@@ -8,9 +8,12 @@
 
 export default{
     name: 'App',
+    mounted(){
+        // this.SetColorName();
+    },
     data(){
         return {
-            GlobalColorName: 'emerald'
+            GlobalColorName: ''
         };
     },
     methods: {
@@ -21,8 +24,9 @@ export default{
             return this.GlobalColorName;
         },
         SetColorName(name){
-            this.GlobalColorName = name ?? 'emerald';
+            this.GlobalColorName = (name ?? 'emerald').toLowerCase();
             this.$forceUpdate();
+            localStorage.setItem('color', this.GlobalColorName);
         }
     },
     provide(){

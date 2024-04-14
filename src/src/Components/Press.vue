@@ -89,14 +89,16 @@ export default{
             else{
                 try {
                     this.$router.push(to).catch(ex => {
-                        console.groupCollapsed('ignorable error occured while trying to use Pressable Route');
-                        console.log(ex);
-                        console.groupEnd();
+                        // console.groupCollapsed('ignorable error occured while trying to use Pressable Route');
+                        // console.log(ex);
+                        // console.groupEnd();
+                        ex
                     });
                 } catch (ex) {
-                    console.groupCollapsed('error occured');
-                    console.log(ex);
-                    console.groupEnd();
+                    // console.groupCollapsed('error occured');
+                    // console.log(ex);
+                    // console.groupEnd();
+                    ex
                 }
             }
         },

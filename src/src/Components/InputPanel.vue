@@ -1,21 +1,23 @@
 <template>
     <div ref="Container" :style="`height: ${((this.height ?? 'UNSET') + 'px').replace('UNSETpx', 'unset') }; max-height: 51vh; min-height: 12vh`" 
-    class="m-1 min-h-fit relative transition">
-        <div id="dragArea" ref="dragArea" class="w-full text-lg text-center border-b cursor-grab active:cursor-grabbing -translate-y-1">
-            <Icon>e76f</Icon>
+    class="min-h-fit relative transition">
+        <div id="dragArea" ref="dragArea" class="w-full bg-zinc-300 text-lg text-center border-b cursor-grab active:cursor-grabbing -translate-y-1 ">
+            <Icon style="transform: translateY(1.5px);" class="inline-block">e76f</Icon>
         </div>
-        <p class=" -translate-y-1 text-lg">
-            <span>当前编辑: <span class="font-semibold ">#{{ this.editing }}</span></span>
-        </p>
-        <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg" 
-            :style="`min-height: 0; max-height: 37.89vh` " 
-        ref="input" rows="5"
-        ></textarea>
+        <div class="px-3">
+            <p class=" -translate-y-0.5 text-lg select-none">
+                <span>当前编辑: <span class="font-semibold ">#{{ this.editing }}</span></span>
+            </p>
+            <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg" 
+                :style="`min-height: 0; max-height: 37.89vh` " 
+            ref="input" rows="5"
+            ></textarea>
+        </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 w-full right-1">
             <div class="grow"></div> 
-            <Press overclass="text-lg" @click.native="__('rose')">huanse</Press>  
+            <!-- <Press overclass="text-lg" @click.native="__('rose')">huanse</Press>   -->
             <Press overclass="text-lg">添加</Press> 
-            <Press overclass="text-lg">提交</Press> 
+            <Press overclass="text-lg" @click.native="Add()">提交</Press> 
         </div> 
     </div>
 </template>
@@ -26,7 +28,13 @@ import Press from './Press.vue';
 export default{
     name: 'InputPanel',
     components: { Icon, Press }, 
-    inject: {_: "_", __: "__"},
+    inject: {
+        _: "_", 
+        __: "__", 
+        Add: "Add", 
+        Del: "Del", 
+        Edit: "Upd",
+    },
     mounted: function (){
         console.log(this);
         let Drag = this.$refs.dragArea,
@@ -41,6 +49,7 @@ export default{
         window.addEventListener('touchmove', (e) => {this.resize(e)});
 
         this.dragBarHeight = Cont.offsetHeight;
+        // this.Add();
         
     },
     data(){
