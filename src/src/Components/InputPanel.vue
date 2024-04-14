@@ -1,7 +1,8 @@
 <template>
     <div ref="Container" :style="`height: ${((this.height ?? 'UNSET') + 'px').replace('UNSETpx', 'unset') }; max-height: 51vh; min-height: 12vh`" 
     class="min-h-fit relative transition">
-        <div id="dragArea" ref="dragArea" class="w-full bg-zinc-300 text-lg text-center border-b cursor-grab active:cursor-grabbing -translate-y-1 ">
+        <div id="dragArea" style="box-shadow: 0 -3px 6px #30303030;"
+        ref="dragArea" class="w-full bg-zinc-300 text-lg text-center cursor-grab active:cursor-grabbing -translate-y-1 ">
             <Icon style="transform: translateY(1.5px);" class="inline-block">e76f</Icon>
         </div>
         <div class="px-3">

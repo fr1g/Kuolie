@@ -6,7 +6,8 @@
         <div id="palette" class="transition absolute right-1.5 top-1.5 bottom-1.5 left-auto p-1 rounded-lg bg-white h-full">
             <ColorChoose />
         </div>
-        <div class="transition fixed w-full bg-zinc-200 bottom-0 left-0 right-0 min-h-fit" id="input-area">
+        <div class="transition fixed w-full bg-zinc-200 bottom-0 left-0 right-0 min-h-fit shadow-lg drop-shadow-lg" 
+             id="input-area">
             <InputPanel />
         </div>
     </div> 
