@@ -14,11 +14,12 @@
             ref="input" rows="5"
             ></textarea>
         </div>
-        <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 w-full right-1">
+        <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2">
+            <Press overclass="text-lg bg-yellow-300">生成</Press> 
             <div class="grow"></div> 
             <!-- <Press overclass="text-lg" @click.native="__('rose')">huanse</Press>   -->
-            <Press overclass="text-lg">添加</Press> 
-            <Press overclass="text-lg" @click.native="Add()">提交</Press> 
+            <Press overclass="text-lg bg-green-300">添加</Press> 
+            <Press overclass="text-lg bg-blue-300" @click.native="Add()">提交</Press> 
         </div> 
     </div>
 </template>
