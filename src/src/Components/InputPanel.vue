@@ -14,7 +14,7 @@
             ref="input" rows="5"
             ></textarea>
         </div>
-        <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2">
+        <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800" style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;"> 
             <Press overclass="text-lg bg-yellow-300">生成</Press> 
             <div class="grow"></div> 
             <!-- <Press overclass="text-lg" @click.native="__('rose')">huanse</Press>   -->

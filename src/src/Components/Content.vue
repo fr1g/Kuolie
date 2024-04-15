@@ -3,7 +3,7 @@
         <div :class="`  bg-${this._()}-200 text-${this._()}-800
                     rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg`">
             <h1 class="">
-                <input type="text" :class="'w-fit p-0 inline-block text-3xl border-0 outline-1 bg-transparent '" placeholder="点击输入标题文本..." />
+                <input type="text" :class="'w-fit p-1 inline-block text-3xl border-0 outline-1 bg-transparent '" placeholder="点击输入标题文本..." />
             </h1>
         </div>
 
