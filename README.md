@@ -4,3 +4,5 @@
 我倒是打算做完基本功能之后打包成tauri和electron, 然后再配个一般dist进仓库
 
 不过还没写完呢 (2024-04-14)
+
+demo: [部署在Kami.su::gio上的Kuolie Demo](https://gio.kami.su/kuolie)
