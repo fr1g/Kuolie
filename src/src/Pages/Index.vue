@@ -1,9 +1,9 @@
 <template>
-    <div id="main-area" class="min-h-screen bg-zinc-100 w-full relative transition">
+    <div id="main-area" class="min-h-screen bg-zinc-50 w-full relative transition">
         <div id="navpill" class="fixed top-1.5 left-1.5 z-20" :style="`opacity: ${this.opa / 100};`">
             <NavPill />
         </div>
-        <div :class="`block bg-${this._()}-50 w-full h-screen relative transition `" id="draw-area" :style="`opacity: ${this.opa / 100};`">
+        <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full h-screen relative transition `" id="draw-area" :style="`opacity: ${this.opa / 100};`">
             <Content ref="c" />
         </div>
         <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition absolute right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-white h-full">
@@ -16,7 +16,7 @@
         <div ref="modal" id="modal"  :style="`opacity: ${(1 - (this.opa / 100)) * 2};`"
             :class="`${this.modal ? 'fixed' : 'hidden'} bg-${this._()}-100 top-10 scale-90 bottom-10 left-1 right-1 m-auto p-5 rounded-lg shadow-lg transition z-30 h-fit w-2/3`">
             <div class="absolute top-1 right-0">
-                <Press init-opacity="0" overclass="shadow-0" class="scale-75" style="box-shadow: none;" @click.native="_ => {_}"> 
+                <Press init-opacity="0" overclass="shadow-0" class="scale-75 inline-block" style="box-shadow: none;" @click.native="_ => {_}"> 
                     <Icon>e711</Icon>
                 </Press>
             </div>
@@ -42,22 +42,33 @@ export default{
         InputPanel, ColorChoose, Content, NavPill, Press, Icon,
 
         ModalBase: {
-            props: ["assembly"], // components: { Press, Icon },
+            props: { assembly: String },
+            components: { Press, Icon },
+            // render(h){
+            //     return () => {
+            //         try{
+            //             return (Vue.compile(`<template><div class="injected">${this.assembly}</div></template>`)).render;
+            //         }catch(ex){
+            //             eval(` console.groupCollapsed('error rendering'); console.log(${ex}); console.groupEnd();`);
+            //         }
+            //     };
+            // },
             render(h) {
                 const com = Vue.extend({
                     name: 'ModalAgent',
-                    template: `<div>${this.assembly}</div>`,
-                    render(h){ return h('div', {template: this.assembly}) }
+                    template: `<div class="modal-content select-none text-lg">${this.assembly}</div>`,
+                    components: {Icon, Press}
                 });
-                // return h(com, {template: com});
-                return h('div', this.assembly);
+                // console.log(this.assembly);
+                return h(com, {});
+            },
+            mounted(){
+                this.$nextTick(() => {
+                    this.$forceUpdate();
+                });
             }
-        },
 
-        // ModalBase: {
-        //     props: { assembly: String },
-        //     render(h) { const com = Vue.extend({ template: this.assembly }); return h(com, {}); }
-        // }
+        },
      },
     inject: {_: "_", __: "__"},
     mounted(){
@@ -70,7 +81,7 @@ export default{
         document.getElementById('VALUEPASS').addEventListener('change', (e) => {console.log(e)})
         window.addEventListener('click', (e) => {
             if(this.modal) if(!(`${e.target.id}`.includes('modal')) && !(`${e.target.classList}`.includes('modal'))) this.SwitchModal();
-        })
+        }, true);
     },
     data(){
         return {

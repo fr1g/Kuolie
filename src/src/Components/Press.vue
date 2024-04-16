@@ -5,15 +5,15 @@
             ${((this.overclass ?? '').includes('rounded')) ? '' : 'rounded-lg'}
             bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'} 
             dark:bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'}
-            hover:shadow-md hover:bg-opacity-70   active:shadow-sm active:bg-opacity-100
+            hover:shadow-md hover:bg-opacity-70   active:shadow-sm active:bg-opacity-100 
             dark:hover:bg-opacity-70 dark:hover:shadow-md   dark:shadow  dark:active:shadow-sm dark:active:bg-opacity-100
             px-2 py-1 mx-1 select-none
             ${(this.disable ?? 'false') == 'true' ? 'dis' : ''}
             ${this.overclass}
         `)" :style="`${this.overstyle} ; cursor: pointer;`"   ref="pressableBase">
         <span class="tense">
-            <i :class="(this.iconClass)"></i> 
-            <span :class="`text-center my-auto mx-0 ml-0 ${(this.isOnlyIcon ?? 'false') == 'true' ? ' use-icon ' : ' '}`" ><span ref="iconRef" class="use-icon"></span><slot></slot>{{ (((this.hideProtocol ?? 'false') == 'true') & this.ex.includes('://') ? this.ex.split('://')[1] : this.ex) }}</span><i :class="(((this.noLinkIcon ?? 'false') == 'true') ? 'hidden' : ((this.type == 'outer' || this.isVerified == 'true') ? '  text-sm use-icon sm-icon' : 'hidden'))" style="vertical-align: text-top !important; " ref="endIconRef"> &#xe8a7;</i>
+            <i :class="(`${this.iconClass}`)"></i> 
+            <span :class="`text-center my-auto mx-0 ml-0 ${(this.isOnlyIcon ?? 'false') == 'true' ? ' use-icon ' : ' '}`" ><span ref="iconRef" :class="`use-icon translate-y-0.5 mr-1 ${this.iconRefHide ? 'hidden' : 'inline-block'}`"></span><span class="inline-block"><slot></slot></span>{{ (((this.hideProtocol ?? 'false') == 'true') & this.ex.includes('://') ? this.ex.split('://')[1] : this.ex) }}</span><i :class="(((this.noLinkIcon ?? 'false') == 'true') ? 'hidden' : ((this.type == 'outer' || this.isVerified == 'true') ? '  text-sm use-icon sm-icon' : 'hidden'))" style="vertical-align: text-top !important; " ref="endIconRef"> &#xe8a7;</i>
         </span>
     </div>
 </template>
@@ -25,10 +25,12 @@ export default{
     data: function(){
         return {
             unspaced: 0,
+            iconRefHide: false,
             // ex: ''
         }; 
     },
     mounted: function(){
+        this.iconRefHide = (this.$refs.iconRef.innerHTML == '');
         this.unspaced = (this.$slots.default[0].text ?? '').replaceAll(' ', '').length;
         this.$refs.pressableBase.addEventListener('pointerup', () => {this.RunClickEvent(this.link, this.type)}); // @click="RunClickEvent(link, type)"
         if((this.hideMatchedIcon ?? 'false') != 'true')    
@@ -48,6 +50,7 @@ export default{
     methods: {
         RunClickEvent: function(to, ty){
             // console.log(to + ' ' + ty + ' ' + this.link)
+            let LINKHANDLER = document.getElementById('LINKHANDLER');
             if(this.isFuncButton == 'true') return;
 
             if(ty == 'copy')

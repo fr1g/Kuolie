@@ -7,6 +7,12 @@ import { createVuePlugin } from '@vitejs/plugin-vue2'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      vue: 'vue/dist/vue.esm.js',
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
   plugins: [
     vue2({
       runtimeCompiler: true,
@@ -19,9 +25,4 @@ export default defineConfig({
     //   runtimeCompiler: true,
     // })
   ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
 })
