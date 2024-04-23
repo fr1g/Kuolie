@@ -3,7 +3,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
-// import './assets/output.css'
+// import '../public/output.css'
+// import '../public/sfi.ttf'
 
 new Vue({
   router,

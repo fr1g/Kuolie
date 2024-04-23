@@ -17,9 +17,6 @@ export default{
         };
     },
     methods: {
-        Test(){
-            console.log("test");
-        },
         GetColorName(){
             return this.GlobalColorName;
         },
@@ -31,7 +28,6 @@ export default{
     },
     provide(){
         return {
-            Try: this.Test,
             GetColor: this.GetColorName,
             _: this.GetColorName,
             SetColor: this.SetColorName,

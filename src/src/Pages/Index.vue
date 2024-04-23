@@ -9,12 +9,12 @@
         <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition absolute right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-white h-full">
             <ColorChoose />
         </div>
-        <div :style="`opacity: ${this.opa / 100};`" class="transition fixed w-full bg-zinc-200 bottom-0 left-0 right-0 min-h-fit shadow-lg drop-shadow-lg" 
-             id="input-area">
-            <InputPanel />
+        <div :style="`opacity: ${this.opa / 100}; z-index: 998`" class="transition fixed w-full bg-zinc-200 bottom-0 left-0 right-0 min-h-fit shadow-lg drop-shadow-lg" 
+             id="input-area" >
+            <InputPanel ref="input" />
         </div>
-        <div ref="modal" id="modal"  :style="`opacity: ${(1 - (this.opa / 100)) * 2};`"
-            :class="`${this.modal ? 'fixed' : 'hidden'} bg-${this._()}-100 top-10 scale-90 bottom-10 left-1 right-1 m-auto p-5 rounded-lg shadow-lg transition z-30 h-fit w-2/3`">
+        <div ref="modal" id="modal"  :style="`opacity: ${(1 - (this.opa / 100)) * 2}; z-index: 999;`"
+            :class="`${this.modal ? 'fixed' : 'hidden'} bg-${this._()}-100 top-10 scale-90 bottom-10 left-1 right-1 m-auto p-5 rounded-lg shadow-lg transition h-fit w-2/3`">
             <div class="absolute top-1 right-0">
                 <Press init-opacity="0" overclass="shadow-0" class="scale-75 inline-block" style="box-shadow: none;" @click.native="_ => {_}"> 
                     <Icon>e711</Icon>
@@ -33,7 +33,6 @@ import Content from '../Components/Content.vue';
 import NavPill from '@/Components/NavPill.vue';
 import Press from '../Components/Press.vue';
 import Icon from '../Components/Icon.vue';
-// import { h } from 'vue';
 import Vue from 'vue';
 
 export default{
@@ -44,22 +43,12 @@ export default{
         ModalBase: {
             props: { assembly: String },
             components: { Press, Icon },
-            // render(h){
-            //     return () => {
-            //         try{
-            //             return (Vue.compile(`<template><div class="injected">${this.assembly}</div></template>`)).render;
-            //         }catch(ex){
-            //             eval(` console.groupCollapsed('error rendering'); console.log(${ex}); console.groupEnd();`);
-            //         }
-            //     };
-            // },
             render(h) {
                 const com = Vue.extend({
                     name: 'ModalAgent',
                     template: `<div class="modal-content select-none text-lg">${this.assembly}</div>`,
                     components: {Icon, Press}
                 });
-                // console.log(this.assembly);
                 return h(com, {});
             },
             mounted(){
@@ -104,7 +93,10 @@ export default{
         },
         Add( ){ this.$refs.c.Create( ) },
         Del(x){ this.$refs.c.Remove(x) },
-        Upd(x){ this.$refs.c.Modify(x) },
+        Upd(x){ this.$refs.c.Modify(x); this.$forceUpdate(); this.$refs.c.$forceUpdate(); },
+        Focus(item){
+            this.$refs.input.changeEditing(item);
+        },
         Hide(){
             if(this.hidden) return;
             for(let i of this.idNeedHide){
@@ -153,6 +145,7 @@ export default{
             Upd: this.Upd,
             S: this.Show,
             H: this.Hide,
+            Focus: this.Focus,
             Modal: this.SwitchModal,
         }
     },

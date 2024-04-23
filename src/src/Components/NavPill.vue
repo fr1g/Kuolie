@@ -33,7 +33,11 @@ export default{
                     <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://min.corona.studio" target="_blank">日冕工作室最小官网 (搬了点组件来用hhh)</a></li>
                 </ul>
                 <br>
-                <Press class="modal-item" type="verified-link" no-link-icon="true" link="https://github.com/fr1g/Kuolie" overclass="text-lg block max-w-fit">查看Github仓库</Press>
+                <div class="flex flex-wrap ">
+                    <Press class="modal-item" type="verified-link" no-link-icon="true" link="https://github.com/fr1g/Kuolie" overclass="text-lg block max-w-fit">查看Github仓库</Press>
+                    <div class="grow"></div>
+                    <Press class="modal-item" type="function" onclick="eval('localStorage.clear(); setTimeout(()=>{window.location.reload()}, 300)')" no-link-icon="true" overclass="text-lg block max-w-fit bg-red-500">清除缓存</Press>
+                </div>
             `;
             this.Modal(true, inner);
         }

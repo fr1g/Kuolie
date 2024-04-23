@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="./favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script >
@@ -14,13 +14,21 @@
     <style>
       @font-face {
         font-family: segoe-fluent;
-        src: url(/sfi.ttf);
+        src: url(sfi.ttf);
       }
       .use-icon{
         font-family: system-ui, segoe-fluent, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       }
       .modal-item > *{
         pointer-events: none;
+      }
+      *{
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      textarea,.content{
+        user-select: auto;
+        -webkit-user-select: auto;
       }
     </style>
     <title>Vite App</title>
@@ -31,6 +39,138 @@
       <input id="VALUEPASS" value="NULL" name="VALUEPASS" />
     </div>
     <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+    <!-- POPUP TOAST -->
+    <div id="popup-container fixed taz select-none" style="pointer-events: none !important;">
+      <div class="PopUpToastArea transition fixed  taz m-2 text-left right-auto left-0 top-2 pb-3 " id="pa">
+          <!-- -->
+      </div>
+      <style>
+          .taz{z-index: 1000 !important;}
+          :root{
+              --toast-span: .5s;
+              --toast-pos: -.3vw;
+              /* POPUP TOAST CONFIGURATION */
+          }
+
+          .shine{
+              background-color: rgba(255, 255, 233, 0.35141141919810) !important;
+          }
+      
+          input{
+              outline: 0;
+          }
+      
+          .toast-initial{
+              transform: translateX(var(--toast-pos));
+              animation: cubic-bezier(0.075, 0.82, 0.165, 1) popupAnimate calc(var(--toast-span) * 2) forwards;
+              z-index: 1000 !important;
+          }
+
+          .toast-leave{
+              animation: cubic-bezier(0.075, 0.82, 0.165, 1) popupLeave calc(var(--toast-span) * 0.3) forwards;
+
+          }
+      
+          @keyframes popupAnimate {
+              0%{
+                  transform: translateX(var(--toast-pos));
+                  opacity: .6;
+              }
+              100%{
+                  transform: translateX(calc(-5.8 * var(--toast-pos)));
+                  opacity: 1;
+              }
+          }
+
+          @keyframes popupLeave{
+              0%{
+                  transform: translateX(calc(-1.8 * var(--toast-pos)));
+              }
+              100%{
+                  transform: translateX(calc(var(--toast-pos) * 56));
+              }
+          }
+          .lini{
+              line-height: .88rem;
+          }
+
+          .a{
+              color: rgb(54, 161, 255);
+              transition-property: all;
+              transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+              transition-duration: 150ms;
+              font-weight: 539;
+          }
+          .a:hover{
+              color: rgba(49, 128, 255, 0.888);
+              text-decoration: underline;
+          }
+          .a:active{
+              color: rgb(23, 83, 195, .9);
+          }
+          .a:visited{
+              color: rgb(66, 85, 233);
+              text-decoration: line-through;
+          }
+          .force-baseline{
+              vertical-align: baseline !important;
+          }
+      </style>
+      <script>
+          const PopUpToastContainerClass = "toast-initial fixed p-1.5 use-icon #COLOR# border opacity-95 shadow-xl hover:shadow-2xl rounded-lg max-w-max left-0 right-0 inline-block taz";
+          const PopUpToastInnerClass = "use-icon force-baseline inline-block px-1.5 mx-auto taz lini";
+          var PopupArea = document.getElementById('pa');
+      
+          function PushToast(str, ucolor = "bg-emerald-400", later = 0, disappear = 3200){
+              let color = ucolor;
+              setTimeout(() => {
+                  switch(color){
+                      case "normal":
+                          // do nothing on the color
+                          break;
+                      case "warn":
+                          color = "bg-yellow-400";
+                          break;
+                      case "err":
+                          color = "bg-rose-400";
+                          break;
+                      case 'blur':
+                          color = 'backdrop-blur-md'
+                      default:
+                          break;
+                  }
+                  let containerC = PopUpToastContainerClass.replace('#COLOR#', color);
+                  let nPopToast = document.createElement('div');
+                  let nPopToastText = document.createElement('p');
+                  nPopToastText.innerHTML = str;
+                  nPopToast.appendChild(nPopToastText);
+                  for(let ii of containerC.split(" ")){
+                      nPopToast.classList.add(ii);
+                  }
+                  for(let ii of PopUpToastInnerClass.split(" ")){
+                      nPopToastText.classList.add(ii);
+                  }
+                  PopupArea.appendChild(nPopToast);
+      
+                  setTimeout(() => {
+                      nPopToast.classList.replace('toast-initial', 'toast-leave')
+                  }, disappear);
+                  setTimeout(() => {
+                      PopupArea.removeChild(nPopToast);
+                      delete nPopToast;
+                  }, 787 + disappear);
+      
+              }, later);
+          };
+          
+      </script>
+  </div>
+  <!-- end of popup -->
+    <script type="module" src="./src/main.js"></script>
+    <script>
+      function Find(array, item){
+        for(let i of array) if (i.id == item.id) return i;
+      }
+    </script>
   </body>
 </html>

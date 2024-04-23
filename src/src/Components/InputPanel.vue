@@ -7,19 +7,28 @@
         </div>
         <div class="px-3">
             <p class=" -translate-y-0.5 text-lg select-none">
-                <span>当前编辑: <span class="font-semibold ">#{{ this.editing }}</span></span>
+                <span>当前编辑: <span class="font-semibold ">#{{ this.tempObject.id ?? '无' }}</span></span>
             </p>
             <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg" 
-                :style="`min-height: 0; max-height: 37.89vh` " 
+                :style="`min-height: 0; max-height: 37.89vh` " @change="textAreaChanged()" @blur="textAreaChanged()"
             ref="input" rows="5" placeholder="在开头使用「方括号 ([] /【】)」包裹住的文字将成为块的标题."
-            ></textarea>
+            >{{ this.tempObject.content }}</textarea>
         </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800" style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;"> 
             <Press overclass="text-lg bg-yellow-300">生成</Press> 
+
             <div class="grow"></div> 
-            <!-- <Press overclass="text-lg" @click.native="__('rose')">huanse</Press>   -->
-            <Press overclass="text-lg bg-green-300">添加</Press> 
-            <Press overclass="text-lg bg-blue-300" @click.native="Add()">提交</Press> 
+            
+            <div ref="adjustSpan" class="flex flex-wrap text-lg align-bottom mx-1" >
+                <p class="align-bottom h-min my-auto mx-1">块宽度: </p>
+                <Press @click.native="addSpan()"><Icon class="my-auto">e710</Icon></Press>
+                <div class="align-bottom mx-0.5 px-1.5 h-min my-auto rounded-lg border font-semibold">{{ this.tempObject.span }}</div>
+                <Press @click.native="remSpan()"><Icon class="my-auto">e738</Icon></Press>
+            </div>
+            <Press overclass="text-lg bg-green-300" @click.native="Add()">添加</Press> 
+            <Press overclass="text-lg bg-red-300" @click.native="Del(this.tempObject.id)">删除</Press> 
+            <div class="w-5"></div>
+            <Press overclass="text-lg bg-blue-300" @click.native="submit()">提交</Press> 
         </div> 
     </div>
 </template>
@@ -38,7 +47,7 @@ export default{
         Edit: "Upd",
     },
     mounted: function (){
-        console.log(this);
+        // console.log(this);
         let Drag = this.$refs.dragArea,
             Cont = this.$refs.Container;
         Drag.addEventListener('mousedown', () => {this.startDrag()});
@@ -64,12 +73,51 @@ export default{
             dragBarHeight: 0,
             tempObject: {
                 id: null,
-                toRender: '',
-                // ...
+                content: '',
+                span: 1,
+                offset: 0,
+                x: 0
             }
         };
     },
-    methods: { // changeEditing, submitChange, startDrag, endDrag, resize
+    methods: { // changeEditing(Focus), submitChange, startDrag, endDrag, resize
+        changeEditing(item){
+            // console.log(`got received: ${item}`);
+            this.tempObject = item;
+            this.$refs.input.value = this.tempObject.content;
+            this.$forceUpdate();
+        },
+
+
+        submit(){
+            this.Edit(this.tempObject);
+        },
+        textAreaChanged(){
+            this.tempObject.content = document.getElementById('textarea-input').value;
+            this.Edit(this.tempObject);
+            this.tempObject.x = Math.floor(Math.random(6) * 100000);
+            this.Edit(this.tempObject);
+        },
+        addSpan(){
+            if(this.tempObject.span == 12) {
+                PushToast('已经最大了! ', 'warn')
+                return;
+            }
+            else  {
+                this.tempObject.span ++;
+                this.Edit(this.tempObject);
+            }
+        },
+        remSpan(){
+            if(this.tempObject.span == 1) {
+                PushToast('已经最小了! ', 'warn')
+                return;
+            }
+            else  {
+                this.tempObject.span --;
+                this.Edit(this.tempObject);
+            }
+        },
         startDrag(){
             this.resizing = true;
         },
@@ -81,7 +129,7 @@ export default{
         resize(e, isForce = false){
             if(!this.resizing) return;
             if(this.timer & !isForce) return;
-            console.log('invoked. isForce: ' + isForce);
+            // console.log('invoked. isForce: ' + isForce);
             this.timer = true;
             let upYpos = window.innerHeight - (e.clientY ?? e.touches[0].clientY);
             this.height = upYpos;
@@ -98,3 +146,8 @@ export default{
     }
 }
 </script>
+<style scoped>
+.align-bottom{
+    vertical-align: bottom !important;
+}
+</style>
