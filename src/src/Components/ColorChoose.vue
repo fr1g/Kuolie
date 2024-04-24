@@ -4,7 +4,7 @@
          :class="`w-6 h-6 transition hover:scale-110 scale-105 active:scale-100 rounded-lg opacity-70 hover:opacity-90 active:opacity-100 shadow bg-${color.toLowerCase()}-500 `">
 
         </div>
-
+        <div class="h-6 opacity-0 block md:hidden" v-for="i in 8" :key="i"></div>
     </div>
 </template>
 <script>

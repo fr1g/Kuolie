@@ -1,15 +1,27 @@
 <template>
-    <div :id="`TEXTBOX::${this.id}`" :class="`p-2.5 rounded-lg shadow  col-span-${this.span ?? '1'}  ${(this.fill ?? 'false') == 'true' ? 'h-full' : 'h-fit'}       transition-all
-                                             text-${this._()}-900 bg-${this._()}-100 `"
-                :style="'z-index: ' + this.id + 10">
-        <h3 :class="`text-${this._()}-700 font-semibold text-lg flex flex-wrap`">
-            <div style="display: var(--id-show);" class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
-                #{{ this.id }}
+    <div :id="`TEXTBOX::${this.id}`" 
+        :class="`   basicLooking? p-2.5 rounded-lg shadow transition-all
+                    advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._()}-900 bg-${this._()}-100 
+                    forExtraFunctions? ${this.isPlaceHolder ? 'grow col-span-auto justify-items-center justify-center items-center  grid' : ''}
+                `"
+                :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}`">
+        <div :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
+            <h3 :class="`text-${this._()}-700 font-semibold text-lg flex flex-wrap`">
+                <div style="display: var(--id-show);" class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
+                    #{{ this.id }}
+                </div>
+                <div class="grow" v-html="this.title">
+                </div>
+            </h3>
+            <div class="text-sm" v-html="this.content" ref="contented"></div>
+        </div>
+    
+        <div :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
+            <div class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
+                #{{ this.id }}占位格子
             </div>
-            <div class="grow" v-html="this.title">
-            </div>
-        </h3>
-        <div class="text-sm" v-html="this.content" ref="contented"></div>
+        </div>
+        
     </div>
 </template>
 
@@ -17,7 +29,7 @@
 
 export default{
     name: 'TextBox',
-    props: ['id', 'offset', 'span', 'inside', 'fill', 'x'],
+    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder'],
     inject: {
         _: '_',
         __: '__',
@@ -38,10 +50,8 @@ export default{
     },
     methods: {
         Renew(){
-            if (this.inside == null){
-                console.log('null inside');
-                return;
-            }
+            if (this.inside == null) return;
+            
             let process = this.inside;
             if(process == undefined) return;
             if(process.includes('[') || process.includes('【')){
@@ -76,7 +86,6 @@ export default{
     },
     watch: {
         content(after, before){
-            console.log(`b: ${before}, a: ${after}`);
             this.Renew();
         },
         x(){

@@ -87,11 +87,11 @@
                   transform: translateX(calc(-1.8 * var(--toast-pos)));
               }
               100%{
-                  transform: translateX(calc(var(--toast-pos) * 56));
+                  transform: translateX(calc(var(--toast-pos) * 128));
               }
           }
           .lini{
-              line-height: .88rem;
+              line-height: 1.29rem;
           }
 
           .a{
@@ -170,6 +170,9 @@
     <script>
       function Find(array, item){
         for(let i of array) if (i.id == item.id) return i;
+      }
+      function Scroll(id){
+        window.scrollTo({top: document.getElementById(id.replace('#', '')).offsetTop + 10, behavior: "smooth"});
       }
     </script>
   </body>

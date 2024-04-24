@@ -11,9 +11,9 @@
             ${(this.disable ?? 'false') == 'true' ? 'dis' : ''}
             ${this.overclass}
         `)" :style="`${this.overstyle} ; cursor: pointer;`"   ref="pressableBase">
-        <span class="tense">
-            <i :class="(`${this.iconClass}`)"></i> 
-            <span :class="`text-center my-auto mx-0 ml-0 ${(this.isOnlyIcon ?? 'false') == 'true' ? ' use-icon ' : ' '}`" ><span ref="iconRef" :class="`use-icon translate-y-0.5 mr-1 ${this.iconRefHide ? 'hidden' : 'inline-block'}`"></span><span class="inline-block"><slot></slot></span>{{ (((this.hideProtocol ?? 'false') == 'true') & this.ex.includes('://') ? this.ex.split('://')[1] : this.ex) }}</span><i :class="(((this.noLinkIcon ?? 'false') == 'true') ? 'hidden' : ((this.type == 'outer' || this.isVerified == 'true') ? '  text-sm use-icon sm-icon' : 'hidden'))" style="vertical-align: text-top !important; " ref="endIconRef"> &#xe8a7;</i>
+        <span :class="`tense  ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `">
+            <i :class="(`${this.iconClass} ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `)"></i> 
+            <span :class="` ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} text-center my-auto mx-0 ml-0 ${(this.isOnlyIcon ?? 'false') == 'true' ? ' use-icon ' : ' '}`" ><span ref="iconRef" :class="` ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} use-icon translate-y-0.5 mr-1 ${this.iconRefHide ? 'hidden' : 'inline-block'}`"></span><span :class="`inline-block ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `"><slot></slot></span>{{ (((this.hideProtocol ?? 'false') == 'true') & this.ex.includes('://') ? this.ex.split('://')[1] : this.ex) }}</span><i :class="`${(((this.noLinkIcon ?? 'false') == 'true') ? 'hidden' : ((this.type == 'outer' || this.isVerified == 'true') ? '  text-sm use-icon sm-icon' : 'hidden'))}  ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `" style="vertical-align: text-top !important; " ref="endIconRef"> &#xe8a7;</i>
         </span>
     </div>
 </template>
@@ -21,7 +21,7 @@
 
 export default{
     name: 'Press',
-    props: ['type', 'target', 'isVerified', 'hideMatchedIcon', 'initShadow', 'isOnlyIcon', 'overstyle', 'iconClass', 'link', 'overclass', 'initOpacity', 'isFuncButton', 'copyContent', 'isDownload', 'disable', 'hideProtocol', 'noLinkIcon', 'title' ], // 类型(内外链)，页面打开类型，覆盖的样式，图标类名，链接
+    props: ['isForModalClose', 'type', 'target', 'isVerified', 'hideMatchedIcon', 'initShadow', 'isOnlyIcon', 'overstyle', 'iconClass', 'link', 'overclass', 'initOpacity', 'isFuncButton', 'copyContent', 'isDownload', 'disable', 'hideProtocol', 'noLinkIcon', 'title' ], // 类型(内外链)，页面打开类型，覆盖的样式，图标类名，链接
     data: function(){
         return {
             unspaced: 0,

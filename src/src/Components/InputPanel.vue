@@ -10,12 +10,16 @@
                 <span>当前编辑: <span class="font-semibold ">#{{ this.tempObject.id ?? '无' }}</span></span>
             </p>
             <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg" 
-                :style="`min-height: 0; max-height: 37.89vh` " @change="textAreaChanged()" @blur="textAreaChanged()"
+                :style="`min-height: 0; max-height: 37.89vh` " spellcheck="false" 
+                @change="textAreaChanged()" @blur="textAreaChanged()" @input="textAreaAutoTag" @focus="textAreaFocus"
             ref="input" rows="5" placeholder="在开头使用「方括号 ([] /【】)」包裹住的文字将成为块的标题."
             >{{ this.tempObject.content }}</textarea>
         </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800" style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;"> 
             <Press overclass="text-lg bg-yellow-300">生成</Press> 
+            <Press overclass="text-lg bg-indigo-300"  @click.native="Modal(true, '<ConfigurationModal />')">
+                <Icon>f8b0</Icon>
+            </Press> 
 
             <div class="grow"></div> 
             
@@ -25,26 +29,28 @@
                 <div class="align-bottom mx-0.5 px-1.5 h-min my-auto rounded-lg border font-semibold">{{ this.tempObject.span }}</div>
                 <Press @click.native="remSpan()"><Icon class="my-auto">e738</Icon></Press>
             </div>
-            <Press overclass="text-lg bg-green-300" @click.native="Add()">添加</Press> 
-            <Press overclass="text-lg bg-red-300" @click.native="Del(this.tempObject.id)">删除</Press> 
+            <Press overclass="text-lg bg-green-300" @click.native="Add()" id="NEWTEXTBOX">添加</Press> 
+            <Press overclass="text-lg bg-red-300" @click.native="judgeDeletion">删除</Press> 
             <div class="w-5"></div>
-            <Press overclass="text-lg bg-blue-300" @click.native="submit()">提交</Press> 
+            <Press overclass="text-lg bg-blue-300" @click.native="Add(true)">占位</Press> 
         </div> 
     </div>
 </template>
 <script>
 import Icon from './Icon.vue';
 import Press from './Press.vue';
+import ConfigurationModal from './Views/ConfigurationModal.vue';
  
 export default{
     name: 'InputPanel',
-    components: { Icon, Press }, 
+    components: { Icon, Press, ConfigurationModal }, 
     inject: {
         _: "_", 
         __: "__", 
         Add: "Add", 
         Del: "Del", 
         Edit: "Upd",
+        Modal: 'Modal'
     },
     mounted: function (){
         // console.log(this);
@@ -76,21 +82,43 @@ export default{
                 content: '',
                 span: 1,
                 offset: 0,
-                x: 0
-            }
+                x: 0,
+                isPlaceHolder: false,
+            },
+            OpeningTag: false,
+
         };
     },
     methods: { // changeEditing(Focus), submitChange, startDrag, endDrag, resize
         changeEditing(item){
             // console.log(`got received: ${item}`);
             this.tempObject = item;
-            this.$refs.input.value = this.tempObject.content;
+            if(this.tempObject.isPlaceHolder) this.$refs.input.value = '占位小方块! 它会在生成结果中隐藏掉自己🫥...';
+            else this.$refs.input.value = this.tempObject.content;
             this.$forceUpdate();
         },
 
-
+        judgeDeletion(e){
+            if(this.tempObject.id == null) return;
+            this.Del(`${this.tempObject.id}&#&${this.tempObject.content.slice(0, 12)}...`);
+        },
         submit(){
             this.Edit(this.tempObject);
+        },
+        textAreaAutoTag(e){
+            console.log(e);
+
+        },
+        textAreaFocus(e){
+
+            if(this.tempObject.id != null) return;
+            else {
+                e.target.blur();
+                document.getElementById('NEWTEXTBOX').click();
+                setTimeout(() => {
+                    e.target.click();
+                }, 50);
+            }
         },
         textAreaChanged(){
             this.tempObject.content = document.getElementById('textarea-input').value;
@@ -99,8 +127,13 @@ export default{
             this.Edit(this.tempObject);
         },
         addSpan(){
+            if(this.tempObject.id == null){
+                PushToast('未选中修改目标! ', 'warn');
+                return;
+            }
             if(this.tempObject.span == 12) {
-                PushToast('已经最大了! ', 'warn')
+                PushToast('已经最大了! ', 'warn');
+                Scroll(`TEXTBOX::${this.tempObject.id}`);
                 return;
             }
             else  {
@@ -109,8 +142,13 @@ export default{
             }
         },
         remSpan(){
+            if(this.tempObject.id == null){
+                PushToast('未选中修改目标! ', 'warn');
+                return;
+            }
             if(this.tempObject.span == 1) {
-                PushToast('已经最小了! ', 'warn')
+                PushToast('已经最小了! ', 'warn');
+                Scroll(`TEXTBOX::${this.tempObject.id}`);
                 return;
             }
             else  {
