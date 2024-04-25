@@ -159,7 +159,12 @@ export default{
             
                         setTimeout(() => {
                             this.Opacity(100);
-                            if(window.location.href.includes('localhost') & localStorage.debug == 'true') document.body.appendChild(canvas); //
+                            if(window.location.href.includes('localhost') & localStorage.debug == 'true') {
+                                document.body.appendChild(canvas); 
+                                let spanner = document.createElement('div');
+                                spanner.classList.add('h-64');
+                                document.body.appendChild(spanner); 
+                            }//
                         }, 123);
                     });
                 }, 1230);
