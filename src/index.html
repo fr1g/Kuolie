@@ -2,15 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="./favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com" ></script>
+    <script src="https://cdn.tailwindcss.com"    ></script>
     <script >
       tailwind.config = {
         darkMode: 'class'
+      };
+      var hasError = false;
+      window.addEventListener('load', () => {
+        if(hasError) PushToast('资源未完成加载! 或许应该刷新页面重试, <br>或检查自己的网络连接? ', 'bg-red-400 animation-pulse', 500, 114514);
+      });
+      const AccessList = [
+        './favicon.ico',
+        './output.css',
+        './sfi.ttf',
+      ];
+
+      for(let i of AccessList){
+        let xhr = new XMLHttpRequest();
+        // console.log(`Checking ${i} while before this total status is: ${hasError}`);
+        xhr.open('get', i);
+        xhr.onreadystatechange = () => {
+            // console.log(xhr.readyState + ' : ' + xhr.status)
+            if(xhr.readyState != 4) return;
+            if(xhr.status != 200) hasError = true;
+        };
+        xhr.send();
       }
+
+      var _consoleWarn = console.warn, isTwLoaded = false;
+        console.warn = function(...data){
+            _consoleWarn(...data);
+            if(data.toString().includes('cdn.tailwindcss.com')) isTwLoaded = true;
+            else hasError = true;
+        }
+        const _ua = navigator.userAgent;
+
     </script>
-    <link rel="stylesheet" href="output.css">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="output.css" />
+    
     <style>
       @font-face {
         font-family: segoe-fluent;
@@ -40,6 +71,10 @@
     </div>
     <script>
         var AHANDLER = document.getElementById('LINKHANDLER');
+
+        // .ico .css cdn.tailwindcss.com .ttf
+  
+        
     </script>
     <div id="app"></div>
     <!-- POPUP TOAST -->
