@@ -10,10 +10,10 @@
                 <div style="display: var(--id-show);" class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
                     #{{ this.id }}
                 </div>
-                <div class="grow" v-html="this.title">
+                <div class="grow" v-html="this.title.replaceAll(this.reg, this.replacement)">
                 </div>
             </h3>
-            <div class="text-sm break-words" v-html="this.content" ref="contented"></div>
+            <div class="text-sm break-words" v-html="`${this.content.replaceAll(this.reg, this.replacement)}`" ref="contented"></div>
         </div>
     
         <div :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
@@ -37,7 +37,9 @@ export default{
     data(){
         return {
             title: '=v=',
-            content: '空哒!'
+            content: '空哒!',
+            replacement: '<span class=\"text-sm font-semibold\">不要尝试插入脚本!</span>',
+            reg: /<script[^>]*?>[^]*?<\/script>/gi
         }
     },
     mounted(){ // [] /【】
