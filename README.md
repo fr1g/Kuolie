@@ -5,4 +5,4 @@
 
 不过还没写完呢 (2024-04-14)
 
-demo: [部署在Kami.su::gio上的Kuolie Demo](https://gio.kami.su/kuolie)
+demo: [部署在vercel上的Kuolie Demo](https://kuolie.kami.su) |  [备用](https://kuolie.vercel.app)
