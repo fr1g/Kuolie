@@ -15,7 +15,7 @@
             <div id="navpill" class="fixed top-1.5 left-1.5 z-20" :style="`opacity: ${this.opa / 100};`">
                 <NavPill />
             </div>
-            <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full min-h-screen relative transition pb-72 `" id="draw-area" :style="`opacity: ${this.opa / 100};`">
+            <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full min-h-screen m-auto relative transition pb-72 `" id="draw-area" :style="`opacity: ${this.modal ? this.opa / 100 : '1'};`">
                 <Content ref="c" />
             </div>
             <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition fixed right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-white h-full max-h-screen overflow-x-hidden overflow-y-auto">
@@ -32,7 +32,7 @@
                         <Icon>e711</Icon>
                     </Press>
                 </div>
-                <ModalBase ref="modal-render" class="mt-3" id="modal-render" :assembly="this.modalContent">
+                <ModalBase ref="modal-render" class="mt-3" id="modal-render" :assembly="this.modalContent" :key="Math.random()">
 
                 </ModalBase>
             </div>
@@ -40,38 +40,41 @@
     </div> 
 </template>
 <script>
+import Vue from 'vue';
+import html2canvas from 'html2canvas'
+
 import InputPanel from '@/Components/InputPanel.vue';
 import ColorChoose from '../Components/ColorChoose.vue';
 import Content from '../Components/Content.vue';
 import NavPill from '@/Components/NavPill.vue';
 import Press from '../Components/Press.vue';
 import Icon from '../Components/Icon.vue';
-import Vue from 'vue';
 
 import ConfigurationModal from '../Components/Views/ConfigurationModal.vue';
 import ConfirmDeletionModal from '../Components/Views/ConfirmDeletionModal.vue';
+import AboutInfoModal from '../Components/Views/AboutInfoModal.vue';
+import FirstTryInfoModal from '../Components/Views/FirstTryInfoModal.vue';
 
 export default{
     name: 'Index',
     components: { 
         InputPanel, ColorChoose, Content, NavPill, Press, Icon,
 
-        ConfigurationModal, ConfirmDeletionModal,
-
         ModalBase: {
+            // thanks to: 
+            // - Chobits' answer at: https://segmentfault.com/q/1010000015734369/a-1020000015737231
+            // - tptech & bhenderson's answer at: https://github.com/vitejs/vite/discussions/4158#discussioncomment-1282397
+            // - sjpqy's simplified solution at: https://www.cnblogs.com/shenjp/p/10670787.html
+            // these helped this modal got constructed, but never will I prefer to try to make this modal again.
             props: { assembly: String },
-            components: { 
-                Press, Icon, 
-                ConfigurationModal, ConfirmDeletionModal, 
-            },
             render(h) {
                 const com = Vue.extend({
                     name: 'ModalAgent',
                     template: `<div class="modal-content select-none text-lg">${this.assembly}</div>`,
                     components: {
                         Icon, Press, 
-                        ConfigurationModal, ConfirmDeletionModal, 
-                    }
+                        ConfigurationModal, ConfirmDeletionModal, AboutInfoModal, FirstTryInfoModal
+                    },
                 });
                 return h(com, {});
             },
@@ -79,7 +82,7 @@ export default{
                 this.$nextTick(() => {
                     this.$forceUpdate();
                 });
-            }
+            },
 
         },
      },
@@ -96,6 +99,9 @@ export default{
         window.addEventListener('click', (e) => {
             if(this.modal) if(!(`${e.target.id}`.includes('modal')) && !(`${e.target.classList}`.includes('modal')) && !(`${e.target.parentElement.classList}`.includes('modal'))) this.SwitchModal();
         }, true);
+
+        if(localStorage.firstTry == undefined) localStorage.firstTry = true;
+        this.firstTry = localStorage.firstTry; 
     },
     data(){
         return {
@@ -110,23 +116,64 @@ export default{
             opa: 100,
             modalContent: '',
             interval: null,
+            firstTry: 'false',
 
         }
     },
     methods: {
-        ValueChange(val){
+        Generate(val = 0){
+            console.log('invoked generation');
+            // 可以在第一次使用的时候弹窗提示流程 'CORAL' / 'ROUND'
+            if(this.firstTry == 'false') this.GenerateStep();
+            else this.SwitchModal(true, '<FirstTryInfoModal />'); // set firsttry to false 
+        },
+        GenerateStep(){
+            if(localStorage.firstTry == 'true'){
+                localStorage.firstTry = false;
+                this.SwitchModal();
+            }
+            setTimeout(() => {
+                PushToast('即将截取, <br>成功后将触发下载喔', `bg-${this._()}-300`);
+                this.Opacity(0);
+                setTimeout(() => {
+                    html2canvas(document.getElementById('ROUND').parentElement, 
+                    {
+                        backgroundColor: null,
+                        useCORS: true,
+                        allowTaint: true,
+                        height: document.getElementById('ROUND').offsetHeight,
+                        width: document.getElementById('CORAL').offsetWidth + 80,
+                        x: document.getElementById('CORAL').offsetLeft - 40,
+                        removeContainer: true
 
+                    }).then((canvas) => {
+                        
+                        AHANDLER.setAttribute('download', `Kuolie-Generated_${(new Date()).toLocaleString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_')}.png`);
+                        AHANDLER.setAttribute('href', canvas.toDataURL('png'));
+
+                        AHANDLER.click();
+            
+                        setTimeout(() => {
+                            this.Opacity(100);
+                        }, 123);
+                    });
+                }, 1230);
+            }, 567);
+            
         },
         Config(i, o = null){ return this.$refs.c.Configure(i, o); },
         Add(x){ this.$refs.c.Create(x) },
-        Del(x){ 
-            this.SwitchModal(true, `<ConfirmDeletionModal target="${x}" />`);
-            // this.$refs.c.Remove(x);
+        Del(x, o){ 
+            this.SwitchModal(true, `<ConfirmDeletionModal target="${x.replaceAll('"', '“')}" origin="${o.replaceAll('"', '“')}" />`);
         },
         RealDel(id){
             this.$refs.c.Remove(id);
+            this.SwitchModal();
         },
-        Upd(x){ this.$refs.c.Modify(x); this.$forceUpdate(); this.$refs.c.$forceUpdate(); },
+        Upd(x){ 
+            this.$refs.c.Modify(x); 
+            this.$forceUpdate(); 
+            this.$refs.c.$forceUpdate(); },
         Focus(item){
             this.$refs.input.changeEditing(item);
         },
@@ -143,32 +190,37 @@ export default{
             }
         },
         SwitchModal(status = false, content = ''){
-            let target = this.opa, to;
             if(status){
                 if(this.modal) return;
-                to = 50;
+                this.Opacity(50, true, content);
+            }else{
+                if(!this.modal) return;
+                this.Opacity(100, false, content);
+            }
+        },
+        Opacity(to, modal = null, content = ''){ // this is really a mess...
+            if(this.opa > to){
+                // decrease
                 this.interval = setInterval(() => {
-                    // console.log(0)
                     if(this.opa < to) {
-                        this.modal = true;
-                        this.modalContent = content;
+                        if(modal != null){
+                            this.modal = modal;
+                            this.modalContent = content;
+                        }
                         clearInterval(this.interval);
                     }
                     this.opa -= 3;
                 }, 3);
-            }else{
-                if(!this.modal) return;
-                to = 100;
+            }
+            else{
                 this.interval = setInterval(() => {
                     if(this.opa > to) {
-                        this.modal = false;
+                        if(modal != null) this.modal = modal;
                         clearInterval(this.interval);
                     }
                     this.opa += 3;
                 }, 3);
             }
-        },
-        Opacity(to){
         }
     },
     provide(){ 
@@ -181,7 +233,10 @@ export default{
             Focus: this.Focus,
             RD: this.RealDel,
             Modal: this.SwitchModal,
-            Config: this.Config
+            Config: this.Config,
+            Generate: this.Generate,
+            GenerateStep: this.GenerateStep,
+
         }
     },
 

@@ -36,11 +36,12 @@ export default{
             }
             else {
                 this.conf = Object.values(this.Config('get'));
-                this.$refs.loading.remove();
+                if(this.$refs.loading)
+                    this.$refs.loading.remove();
                 clearInterval(this.confGetInterval);
             }
             
-        }, 1000);
+        }, 1);
         
         this.$forceUpdate();
     },

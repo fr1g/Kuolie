@@ -12,11 +12,11 @@
             <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg" 
                 :style="`min-height: 0; max-height: 37.89vh` " spellcheck="false" 
                 @change="textAreaChanged()" @blur="textAreaChanged()" @input="textAreaAutoTag" @focus="textAreaFocus"
-            ref="input" rows="5" placeholder="在开头使用「方括号 ([] /【】)」包裹住的文字将成为块的标题."
+            ref="input" rows="5" placeholder="在开头使用「方括号 ([] /【】)」包裹住的文字将成为块的标题. 输入框具有简单的输入补全, 可用于补全方括号和HTML标签. 按下回车将自动在html标签之外的地方插入换行符. "
             >{{ this.tempObject.content }}</textarea>
         </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800" style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;"> 
-            <Press overclass="text-lg bg-yellow-300">生成</Press> 
+            <Press overclass="text-lg bg-yellow-300" @click.native="Generate()">生成</Press> 
             <Press overclass="text-lg bg-indigo-300"  @click.native="Modal(true, '<ConfigurationModal />')">
                 <Icon>f8b0</Icon>
             </Press> 
@@ -50,7 +50,8 @@ export default{
         Add: "Add", 
         Del: "Del", 
         Edit: "Upd",
-        Modal: 'Modal'
+        Modal: 'Modal',
+        Generate: 'Generate',
     },
     mounted: function (){
         // console.log(this);
@@ -64,6 +65,8 @@ export default{
 
         window.addEventListener('mousemove', (e) => {this.resize(e)});
         window.addEventListener('touchmove', (e) => {this.resize(e)});
+
+        document.getElementsByTagName('textarea')[0].addEventListener('keydown', (e) => {this.handleKey(e)});
 
         this.dragBarHeight = Cont.offsetHeight;
         // this.Add();
@@ -85,29 +88,82 @@ export default{
                 x: 0,
                 isPlaceHolder: false,
             },
-            OpeningTag: false,
-
+            ot: false,
+            otname: '',
+            key: ''
         };
     },
-    methods: { // changeEditing(Focus), submitChange, startDrag, endDrag, resize
+    methods: {
         changeEditing(item){
-            // console.log(`got received: ${item}`);
             this.tempObject = item;
             if(this.tempObject.isPlaceHolder) this.$refs.input.value = '占位小方块! 它会在生成结果中隐藏掉自己🫥...';
             else this.$refs.input.value = this.tempObject.content;
             this.$forceUpdate();
+            let obj;
+            if(document.getElementById(`TEXTBOX::${this.tempObject.id}`)) obj = document.getElementById(`TEXTBOX::${this.tempObject.id}`);
+            else return;
+            setTimeout(() => {
+                obj.classList.add('shine');
+            }, 123);
+            setTimeout(() => {
+                obj.classList.remove('shine');
+            }, 1234);
         },
 
         judgeDeletion(e){
             if(this.tempObject.id == null) return;
-            this.Del(`${this.tempObject.id}&#&${this.tempObject.content.slice(0, 12)}...`);
+            this.Del(`${this.tempObject.id}`, `${this.tempObject.content}`);
         },
         submit(){
             this.Edit(this.tempObject);
         },
         textAreaAutoTag(e){
-            console.log(e);
-
+            console.log(e.data)
+            if(this.ot){ // opened
+                if(e.data == '<') return;
+                else if(e.data == '='){
+                    let dir = e.target.selectionStart;
+                    this.$refs.input.value += `""`;
+                    e.target.selectionStart = dir + 1;
+                    e.target.selectionEnd = dir + 1;
+                }
+                else if(e.data == '/'){
+                    this.$refs.input.value += '>';
+                    this.otname = '';
+                }else if(e.data == '>'){
+                    let dir = e.target.selectionStart;
+                    this.$refs.input.value += `</${this.otname.replaceAll(' ', '')}> `;
+                    e.target.selectionStart = dir;
+                    e.target.selectionEnd = dir;
+                    this.otname = '';
+                }else{
+                    this.otname += e.data;
+                    console.log(this.otname);
+                }
+            }else{ // nothing new opened
+                if(e.data == '<') {
+                    this.ot = true;
+                }
+                else if(e.data == '['){
+                    let dir = e.target.selectionStart;
+                    this.$refs.input.value += `]`;
+                    e.target.selectionStart = dir;
+                    e.target.selectionEnd = dir;
+                }
+                else if(e.data == '【'){
+                    let dir = e.target.selectionStart;
+                    this.$refs.input.value += `】`;
+                    e.target.selectionStart = dir;
+                    e.target.selectionEnd = dir;
+                }
+                else if(e.data == null){
+                    if(this.key == 'enter') this.$refs.input.value += `<br/>`;
+                }
+            }
+            this.textAreaChanged();
+        },
+        handleKey(e){
+            this.key = e.code.toLowerCase();
         },
         textAreaFocus(e){
 
@@ -125,6 +181,7 @@ export default{
             this.Edit(this.tempObject);
             this.tempObject.x = Math.floor(Math.random(6) * 100000);
             this.Edit(this.tempObject);
+            return;
         },
         addSpan(){
             if(this.tempObject.id == null){

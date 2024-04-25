@@ -1,5 +1,5 @@
 <template>
-    <div class=" w-full p-5 grid justify-items-center transition-all" ref="rend" >
+    <div class=" w-full m-auto p-5 grid justify-items-center transition-all" ref="rend" id="ROUND">
         <div :class="`  bg-${this._()}-200 text-${this._()}-800
                     rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5`" id="CORAL">
             <h1 class=" mb-2.5">
@@ -104,7 +104,7 @@ export default{
                 {
                     id: 2,
                     content: 'Placeholder的内容不会展示... ',
-                    span: 2,
+                    span: 3,
                     offset: 0,
                     x: 0,
                     isPlaceHolder: true,
@@ -199,6 +199,7 @@ export default{
                 PushToast('没有选中编辑项目.<br>为此, 新块已添加.', 'bg-sky-300');
                 return;
             }else{
+                this.UpdateSorting();
                 let _tmp = Find(this.TextBoxes, change);
                 this.TextBoxes[this.TextBoxes.indexOf(_tmp)] = change;
                 this.$forceUpdate();
@@ -206,6 +207,7 @@ export default{
             Scroll(`TEXTBOX::${change.id}`);
         },
         Save(){
+            this.UpdateSorting();
             if(this.$refs.titl != undefined) localStorage.setItem('kuolieTitle', this.$refs.titl.value);
             if(this.TextBoxes.length != 0 || this.TextBoxes != this.defaultTextBoxes)
                 localStorage.setItem('kuolieJson', JSON.stringify(this.TextBoxes));
@@ -237,11 +239,8 @@ export default{
                 
             }
             this.$forceUpdate();
-            console.log('已重新排序');
-            this.$refs.rend.classList.add('shine');
-            setTimeout(() => {
-                this.$refs.rend.classList.remove('shine');
-            }, 3000);
+            // console.log('已重新排序');
+
         },
     },
     watch: {

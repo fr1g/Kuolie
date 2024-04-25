@@ -13,7 +13,7 @@
                 <div class="grow" v-html="this.title">
                 </div>
             </h3>
-            <div class="text-sm" v-html="this.content" ref="contented"></div>
+            <div class="text-sm break-words" v-html="this.content" ref="contented"></div>
         </div>
     
         <div :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
@@ -81,7 +81,7 @@ export default{
         Clear(onlyTitle = false, process = ''){
             this.title = '=v=';
             if (!onlyTitle) this.content = '空哒!';
-            else this.content = process;
+            else this.content = (process == '' ? '空哒! owo' : process);
         }
     },
     watch: {
