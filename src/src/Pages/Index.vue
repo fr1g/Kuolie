@@ -138,14 +138,18 @@ export default{
                 setTimeout(() => {
                     html2canvas(document.getElementById('ROUND').parentElement, 
                     {
-                        backgroundColor: null,
+                        backgroundColor: null, // can get localstorage rgb as string via settings preference.
                         useCORS: true,
                         allowTaint: true,
                         height: document.getElementById('ROUND').offsetHeight,
                         width: document.getElementById('CORAL').offsetWidth + 80,
                         x: document.getElementById('CORAL').offsetLeft - 40,
-                        removeContainer: true
+                        removeContainer: true,
+                        scale: window.devicePixelRatio   ,
+                        imageTimeout: 0,
+                        
 
+                        onclone: () => {},
                     }).then((canvas) => {
                         
                         AHANDLER.setAttribute('download', `Kuolie-Generated_${(new Date()).toLocaleString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_')}.png`);
@@ -155,6 +159,7 @@ export default{
             
                         setTimeout(() => {
                             this.Opacity(100);
+                            if(window.location.href.includes('localhost') & localStorage.debug == 'true') document.body.appendChild(canvas); //
                         }, 123);
                     });
                 }, 1230);

@@ -69,13 +69,6 @@
       <a id="LINKHANDLER"></a>
       <input id="VALUEPASS" value="NULL" name="VALUEPASS" />
     </div>
-    <script>
-        var AHANDLER = document.getElementById('LINKHANDLER');
-
-        // .ico .css cdn.tailwindcss.com .ttf
-  
-        
-    </script>
     <div id="app"></div>
     <!-- POPUP TOAST -->
     <div id="popup-container fixed taz select-none" style="pointer-events: none !important;">
@@ -231,6 +224,7 @@
   <!-- end of popup -->
     <script type="module" src="./src/main.js"></script>
     <script>
+        var AHANDLER = document.getElementById('LINKHANDLER');
       function Find(array, item){
         for(let i of array) if (i.id == item.id) return i;
       }
@@ -240,6 +234,11 @@
       function Clear(){
         localStorage.clear(); 
         setTimeout(()=>{window.location.reload()}, 300);
+      }
+      function DebugCondition2(){
+        if(localStorage.debug != 'true') localStorage.debug = 'true';
+        else localStorage.debug = 'false';
+        return localStorage.debug;
       }
     </script>
   </body>

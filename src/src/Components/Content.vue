@@ -3,7 +3,7 @@
         <div :class="`  bg-${this._()}-200 text-${this._()}-800
                     rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5`" id="CORAL">
             <h1 class=" mb-2.5">
-                <input ref="titl" type="text" :class="'w-full p-1 inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent '" placeholder="点击输入标题文本..." />
+                <input ref="titl" type="text" :class="'w-full p-1.5 inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent '" placeholder="点击输入标题文本..." />
             </h1>
             <div ref="texts" :style="`--id-show: ${this.showId ? 'block' : 'hidden'};`" 
                 :class="`grid grid-cols-12 gap-2.5 transition-all   ${Config.flowDense.stat ? 'grid-flow-dense' : ''}  ${Config.colsAuto.stat ? 'auto-cols-auto' : ''}  ${Config.rowsAuto.stat ? 'auto-rows-auto' : ''}  `">
