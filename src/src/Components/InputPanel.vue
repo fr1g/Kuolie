@@ -90,7 +90,9 @@ export default{
             },
             ot: false,
             otname: '',
-            key: ''
+            otnamePause: false,
+            key: '',
+            prepare: '',
         };
     },
     methods: {
@@ -113,12 +115,19 @@ export default{
         judgeDeletion(e){
             if(this.tempObject.id == null) return;
             this.Del(`${this.tempObject.id}`, `${this.tempObject.content}`);
+            this.tempObject = {
+                id: null,
+                content: '',
+                span: 1,
+                offset: 0,
+                x: 0,
+                isPlaceHolder: false,
+            };
         },
         submit(){
             this.Edit(this.tempObject);
         },
         textAreaAutoTag(e){
-            console.log(e.data)
             if(this.ot){ // opened
                 if(e.data == '<') return;
                 else if(e.data == '='){
@@ -128,17 +137,24 @@ export default{
                     e.target.selectionEnd = dir + 1;
                 }
                 else if(e.data == '/'){
+                    if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) != ' ') return;
                     this.$refs.input.value += '>';
                     this.otname = '';
+                    this.otnamePause = false;
                 }else if(e.data == '>'){
+                    if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) == '/') return;
                     let dir = e.target.selectionStart;
-                    this.$refs.input.value += `</${this.otname.replaceAll(' ', '')}> `;
+                    this.$refs.input.value = 
+                    `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}</${this.otname.replaceAll(' ', '')}>${this.$refs.input.value.slice(this.$refs.input.selectionEnd)}`;
+                    
                     e.target.selectionStart = dir;
                     e.target.selectionEnd = dir;
                     this.otname = '';
+                    this.otnamePause = false;
                 }else{
-                    this.otname += e.data;
-                    console.log(this.otname);
+                    if(e.data == ' ') this.otnamePause = true;
+                    if(!this.otnamePause & e.data != null) this.otname += e.data;
+                    
                 }
             }else{ // nothing new opened
                 if(e.data == '<') {
@@ -224,7 +240,6 @@ export default{
         resize(e, isForce = false){
             if(!this.resizing) return;
             if(this.timer & !isForce) return;
-            // console.log('invoked. isForce: ' + isForce);
             this.timer = true;
             let upYpos = window.innerHeight - (e.clientY ?? e.touches[0].clientY);
             this.height = upYpos;
