@@ -127,26 +127,27 @@ export default{
         submit(){
             this.Edit(this.tempObject);
         },
+        appendAtInput(item){
+            return `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(this.$refs.input.selectionEnd)}`;
+        },
         textAreaAutoTag(e){
             if(this.ot){ // opened
                 if(e.data == '<') return;
                 else if(e.data == '='){
                     let dir = e.target.selectionStart;
-                    this.$refs.input.value += `""`;
+                    this.$refs.input.value = this.appendAtInput(`""`);
                     e.target.selectionStart = dir + 1;
                     e.target.selectionEnd = dir + 1;
                 }
                 else if(e.data == '/'){
                     if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) != ' ') return;
-                    this.$refs.input.value += '>';
+                    this.$refs.input.value = this.appendAtInput(`>`);
                     this.otname = '';
                     this.otnamePause = false;
                 }else if(e.data == '>'){
                     if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) == '/') return;
                     let dir = e.target.selectionStart;
-                    this.$refs.input.value = 
-                    `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}</${this.otname.replaceAll(' ', '')}>${this.$refs.input.value.slice(this.$refs.input.selectionEnd)}`;
-                    
+                    this.$refs.input.value = this.appendAtInput(`</${this.otname.replaceAll(' ', '')}>`);
                     e.target.selectionStart = dir;
                     e.target.selectionEnd = dir;
                     this.otname = '';
@@ -162,18 +163,18 @@ export default{
                 }
                 else if(e.data == '['){
                     let dir = e.target.selectionStart;
-                    this.$refs.input.value += `]`;
+                    this.$refs.input.value = this.appendAtInput(`]`);
                     e.target.selectionStart = dir;
                     e.target.selectionEnd = dir;
                 }
                 else if(e.data == '【'){
                     let dir = e.target.selectionStart;
-                    this.$refs.input.value += `】`;
+                    this.$refs.input.value = this.appendAtInput(`】`);
                     e.target.selectionStart = dir;
                     e.target.selectionEnd = dir;
                 }
                 else if(e.data == null){
-                    if(this.key == 'enter') this.$refs.input.value += `<br/>`;
+                    if(this.key == 'enter') this.$refs.input.value = this.appendAtInput(`<br/>`);
                 }
             }
             this.textAreaChanged();
