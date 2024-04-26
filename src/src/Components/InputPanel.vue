@@ -7,7 +7,7 @@
         </div>
         <div class="px-3">
             <p class=" -translate-y-0.5 text-lg select-none">
-                <span>当前编辑: <span class="font-semibold ">#{{ this.tempObject.id ?? '无' }}</span></span>
+                <span>当前编辑: <span class="font-semibold ">#{{ Get(tempOrigin) == -1 ? '无' : Get(tempOrigin) }}</span></span>
             </p>
             <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg" 
                 :style="`min-height: 0; max-height: 37.89vh` " spellcheck="false" 
@@ -20,9 +20,16 @@
             <Press overclass="text-lg bg-indigo-300"  @click.native="Modal(true, '<ConfigurationModal />')">
                 <Icon>f8b0</Icon>
             </Press> 
-
             <div class="grow"></div> 
-            
+            <div ref="adjustPriority" class="flex flex-wrap text-lg align-bottom mx-1 mr-1.5">
+                <p class="align-bottom h-min my-auto mx-1">位置: </p>
+                <Press @click.native="moveForward()"><Icon class="my-auto">f08d</Icon></Press>
+                <div class="align-bottom mx-0.5 px-1.5 h-min my-auto rounded-lg border font-semibold">{{ Get(tempOrigin) == -1 ? '无' : Get(tempOrigin) }}</div>
+                <Press @click.native="moveBackward()"><Icon class="my-auto">f08f</Icon></Press>
+            </div>
+            <p class="align-bottom h-min my-auto mx-1 font-bold text-xl -translate-y-0.5">
+                ·
+            </p>
             <div ref="adjustSpan" class="flex flex-wrap text-lg align-bottom mx-1" >
                 <p class="align-bottom h-min my-auto mx-1">块宽度: </p>
                 <Press @click.native="addSpan()"><Icon class="my-auto">e710</Icon></Press>
@@ -49,7 +56,10 @@ export default{
         __: "__", 
         Add: "Add", 
         Del: "Del", 
-        Edit: "Upd",
+        EditX: "Upd",
+        Get: "Get",
+        Seek: "Seek",
+        Move: "M",
         Modal: 'Modal',
         Generate: 'Generate',
     },
@@ -88,6 +98,7 @@ export default{
                 x: 0,
                 isPlaceHolder: false,
             },
+            tempOrigin: {},
             ot: false,
             otname: '',
             otnamePause: false,
@@ -98,11 +109,12 @@ export default{
     methods: {
         changeEditing(item){
             this.tempObject = item;
+            this.tempOrigin = item;
             if(this.tempObject.isPlaceHolder) this.$refs.input.value = '占位小方块! 它会在生成结果中隐藏掉自己🫥...';
             else this.$refs.input.value = this.tempObject.content;
             this.$forceUpdate();
             let obj;
-            if(document.getElementById(`TEXTBOX::${this.tempObject.id}`)) obj = document.getElementById(`TEXTBOX::${this.tempObject.id}`);
+            if(document.getElementById(`TEXTBOX::${this.Get(this.tempOrigin)}`)) obj = document.getElementById(`TEXTBOX::${this.Get(this.tempOrigin)}`);
             else return;
             setTimeout(() => {
                 obj.classList.add('shine');
@@ -112,9 +124,29 @@ export default{
             }, 1234);
         },
 
+        Edit(o, i){ 
+            this.EditX(o, i);
+            this.tempOrigin = this.tempObject; // unknown priority
+        },
+        moveForward(){
+            if(this.Get(this.tempOrigin) == 0) {
+                PushToast('不可以再往<b class="text-lg">前</b>挪了! ', 'warn');
+                return;
+            }
+            let hit = this.Move(this.Get(this.tempOrigin), this.Get(this.tempOrigin) - 1);
+            this.changeEditing(this.Seek(hit));
+        },
+        moveBackward(){
+            if(this.Get(this.tempOrigin) == this.Get() - 1){
+                PushToast('不可以再往<b class="text-lg">后</b>挪了! ', 'warn');
+                return;
+            }
+            let hit = this.Move(this.Get(this.tempOrigin), this.Get(this.tempOrigin) + 1);
+            this.changeEditing(this.Seek(hit));
+        },
         judgeDeletion(e){
-            if(this.tempObject.id == null) return;
-            this.Del(`${this.tempObject.id}`, `${this.tempObject.content}`);
+            if(this.tempObject.id == null) return; //
+            this.Del(`${this.tempObject.id}`, `${this.tempObject.content}`); // unnecessary to change. this is still usable.
             this.tempObject = {
                 id: null,
                 content: '',
@@ -123,9 +155,11 @@ export default{
                 x: 0,
                 isPlaceHolder: false,
             };
+            this.tempOrigin = {};
+            this.$refs.input.value = '';
         },
         submit(){
-            this.Edit(this.tempObject);
+            this.Edit(this.Get(this.tempOrigin), this.tempObject);
         },
         appendAtInput(item){
             return `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(this.$refs.input.selectionEnd)}`;
@@ -143,7 +177,8 @@ export default{
                     if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) != ' ') return;
                     this.$refs.input.value = this.appendAtInput(`>`);
                     this.otname = '';
-                    this.otnamePause = false;
+                    this.otnamePause = true;
+                    this.ot = false;
                 }else if(e.data == '>'){
                     if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) == '/') return;
                     let dir = e.target.selectionStart;
@@ -151,15 +186,24 @@ export default{
                     e.target.selectionStart = dir;
                     e.target.selectionEnd = dir;
                     this.otname = '';
-                    this.otnamePause = false;
+                    this.otnamePause = true;
+                    this.ot = false;
                 }else{
                     if(e.data == ' ') this.otnamePause = true;
-                    if(!this.otnamePause & e.data != null) this.otname += e.data;
+                    if(!this.otnamePause ) {
+                        if(e.data != null) this.otname += e.data;
+                        else{
+                            if(this.key.includes('backspace')) 
+                                this.otname = this.otname.substring(0, this.otname.length - 1);
+                        }
+                    }
                     
                 }
             }else{ // nothing new opened
                 if(e.data == '<') {
                     this.ot = true;
+                    this.otnamePause = false;
+                    console.log('new tag opened')
                 }
                 else if(e.data == '['){
                     let dir = e.target.selectionStart;
@@ -181,6 +225,7 @@ export default{
         },
         handleKey(e){
             this.key = e.code.toLowerCase();
+            console.log(this.key);
         },
         textAreaFocus(e){
 
@@ -195,9 +240,9 @@ export default{
         },
         textAreaChanged(){
             this.tempObject.content = document.getElementById('textarea-input').value;
-            this.Edit(this.tempObject);
+            this.Edit(this.Get(this.tempOrigin), this.tempObject);
             this.tempObject.x = Math.floor(Math.random(6) * 100000);
-            this.Edit(this.tempObject);
+            this.Edit(this.Get(this.tempOrigin), this.tempObject);
             return;
         },
         addSpan(){
@@ -207,12 +252,12 @@ export default{
             }
             if(this.tempObject.span == 12) {
                 PushToast('已经最大了! ', 'warn');
-                Scroll(`TEXTBOX::${this.tempObject.id}`);
+                Scroll(`TEXTBOX::${this.Get(this.tempOrigin)}`);
                 return;
             }
             else  {
                 this.tempObject.span ++;
-                this.Edit(this.tempObject);
+                this.Edit(this.Get(this.tempOrigin), this.tempObject);
             }
         },
         remSpan(){
@@ -222,12 +267,12 @@ export default{
             }
             if(this.tempObject.span == 1) {
                 PushToast('已经最小了! ', 'warn');
-                Scroll(`TEXTBOX::${this.tempObject.id}`);
+                Scroll(`TEXTBOX::${this.Get(this.tempOrigin)}`);
                 return;
             }
             else  {
                 this.tempObject.span --;
-                this.Edit(this.tempObject);
+                this.Edit(this.Get(this.tempOrigin), this.tempObject);
             }
         },
         startDrag(){

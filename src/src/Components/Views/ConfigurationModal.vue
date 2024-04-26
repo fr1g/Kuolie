@@ -14,7 +14,7 @@
                 </div>
                 <div class="toggle text-left modal-view">
                     <Press class="w-fit modal-view-x" @click.native="Config(i.key, !i.stat)">
-                        <Icon class="modal-view">{{ i.stat ? 'f78c' : 'f78a' }}</Icon>
+                        <Icon class="modal-view">{{ i.stat ? 'f19f' : 'f19e' }}</Icon>
                     </Press>
                 </div>
             </div>

@@ -1,16 +1,16 @@
 <template>
-    <div :id="`TEXTBOX::${this.id}`" 
+    <div :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))"
         :class="`   basicLooking? p-2.5 rounded-lg shadow transition-all
                     advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._()}-900 bg-${this._()}-100 
                     forExtraFunctions? ${this.isPlaceHolder ? 'grow col-span-auto justify-items-center justify-center items-center  grid' : ''}
                 `"
                 :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}`">
         <div :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
-            <h3 :class="`text-${this._()}-700 font-semibold text-lg flex flex-wrap`">
-                <div style="display: var(--id-show);" class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
+            <h3 :class="`text-${this._()}-700 font-semibold text-lg flex flex-wrap break-words`" >
+                <div style="display: var(--id-show); line-height: .99rem !important;" class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
                     #{{ this.id }}
                 </div>
-                <div class="grow" v-html="this.title.replaceAll(this.reg, this.replacement)">
+                <div class="grow break-words" style="overflow-x: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement)">
                 </div>
             </h3>
             <div class="text-sm break-words" v-html="`${this.content.replaceAll(this.reg, this.replacement)}`" ref="contented"></div>
@@ -29,10 +29,13 @@
 
 export default{
     name: 'TextBox',
-    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder'],
+    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self'],
     inject: {
         _: '_',
         __: '__',
+        Get: 'Get',
+        Seek: 'Seek',
+        Focus: 'Focus'
     },
     data(){
         return {

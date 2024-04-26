@@ -7,16 +7,16 @@
             </h1>
             <div ref="texts" :style="`--id-show: ${this.showId ? 'block' : 'hidden'};`" 
                 :class="`grid grid-cols-12 gap-2.5 transition-all   ${Config.flowDense.stat ? 'grid-flow-dense' : ''}  ${Config.colsAuto.stat ? 'auto-cols-auto' : ''}  ${Config.rowsAuto.stat ? 'auto-rows-auto' : ''}  `">
-                <TextBox @click.native="Focus(s)" v-for="s of this.TextBoxes"
-                         :ref="`TB_${s.id}`" 
+                <TextBox v-for="s of this.TextBoxes"
                          :x="s.x"   
-                         :key="s.id" 
-                         :id="s.id" 
+                         :key="GetPosition(s)" 
+                         :id="GetPosition(s)" 
                          :offset="Config.waterfall.stat ? s.offset : -1" 
                          :span="s.span" 
                          :inside="s.content"
                          :fill="Config.fill.stat"
                          :isPlaceHolder="s.isPlaceHolder"
+                         :self="s"
                 />
             </div>
         </div>
@@ -48,7 +48,10 @@ export default{
             Add: this.Create,
             Del: this.Remove,
             Upd: this.Modify,
-            Con: this.Configure,
+            Con: this.Configure, 
+            Get: this.GetPosition,
+            Seek: this.GetByIndex,
+            Focus: this.PassFocus,
         }
     },
     data(){
@@ -57,7 +60,7 @@ export default{
                 flowDense: {
                     name: '自动填补',
                     key: 'flowDense',
-                    stat: true,
+                    stat: false,
                 },
                 colsAuto: {
                     name: '自动列',
@@ -77,9 +80,10 @@ export default{
                 fill: {
                     name: '填满',
                     key: 'fill',
-                    stat: false,
+                    stat: true,
                 },
             },
+            ExchangeTemp: {},
             TextBoxes: [
                 //
             ],
@@ -131,14 +135,15 @@ export default{
     methods: {
         Prepare(){
             return {
-                    id: -1,
-                    content: '',
-                    span: 2,
-                    offset: 0,
-                    x: 0,
-                    isPlaceHolder: false,
-                };
+                id: -1,
+                content: '',
+                span: 2,
+                offset: 0,
+                x: 0,
+                isPlaceHolder: false,
+            };
         },
+        PassFocus(b){return this.Focus(b);},
         Configure(key, val = null){
             switch(key){
                 case 'flowDense':
@@ -169,14 +174,15 @@ export default{
         Create(placeholder = false){
             let prepare = this.Prepare();
             this.UpdateSorting();
-            prepare.id = this.TextBoxes.length;
+            prepare.id = this.TextBoxes.length; // ...
             if(placeholder) prepare.isPlaceHolder = true;
             this.TextBoxes.push(prepare);
             this.UpdateSorting();
             setTimeout(() => {                
-                document.getElementById(`TEXTBOX::${prepare.id}`).click();
+                let di = this.GetPosition(prepare);
+                document.getElementById(`TEXTBOX::${di}`).click();
                 document.getElementsByTagName('textarea')[0].focus();
-                Scroll(`TEXTBOX::${prepare.id}`);
+                Scroll(`TEXTBOX::${di}`);
             }, 123);   
             return;
             
@@ -188,10 +194,14 @@ export default{
             }
             console.log(id);
             PushToast(`删除了「${id}」, 但是如果先前保存过, 那在窗口失焦触发保存之前, <br>仍然可以通过快速按下键盘上的F5进行刷新以恢复...`, 'bg-zinc-300', 1, 5600);
-            this.TextBoxes = this.TextBoxes.filter(i => i.id != id);
+            this._delete(id);
             this.UpdateSorting();
         },
-        Modify(change = 'default'){
+        _delete(position){
+            // this.TextBoxes = this.TextBoxes.filter(i => i.id != id); // !!!
+            this.TextBoxes.splice(position, 1);
+        },
+        Modify(place, change = 'default'){ // ?????
             if(change === 'default'){
                 console.error('Require ID!');
                 return;
@@ -200,7 +210,8 @@ export default{
                 return;
             }else{
                 this.UpdateSorting();
-                let _tmp = Find(this.TextBoxes, change);
+                this.TextBoxes[this.GetPosition(change)]
+                let _tmp = this.TextBoxes[place]; // !!!
                 this.TextBoxes[this.TextBoxes.indexOf(_tmp)] = change;
                 this.$forceUpdate();
             }
@@ -226,22 +237,29 @@ export default{
                 PushToast('载入默认组...');
             }, 567);
         },
-        UpdateSorting(){
-            this.TextBoxes.sort((a, b) => { return a.id - b.id; });
-            let ids = -1;
-            for(let i of this.TextBoxes){
-                ids++;
-
-                let _prechange = Find(this.TextBoxes, i), _tmp;
-                _tmp = _prechange;
-                _tmp.id = ids;
-                this.TextBoxes[this.TextBoxes.indexOf(_prechange)] = _tmp;
-                
-            }
-            this.$forceUpdate();
-            // console.log('已重新排序');
-
+        GetPosition(item = null){
+            if (item === null) return this.TextBoxes.length;
+            else return this.TextBoxes.indexOf(item);
         },
+        GetByIndex(index){
+            return this.TextBoxes[index];
+        },
+        UpdateSorting(){ 
+            this.TextBoxes.filter((x)=>{ x != null });
+            this.$forceUpdate();
+        },
+        MoveTo(from, to){ // obj, position, return updated id.
+            if(to < 0 || to > this.TextBoxes.length) {
+                PushToast('OutOfRange', 'warn');
+                return this.GetPosition(from);
+            } // to refuse out-ranged item
+            this.ExchangeTemp = this.TextBoxes[from];
+            this.TextBoxes[from] = this.TextBoxes[to];
+            this.TextBoxes[to] = this.ExchangeTemp;
+            this.ExchangeTemp = {};
+            this.UpdateSorting();
+            return to;
+        }
     },
     watch: {
         TextBoxes(){

@@ -121,10 +121,10 @@ export default{
         }
     },
     methods: {
-        Generate(val = 0){
+        Generate(){
             console.log('invoked generation');
             // 可以在第一次使用的时候弹窗提示流程 'CORAL' / 'ROUND'
-            if(this.firstTry == 'false') this.GenerateStep();
+            if(localStorage.firstTry == 'false') this.GenerateStep();
             else this.SwitchModal(true, '<FirstTryInfoModal />'); // set firsttry to false 
         },
         GenerateStep(){
@@ -173,6 +173,8 @@ export default{
         },
         Config(i, o = null){ return this.$refs.c.Configure(i, o); },
         Add(x){ this.$refs.c.Create(x) },
+        Get(item){ return this.$refs.c.GetPosition(item); },
+        Seek(index){return this.$refs.c.GetByIndex(index);},
         Del(x, o){ 
             this.SwitchModal(true, `<ConfirmDeletionModal target="${x.replaceAll('"', '“')}" origin="${o.replaceAll('"', '“')}" />`);
         },
@@ -180,11 +182,16 @@ export default{
             this.$refs.c.Remove(id);
             this.SwitchModal();
         },
-        Upd(x){ 
-            this.$refs.c.Modify(x); 
+        Upd(place, x){ 
+            this.$refs.c.Modify(place, x); 
             this.$forceUpdate(); 
-            this.$refs.c.$forceUpdate(); },
+            this.$refs.c.$forceUpdate(); 
+        },
+        Move(item, to){
+            return this.$refs.c.MoveTo(item, to);
+        },
         Focus(item){
+            console.log(JSON.stringify(item))
             this.$refs.input.changeEditing(item);
         },
         Hide(){
@@ -238,8 +245,11 @@ export default{
             Add: this.Add,
             Del: this.Del,
             Upd: this.Upd,
+            Get: this.Get,
             S: this.Show,
+            Seek: this.Seek,
             H: this.Hide,
+            M: this.Move,
             Focus: this.Focus,
             RD: this.RealDel,
             Modal: this.SwitchModal,
