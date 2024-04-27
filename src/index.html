@@ -264,6 +264,36 @@
           document.body.classList.remove('NOCLICK');
         }
       }
+        const WarnF12 = () => {
+            console.log('你打开了F12!!! ');
+            if(localStorage.debug == 'true' & window.location.href.includes('localhost')) {
+                console.log('但是是debug模式.');
+                return;
+            }else{
+                setTimeout(() => {
+                    console.log('不是debug模式! %c千万不要在这里粘贴别人给你的代码! 如果你不懂这里的是什么东西, 务必关闭你刚才打开的这个窗口! \n...Kuolie是完全在你本地运行的, 但是粘贴未知来源的代码并执行可能会给你的个人信息安全带来危险!!! \n务必注意!', 'margin: 3px; color: red; font-size: 16px; font-weight: bolder; border: 1px orange solid; padding: 5px;');
+                }, 514);
+            }
+        }
+        const f12 = [
+            'f12'
+        ]
+        window.addEventListener('keydown', (e) => {
+            if(f12.includes(e.key.toLowerCase())) WarnF12();
+        });
+        window.addEventListener('resize', function() {
+            if (window.outerHeight - window.innerHeight > 100 || window.outerWidth - window.innerWidth > 100) {
+                WarnF12(); 
+            }
+        });
+        if (performance.memory && performance.memory.usedJSHeapSize > 0) {
+            WarnF12(); 
+        }
+        window.addEventListener('devicemotion', function(event) {
+            WarnF12(); 
+        });
+
+        WarnF12();
     </script>
   </body>
 </html>
