@@ -6,7 +6,7 @@
                 <p>用的是手机吗? 或许<b class=" font-semibold">横屏</b>查看就可以了哦! <br><span class="text-base -translate-y-1.5 font-light opacity-90 inline-block italic">不然就用平板或者电脑吧...</span></p>
                 <p>用的就是电脑? 把浏览器窗口改为<b class=" font-semibold">最大化</b>吧!</p>
                 <p>再不然我也没办法了xwx</p>
-            </div>
+            </div> 
             <div class="bottom-0 left-1 right-1 fixed mb-1" >
                 <p class="text-center opacity-70 animate-pulse"><b class="font-bold">Kuolie</b> by Feiron Iguista <Icon class="text-rose-300 inline-block " figure="0">eb52</Icon></p>
             </div>

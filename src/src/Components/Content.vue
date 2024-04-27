@@ -60,7 +60,7 @@ export default{
         return {
             Config: {
                 flowDense: {
-                    name: '自动填补',
+                    name: '填补',
                     key: 'flowDense',
                     stat: false,
                 },
@@ -75,7 +75,7 @@ export default{
                     stat: true,
                 },
                 waterfall: {
-                    name: '瀑布流',
+                    name: '瀑布流*',
                     key: 'waterfall',
                     stat: false,
                 },                

@@ -1,12 +1,12 @@
 <template>
     <div :title="((this.title ?? this.link))"
-     :class="(`pressable transition ${this.unspaced <= 1 || (this.overclass ?? 'x').includes('text-') ? '' : 'text-sm'} ${((this.overclass ?? '').includes('bg-')) ? '' : 'bg-stone-300 dark:bg-stone-700'}
-          text-stone-950  dark:text-stone-50 shadow${(this.initShadow ?? 'true') == 'true' ? '' : (this.initShadow == 'sm' ? '-sm' : '-none')} 
+     :class="(`pressable transition ${this.unspaced <= 1 || (this.overclass ?? 'x').includes('text-') ? '' : 'text-sm'} ${((this.overclass ?? '').includes('bg-')) ? '' : 'bg-stone-300 ?dark:bg-stone-700'}
+          text-stone-950  ?dark:text-stone-50 shadow${(this.initShadow ?? 'true') == 'true' ? '' : (this.initShadow == 'sm' ? '-sm' : '-none')} 
             ${((this.overclass ?? '').includes('rounded')) ? '' : 'rounded-lg'}
             bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'} 
-            dark:bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'}
+            ?dark:bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'}
             hover:shadow-md hover:bg-opacity-70   active:shadow-sm active:bg-opacity-100 
-            dark:hover:bg-opacity-70 dark:hover:shadow-md   dark:shadow  dark:active:shadow-sm dark:active:bg-opacity-100
+            ?dark:hover:bg-opacity-70 ?dark:hover:shadow-md ?dark:shadow ?dark:active:shadow-sm ?dark:active:bg-opacity-100
             px-2 py-1 mx-1 select-none
             ${(this.disable ?? 'false') == 'true' ? 'dis' : ''}
             ${this.overclass}

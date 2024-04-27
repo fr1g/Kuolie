@@ -5,7 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="kuolie.kami.su是开源项目Kuolie的官方demo站点.">
     <meta name="keywords" content="扩列,图文,文图,生成器,生成,排版,demo,实用工具,工具">
-    <script src="https://cdn.tailwindcss.com"    ></script>
+
+    <script>
+        // judge to use tailwind or not.
+        var USE_TW = null;
+        if(localStorage.usePlayCDN != undefined){
+          if(localStorage.usePlayCDN == 'true') USE_TW = true;
+          else USE_TW = false;
+        }else USE_TW = false;
+
+        if(USE_TW){
+          var twcdn = document.createElement('script');
+          twcdn.setAttribute('src', 'https://cdn.tailwindcss.com');
+          document.head.appendChild(twcdn);
+        }
+    </script>
+    
+
+
     <style type="text/tailwindcss">
       @layer base{
          img {
@@ -13,15 +30,22 @@
         }
       }
     </style>
+    <script>
+        try {
+          tailwind.config = {
+            darkMode: 'class'
+          };
+        } catch (error) {
+          error
+        }
+    </script>
+
     <style>
       .NOCLICK{
         pointer-events: none !important;
       }
     </style>
     <script >
-      tailwind.config = {
-        darkMode: 'class'
-      };
       var hasError = false;
       window.addEventListener('load', () => {
         if(hasError) PushToast('资源未完成加载! 或许应该刷新页面重试, <br>或检查自己的网络连接? ', 'bg-red-400 animation-pulse', 500, 114514);
@@ -266,6 +290,11 @@
           document.body.classList.remove('NOCLICK');
         }
       }
+      function Three(){
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
         const WarnF12 = () => {
             console.log('你打开了F12!!! ');
             if(localStorage.debug == 'true' & window.location.href.includes('localhost')) {
@@ -296,6 +325,9 @@
         });
 
         WarnF12();
+        if(USE_TW) setTimeout(() => {
+          PushToast('你现在启用了TailwindCSS PlayCDN!', 'warn');
+        }, 1000);
     </script>
   </body>
 </html>

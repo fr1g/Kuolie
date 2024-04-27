@@ -3,12 +3,6 @@
     img {
         @apply inline-block;
       }
-      input {
-        @apply inline-block;
-      }
-      input>* {
-        @apply inline-block;
-      }
   }
 @tailwind utilities;
 @tailwind variants;

@@ -13,7 +13,7 @@
                 <div class="grow break-words" style="overflow-x: hidden; overflow-y: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement)">
                 </div>
             </h3>
-            <div class="text-sm break-words" v-html="`${this.content.replaceAll(this.reg, this.replacement)}`" ref="contented"></div>
+            <div class="text-sm break-words mt-1" v-html="`${this.content.replaceAll(this.reg, this.replacement)}`" ref="contented"></div>
         </div>
     
         <div :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
