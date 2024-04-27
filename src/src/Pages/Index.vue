@@ -192,7 +192,7 @@ export default{
             return this.$refs.c.MoveTo(item, to);
         },
         Focus(item){
-            console.log(JSON.stringify(item))
+            // console.log(JSON.stringify(item))
             this.$refs.input.changeEditing(item);
         },
         Hide(){

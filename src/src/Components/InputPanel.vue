@@ -146,7 +146,7 @@ export default{
         },
         judgeDeletion(e){
             if(this.tempObject.id == null) return; //
-            this.Del(`${this.tempObject.id}`, `${this.tempObject.content}`); // unnecessary to change. this is still usable.
+            this.Del(`${this.Get(this.tempOrigin)}`, `${this.tempObject.content}`); // unnecessary to change. this is still usable.
             this.tempObject = {
                 id: null,
                 content: '',
@@ -203,7 +203,7 @@ export default{
                 if(e.data == '<') {
                     this.ot = true;
                     this.otnamePause = false;
-                    console.log('new tag opened')
+                    // console.log('new tag opened')
                 }
                 else if(e.data == '['){
                     let dir = e.target.selectionStart;
@@ -225,7 +225,7 @@ export default{
         },
         handleKey(e){
             this.key = e.code.toLowerCase();
-            console.log(this.key);
+            // console.log(this.key);
         },
         textAreaFocus(e){
 

@@ -1,27 +1,38 @@
 <template>
     <div class="relative modal-content">
-        <p class="text-2xl modal-item font-semibold my-1 ">Kuolie 是一款开源、简易的扩列图文生成器.</p>
-        <p class="modal-item">使用技术: Vue.js 2.7, TailwindCSS, ~</p>
-        <p class="modal-item">主笔: Feiron Iguista</p>
-        <p class="modal-item">开源协议: MIT, Authorized</p>
-        <p class="modal-item">源代码使用: </p>
-        <ul class="scale-95 modal-content">
-            <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://github.com/niklasvh/html2canvas" target="_blank">HTML2Canvas</a></li>
-            <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://vuejs.org" target="_blank">Vue.js</a></li>
-            <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://tailwindcss.com" target="_blank">TailwindCSS</a></li>
-            <li class="modal-xxx mt-3 opacity-80 italic">还有...</li>
-            <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://min.corona.studio" target="_blank">日冕工作室最小官网 (搬了点组件来用hhh)</a></li>
-        </ul>
-        <details class="modalx scale-90 w-full ">
-            <summary class="modalx scale-105 animate-pulse">致谢</summary>
-            <div class="modalx">
-                <ul class="modalx">
-                     <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://segmentfault.com/q/1010000015734369/a-1020000015737231" target="_blank">Chobits' answer</a> </li>
-                     <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://github.com/vitejs/vite/discussions/4158#discussioncomment-1282397 " target="_blank">tptech & bhenderson's answer</a> </li>
-                     <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
-                </ul>
-            </div>
-        </details>
+        <div class="modalxxx flex flex-wrap flex-shrink">
+            <AppIcon class="modalx rounded-full p-1" />
+            <p class="text-2xl modal-item font-semibold my-auto mx-1.5 h-fit  grow w-fit">
+                Kuolie 是一款开源、简易的扩列文图生成器.
+            </p>
+        </div>
+        <div class="modalxxxx scale-95 mt-1 opacity-95"  style="max-height: 33.33vh; overflow-y: auto; overflow-x: hidden;">
+            <p class="modal-item">使用技术: Vue.js 2.7, TailwindCSS, ~</p>
+            <p class="modal-item">主笔: Feiron Iguista</p>
+            <p class="modal-item">开源协议: MIT, Authorized</p>
+            <p class="modal-item">源代码/开源项目使用: </p>
+            <ul class="scale-95 modal-content">
+                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://github.com/niklasvh/html2canvas" target="_blank">HTML2Canvas</a></li>
+                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://vuejs.org" target="_blank">Vue.js</a></li>
+                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://tailwindcss.com" target="_blank">TailwindCSS</a></li>
+                <li class="modal-xxx mt-3 opacity-80 italic">还有...</li>
+                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://min.corona.studio" target="_blank">日冕工作室最小官网 (搬了点组件来用hhh)</a></li>
+            </ul>
+            <details class="modalx scale-90 w-full ">
+                <summary class="modalx scale-105 animate-pulse">致谢</summary>
+                <div class="modalx">
+                    <ul class="modalx">
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://segmentfault.com/q/1010000015734369/a-1020000015737231" target="_blank">Chobits' answer</a> </li>
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://github.com/vitejs/vite/discussions/4158#discussioncomment-1282397 " target="_blank">tptech & bhenderson's answer</a> </li>
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
+                        <li class="modalx"> - </li>
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
         <br>
         <div class="flex flex-wrap ">
             <Press class="modal-item" type="verified-link" no-link-icon="true" link="https://github.com/fr1g/Kuolie" overclass="text-lg block max-w-fit">查看Github仓库</Press>
@@ -33,10 +44,11 @@
 <script>
 import Icon from '../Icon.vue';
 import Press from '../Press.vue';
+import AppIcon from '../Preset/AppIcon.vue';
 
 export default{
     name: 'AboutInfoModal',
-    components: { Icon, Press },
+    components: { Icon, Press, AppIcon },
     mounted(){
         this.hasClickedOnce = false;
     },
