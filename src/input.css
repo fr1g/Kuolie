@@ -1,8 +1,14 @@
 @tailwind base;
 @layer base{
     img {
-      @apply inline-block;
-    }
+        @apply inline-block;
+      }
+      input {
+        @apply inline-block;
+      }
+      input>* {
+        @apply inline-block;
+      }
   }
 @tailwind utilities;
 @tailwind variants;

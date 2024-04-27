@@ -434,6 +434,18 @@ video {
   display: none;
 }
 
+img {
+  display: inline-block;
+}
+
+input {
+  display: inline-block;
+}
+
+input>* {
+  display: inline-block;
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -658,14 +670,6 @@ video {
 
 .mb-12 {
   margin-bottom: 3rem;
-}
-
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
-.mb-2\.5 {
-  margin-bottom: 0.625rem;
 }
 
 .mb-3 {
@@ -922,6 +926,10 @@ video {
 
 .gap-2\.5 {
   gap: 0.625rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
 }
 
 .overflow-y-auto {

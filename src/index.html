@@ -6,9 +6,14 @@
     <script src="https://cdn.tailwindcss.com"    ></script>
     <style type="text/tailwindcss">
       @layer base{
-        img {
+         img {
           @apply inline-block;
         }
+      }
+    </style>
+    <style>
+      .NOCLICK{
+        pointer-events: none !important;
       }
     </style>
     <script >
@@ -73,7 +78,7 @@
   </head>
   <body class="bg-emerald-100">
     <div id="PASSER" class="w-0 h-0 hidden fixed left-0 top-0 -z-20">
-      <a id="LINKHANDLER"></a>
+      <a id="LINKHANDLER" style="pointer-events: all !important;"></a>
       <input id="VALUEPASS" value="NULL" name="VALUEPASS" />
     </div>
     <div id="app"></div>
@@ -236,7 +241,7 @@
         for(let i of array) if (i.id == item.id) return i;
       }
       function Scroll(id){
-        window.scrollTo({top: document.getElementById(id.replace('#', '')).offsetTop + 10, behavior: "smooth"});
+        window.scrollTo({top: document.getElementById(id.replace('#', '')).offsetTop - 30, behavior: "smooth"});
       }
       function Clear(){
         localStorage.clear(); 
@@ -246,6 +251,17 @@
         if(localStorage.debug != 'true') localStorage.debug = 'true';
         else localStorage.debug = 'false';
         return localStorage.debug;
+      }
+      function TitleSwitch(b){
+        if(b){
+          document.body.classList.add('NOCLICK');
+          document.getElementById('INPUT').classList.add('hidden');
+          document.getElementById('OUTPUT').classList.remove('hidden');
+        }else{
+          document.getElementById('OUTPUT').classList.add('hidden');
+          document.getElementById('INPUT').classList.remove('hidden');
+          document.body.classList.remove('NOCLICK');
+        }
       }
     </script>
   </body>

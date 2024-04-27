@@ -135,6 +135,7 @@ export default{
             setTimeout(() => {
                 PushToast('即将截取, <br>成功后将触发下载喔', `bg-${this._()}-300`);
                 this.Opacity(0);
+                TitleSwitch(true);
                 setTimeout(() => {
                     html2canvas(document.getElementById('ROUND').parentElement, 
                     {
@@ -152,9 +153,9 @@ export default{
                         onclone: () => {},
                     }).then((canvas) => {
                         
-                        AHANDLER.setAttribute('download', `Kuolie-Generated_${(new Date()).toLocaleString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_')}.png`);
+                        AHANDLER.setAttribute('download', `Kuolie-Generated_${document.getElementsByTagName('input')[0].value.replaceAll('\\', '').replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_')}_${(new Date()).toLocaleString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_')}.png`);
                         AHANDLER.setAttribute('href', canvas.toDataURL('png'));
-
+                        TitleSwitch(false);
                         AHANDLER.click();
             
                         setTimeout(() => {

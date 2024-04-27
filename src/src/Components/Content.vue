@@ -1,9 +1,11 @@
 <template>
     <div class=" w-full m-auto p-5 grid justify-items-center transition-all" ref="rend" id="ROUND">
         <div :class="`  bg-${this._()}-200 text-${this._()}-800
-                    rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5`" id="CORAL">
-            <h1 class=" mb-2.5">
-                <input ref="titl" type="text" :class="'w-full p-1.5 inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent '" placeholder="点击输入标题文本..." />
+                    rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5 grid grid-cols-1 gap-3`" id="CORAL">
+          
+            <h1 class="px-1.5"  style="height: 36.5px;">
+                <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'w-full inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
+                <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
             </h1>
             <div ref="texts" :style="`--id-show: ${this.showId ? 'block' : 'hidden'};`" 
                 :class="`grid grid-cols-12 gap-2.5 transition-all   ${Config.flowDense.stat ? 'grid-flow-dense' : ''}  ${Config.colsAuto.stat ? 'auto-cols-auto' : ''}  ${Config.rowsAuto.stat ? 'auto-rows-auto' : ''}  `">
@@ -129,7 +131,8 @@ export default{
                     x: 0,
                     isPlaceHolder: false,
                 },
-            ]
+            ],
+            titlePass: ''
         }
     },
     methods: {
@@ -273,4 +276,5 @@ export default{
 .x-gap > *{
     margin: .375rem;
 }
+
 </style>
