@@ -10,7 +10,7 @@
                 <div style="display: var(--id-show); line-height: .99rem !important;" class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
                     #{{ this.id }}
                 </div>
-                <div class="grow break-words" style="overflow-x: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement)">
+                <div class="grow break-words" style="overflow-x: hidden; overflow-y: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement)">
                 </div>
             </h3>
             <div class="text-sm break-words" v-html="`${this.content.replaceAll(this.reg, this.replacement)}`" ref="contented"></div>
