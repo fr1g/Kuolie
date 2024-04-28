@@ -222,7 +222,7 @@ export default{
         },
         Save(){
             this.UpdateSorting();
-            if(this.$refs.titl != undefined) localStorage.setItem('kuolieTitle', this.$refs.titl.value);
+            if(this.$refs.titl != undefined) localStorage.setItem('kuolieTitle', this.titlePass);
             if(this.TextBoxes.length != 0 || this.TextBoxes != this.defaultTextBoxes)
                 localStorage.setItem('kuolieJson', JSON.stringify(this.TextBoxes));
             PushToast('保存完毕.');
@@ -231,7 +231,7 @@ export default{
             let _yield = '未能找到记录: ';
             if(localStorage.kuolieJson) this.TextBoxes = JSON.parse(localStorage.kuolieJson);
             else _yield += '文本 ';
-            if(localStorage.kuolieTitle) this.$refs.titl.value = localStorage.kuolieTitle;
+            if(localStorage.kuolieTitle) this.titlePass = localStorage.kuolieTitle;
             else _yield += ' 标题';
             if(_yield.includes('文本') || _yield.includes('标题')) PushToast(_yield);
             else PushToast('已经从以下来源载入: <br>本地缓存 (localStorage)');
