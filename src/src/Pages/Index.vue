@@ -1,5 +1,5 @@
 <template>
-    <div id="main-area" class="min-h-screen bg-zinc-50 w-full relative transition" :style="`--opa: ${this.opa / 100}`">
+    <div id="main-area" :class="`min-h-screen bg-zinc-50 w-full relative transition  ${this.modal ? ' pointer-events-none' : ''}`" :style="`--opa: ${this.opa / 100}`">
         <div class="grid sm:hidden justify-items-center justify-center items-center h-screen">
             <div class="text-lg px-8">
                 <p :class="`text-3xl font-semibold text-${this._()}-800 mb-3 pb-1 border-b w-5/6`">窗口太小啦!</p>
@@ -25,8 +25,8 @@
                 id="input-area" >
                 <InputPanel ref="input" />
             </div>
-            <div ref="modal" id="modal"  :style="`opacity: ${(1 - (this.opa / 100)) * 2}; z-index: 999;`"
-                :class="`${this.modal ? 'fixed' : 'hidden'} bg-${this._()}-100 top-10 scale-90 bottom-10 left-1 right-1 m-auto p-5 rounded-lg shadow-lg transition h-fit w-2/3`">
+            <div ref="modal" id="modal"  :style="`opacity: ${(1 - (this.opa / 100)) * 2}; z-index: 999; `"
+                :class="`${this.modal ? 'fixed' : 'hidden'} bg-${this._()}-100 top-10 override scale-90 bottom-10 left-1 right-1 m-auto p-5 rounded-lg shadow-lg transition h-fit w-2/3`">
                 <div class="absolute top-1 right-0">
                     <Press is-for-modal-close="true" init-opacity="0" overclass="shadow-0" class="scale-75 inline-block" style="box-shadow: none;" @click.native="_ => {_}"> 
                         <Icon>e711</Icon>
@@ -208,6 +208,7 @@ export default{
             }
         },
         SwitchModal(status = false, content = ''){
+            console.log(this);
             if(status){
                 if(this.modal) return;
                 this.Opacity(50, true, content);
@@ -239,12 +240,21 @@ export default{
                     this.opa += 3;
                 }, 3);
             }
+
+            this.$forceUpdate();
+        },
+        _$c(){
+            return this._();
+        },
+        __$c(x){
+            this.__(x);
         }
     },
     provide(){ 
         return {
             Add: this.Add,
             Del: this.Del,
+            RealDel: this.RealDel,
             Upd: this.Upd,
             Get: this.Get,
             S: this.Show,
@@ -257,6 +267,8 @@ export default{
             Config: this.Config,
             Generate: this.Generate,
             GenerateStep: this.GenerateStep,
+            // _: this._$c,
+            // __: this.__$c,
 
         }
     },
@@ -266,5 +278,8 @@ export default{
 <style scoped>
 .hidden-x{
     display: none !important;
+}
+.override{
+    pointer-events: painted !important;
 }
 </style>

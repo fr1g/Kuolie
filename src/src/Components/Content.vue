@@ -1,13 +1,16 @@
 <template>
     <div class=" w-full m-auto p-5 grid justify-items-center transition-all" ref="rend" id="ROUND">
-        <div :class="`  bg-${this._()}-200 text-${this._()}-800
+        <div :class="`  bg-${this._()}-200 text-${this._()}-800 relative
                     rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5 grid grid-cols-1 gap-3`" id="CORAL">
           
-            <h1 class="px-1.5"  style="height: 36.5px;">
+            <h1 class="px-1.5 relative"  style="height: 36.5px;">
                 <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'w-full inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
                 <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
+                <div class="absolute -top-1 -right-5 select-none text-sm scale-75 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important;`">
+                    {{ this.watermark }}
+                </div>
             </h1>
-            <div ref="texts" :style="`--id-show: ${this.showId ? 'block' : 'hidden'};`" 
+            <div ref="texts" :style="`--id-show: ${this.Config.squareId.stat ? 'block' : 'hidden'};`" 
                 :class="`grid grid-cols-12 gap-2.5 transition-all   ${Config.flowDense.stat ? 'grid-flow-dense' : ''}  ${Config.colsAuto.stat ? 'auto-cols-auto' : ''}  ${Config.rowsAuto.stat ? 'auto-rows-auto' : ''}  `">
                 <TextBox v-for="s of this.TextBoxes"
                          :x="s.x"   
@@ -19,6 +22,7 @@
                          :fill="Config.fill.stat"
                          :isPlaceHolder="s.isPlaceHolder"
                          :self="s"
+                         :showingBlockId="Config.squareId.stat"
                 />
             </div>
         </div>
@@ -38,6 +42,13 @@ export default{
             PushToast('正在保存');
             this.Save();
         });
+        window.addEventListener('keydown', (e) => {
+            if(e.key == 's' && (e.metaKey || e.ctrlKey)){
+                e.preventDefault();
+                
+                this.Save();
+            } 
+        });
         PushToast('尝试读取');
         this.Read();
 
@@ -54,6 +65,7 @@ export default{
             Get: this.GetPosition,
             Seek: this.GetByIndex,
             Focus: this.PassFocus,
+
         }
     },
     data(){
@@ -84,12 +96,23 @@ export default{
                     key: 'fill',
                     stat: true,
                 },
+                showInfo: {
+                    name: '水印',
+                    key: 'showInfo',
+                    stat: true
+                },
+                squareId: {
+                    name: '块编号',
+                    key: 'squareId',
+                    stat: true,
+                }
             },
             ExchangeTemp: {},
             TextBoxes: [
                 //
             ],
             showId: true,
+            watermark: '使用Kuolie.kami.su生成',
             defaultTextBoxes: [
             {
                     id: 0,
@@ -169,6 +192,14 @@ export default{
                     this.Config.fill.stat = val;
                     break;
 
+                case 'showInfo':
+                    this.Config.showInfo.stat = val;
+                    break;
+
+                case 'squareId':
+                    this.Config.squareId.stat = val;
+                    break;
+
                 default: 
                     return this.Config;
             }
@@ -195,10 +226,17 @@ export default{
                 console.error('Require ID!');
                 return;
             }
-            console.log(id);
-            PushToast(`删除了「${id}」, 但是如果先前保存过, 那在窗口失焦触发保存之前, <br>仍然可以通过快速按下键盘上的F5进行刷新以恢复...`, 'bg-zinc-300', 1, 5600);
-            this._delete(id);
+            if(id == 'all'){
+                this._deleteAll();
+
+            }else{
+                PushToast(`删除了「${id}」, 但是如果先前保存过, 那在窗口失焦触发保存之前, <br>仍然可以通过快速按下键盘上的F5进行刷新以恢复...`, 'bg-zinc-300', 1, 5600);
+                this._delete(id);
+            }
             this.UpdateSorting();
+        },
+        _deleteAll(){
+            this.TextBoxes = [];
         },
         _delete(position){
             // this.TextBoxes = this.TextBoxes.filter(i => i.id != id); // !!!
@@ -222,9 +260,13 @@ export default{
         },
         Save(){
             this.UpdateSorting();
-            if(this.$refs.titl != undefined) localStorage.setItem('kuolieTitle', this.titlePass);
+            if(this.$refs.titl != undefined) 
+                localStorage.setItem('kuolieTitle', this.titlePass);
             if(this.TextBoxes.length != 0 || this.TextBoxes != this.defaultTextBoxes)
-                localStorage.setItem('kuolieJson', JSON.stringify(this.TextBoxes));
+                {
+                    localStorage.History += `###${localStorage.kuolieJson}###:`
+                    localStorage.setItem('kuolieJson', JSON.stringify(this.TextBoxes));
+                }
             PushToast('保存完毕.');
         },
         Read(){

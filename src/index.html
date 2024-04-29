@@ -51,9 +51,9 @@
         if(hasError) PushToast('资源未完成加载! 或许应该刷新页面重试, <br>或检查自己的网络连接? ', 'bg-red-400 animation-pulse', 500, 114514);
       });
       const AccessList = [
-        './favicon.png',
-        './output.css',
-        './sfi.ttf',
+        '/favicon.png',
+        '/output.css',
+        '/sfi.ttf',
       ];
 
       for(let i of AccessList){
@@ -328,6 +328,10 @@
         if(USE_TW) setTimeout(() => {
           PushToast('你现在启用了TailwindCSS PlayCDN!', 'warn');
         }, 1000);
+
+        const GetAllHistoriesSaved = () => {
+          navigator.clipboard.writeText(localStorage.History);
+        }
     </script>
   </body>
 </html>

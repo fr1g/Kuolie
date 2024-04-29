@@ -16,12 +16,13 @@
                 </span>
             </div>
             <div class="toggle modal-view grid grid-cols-3 p-1.5 gap-1.5">
-                <div class="modal-view border-2 rounded-lg grid grid-cols-3 gap-1 p-1.5"  v-for="i of global" :key="i.name">
+                <div :class="`modal-view border rounded-lg grid grid-cols-3 gap-1 p-1.5 bg-opacity-60  bg-${_()}-50 shadow hover:shadow-md transition-all `"  v-for="i of global" :key="i.name">
                     <span class=" p-1.5 block w-fit font-semibold col-span-2 h-fit align-bottom m-auto modalx -translate-y-0.5">{{ i.name }}</span>
                     <div class="modalx text-right">
-                        <Press class=" p-1.5 w-fit mt-0.5 scale-90 modal-view-x border-zinc-700 border-2 shadow-none hover:shadow-none active:shadow-none inline-block" overclass="shadow-none hover:shadow-none active:shadow-none"
-                         @click.native="Configure(i.key, !i.stat)" style="--tw-bg-opacity: 0">
-                            <Icon class="modal-view  translate-y-0.5">{{ i.stat ? 'f78c' : 'f78a' }}</Icon>
+                        <Press :class="` ${i.confirmed == undefined ? '' : (i.confirmed ? 'bg-red-500' : 'bg-red-300')}    p-1.5 w-fit mt-0.5 scale-90 modal-view-x border-zinc-700 border-2 shadow-none hover:shadow-none active:shadow-none inline-block`" 
+                        :overclass="`shadow-none hover:shadow-none active:shadow-none   ${i.confirmed == undefined ? '' : (i.confirmed ? 'bg-red-500' : 'bg-red-300')}   `"
+                         @click.native="Configure(i.key, !i.stat)" :style="i.confirmed == undefined ? '--tw-bg-opacity: 0' : '--tw-bg-opacity: .7'" init-opacity="70" >
+                            <Icon class="modal-view  translate-y-0.5">{{ i.stat == null ? (i.confirmed ? 'e814' : 'e7b5') : (i.stat ? 'f78c' : 'f78a') }}</Icon>
                         </Press>
                     </div>
                     <span class="modalx p-0.5  inline-block col-span-full text-sm scale-95">
@@ -33,12 +34,12 @@
             <div class="modal-view font-semibold text-lg mt-1">
                 渲染区设置
                 <br>
-                <span class="text-base font-normal">
+                <span class="text-base font-normal bg-opacity-70">
                     设置将会在页面刷新后恢复默认. 
                 </span>
             </div>
             <div class="toggle modal-view grid grid-cols-3 p-1.5 gap-1.5">
-                <div class="modalxxx px-0.5 flex flex-wrap  modal-view border-2 rounded-lg"  v-for="i of conf" :key="i.name">
+                <div :class="`modalxxx px-0.5 flex flex-wrap  modal-view border rounded-lg bg-opacity-60   bg-${_()}-50 shadow hover:shadow-md transition-all `"  v-for="i of conf" :key="i.name">
                     <span class="grow pl-1.5 block modalx translate-y-0.5">{{ i.name }}</span>
                     <Press class="w-fit modal-view-x  shadow-none hover:shadow-none active:shadow-none block" overclass="shadow-none hover:shadow-none active:shadow-none" @click.native="Config(i.key, !i.stat)" style="--tw-bg-opacity: 0">
                         <Icon class="modal-view text-xl scale-150 translate-y-0.5">{{ i.stat ? 'f19f' : 'f19e' }}</Icon>
@@ -55,7 +56,11 @@ import Press from '../Press.vue';
 export default{
     name: 'ConfigurationModal',
     components: {Icon, Press},
-    inject: ['Config'],
+    inject: {
+        Config: 'Config', 
+        RealDel: 'RealDel', 
+        _: '_'
+    },
     mounted(){
         this.confGetInterval = setInterval(() => {
             if(!this.Config('get')) {
@@ -85,6 +90,14 @@ export default{
                     stat: (localStorage.usePlayCDN == 'true'),
                     needRefresh: true,
                 },
+                removeAll: {
+                    name: '清空方块',
+                    key: 'removeAll',
+                    desc: '删除已有的全部块, 在触发失焦保存前仍然有机会恢复. 按钮需要第二次点击来确认.',
+                    needRefresh: false,
+                    stat: null,
+                    confirmed: false,
+                }
             }
         }
     },
@@ -97,6 +110,15 @@ export default{
                     localStorage.usePlayCDN = `${val}`;
                     // if() I WANT TO dynamicly get item to config!!!
                     this.needRefresh = true;
+                    Three();
+                    break;
+
+                case 'removeAll':
+                    if(this.global.removeAll.confirmed){
+                        this.RealDel('all');
+                    }else{
+                        this.global.removeAll.confirmed = true;
+                    }
                     break;
 
                 default: 
@@ -106,7 +128,7 @@ export default{
         },
     },
     beforeDestroy(){
-        return Three();
+        // return Three();
     }
 }
 

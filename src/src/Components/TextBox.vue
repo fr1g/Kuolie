@@ -7,7 +7,7 @@
                 :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}`">
         <div :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
             <h3 :class="`text-${this._()}-700 font-semibold text-lg flex flex-wrap break-words`" >
-                <div style="display: var(--id-show); line-height: .99rem !important;" class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
+                <div style="line-height: .99rem !important;" :class="`opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5  ${this.showingBlockId ?? true ? 'block' : 'hidden'} `">
                     #{{ this.id }}
                 </div>
                 <div class="grow break-words" style="overflow-x: hidden; overflow-y: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement)">
@@ -28,7 +28,7 @@
 
 export default{
     name: 'TextBox',
-    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self'],
+    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self', 'showingBlockId'],
     inject: {
         _: '_',
         __: '__',
