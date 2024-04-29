@@ -8,3 +8,5 @@
 
 demo: [部署在vercel上的Kuolie Demo](https://kuolie.kami.su) |  [备用](https://kuolie.vercel.app)<br>
 晚点迁移到v3, 只有拿它试手了才敢把min.corona.studio迁移到v3
+<br>Project with <br>
+![CoronaStudio](https://min.corona.studio/logo.png)
