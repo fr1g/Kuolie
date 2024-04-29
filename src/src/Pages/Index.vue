@@ -1,5 +1,5 @@
 <template>
-    <div id="main-area" :class="`min-h-screen bg-zinc-50 w-full relative transition  ${this.modal ? ' pointer-events-none' : ''}`" :style="`--opa: ${this.opa / 100}`">
+    <div id="main-area" :class="`min-h-screen bg-zinc-50 dark:bg-zinc-950 w-full relative transition  ${this.modal ? ' pointer-events-none' : ''}`" :style="`--opa: ${this.opa / 100}`">
         <div class="grid sm:hidden justify-items-center justify-center items-center h-screen">
             <div class="text-lg px-8">
                 <p :class="`text-3xl font-semibold text-${this._()}-800 mb-3 pb-1 border-b w-5/6`">窗口太小啦!</p>
@@ -21,7 +21,7 @@
             <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition fixed right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-white h-full max-h-screen overflow-x-hidden overflow-y-auto">
                 <ColorChoose />
             </div>
-            <div :style="`opacity: ${this.opa / 100}; z-index: 998`" class="transition fixed w-full bg-zinc-200 bottom-0 left-0 right-0 min-h-fit shadow-lg drop-shadow-lg" 
+            <div :style="`opacity: ${this.opa / 100}; z-index: 998`" class="transition fixed w-full bg-zinc-200 dark:bg-zinc-800 bottom-0 left-0 right-0 min-h-fit shadow-lg drop-shadow-lg" 
                 id="input-area" >
                 <InputPanel ref="input" />
             </div>
@@ -153,7 +153,7 @@ export default{
                         onclone: () => {},
                     }).then((canvas) => {
                         
-                        AHANDLER.setAttribute('download', `Kuolie-Generated_${document.getElementsByTagName('input')[0].value.replaceAll('\\', '').replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_')}_${(new Date()).toLocaleString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_')}.png`);
+                        AHANDLER.setAttribute('download', `Kuolie-Generated_${document.getElementById('OUTPUT').innerHTML}_${(new Date()).toLocaleString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})}.png`.replaceAll('\\', '').replaceAll('/', '-').replaceAll(' ', '').replaceAll(',', '_'));
                         AHANDLER.setAttribute('href', canvas.toDataURL('png'));
                         TitleSwitch(false);
                         AHANDLER.click();
@@ -182,6 +182,7 @@ export default{
         RealDel(id){
             this.$refs.c.Remove(id);
             this.SwitchModal();
+            this.$refs.input.chkNull();
         },
         Upd(place, x){ 
             this.$refs.c.Modify(place, x); 

@@ -1,15 +1,15 @@
 <template>
     <div ref="Container" :style="`height: ${((this.height ?? 'UNSET') + 'px').replace('UNSETpx', 'unset') }; max-height: 51vh; min-height: 12vh`" 
-    class="min-h-fit relative transition">
+    class="min-h-fit relative transition   text-black dark:text-white">
         <div id="dragArea" style="box-shadow: 0 -3px 6px #30303030;"
-        ref="dragArea" class="w-full bg-zinc-300 text-lg text-center cursor-grab active:cursor-grabbing -translate-y-1 ">
+        ref="dragArea" class="w-full bg-zinc-300 dark:bg-zinc-700 text-lg text-center cursor-grab active:cursor-grabbing -translate-y-1 ">
             <Icon style="transform: translateY(1.5px);" class="inline-block">e76f</Icon>
         </div>
         <div class="px-3">
-            <p class=" -translate-y-0.5 text-lg select-none">
+            <p class=" -translate-y-0.5 text-lg select-none text-black dark:text-white">
                 <span>当前编辑: <span class="font-semibold ">#{{ Get(tempOrigin) == -1 ? '无' : Get(tempOrigin) }}</span></span>
             </p>
-            <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg" 
+            <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg text-black dark:text-white bg-zinc-100 dark:bg-zinc-700" 
                 :style="`min-height: 0; max-height: 37.89vh` " spellcheck="false" 
                 @change="textAreaChanged()" @blur="textAreaChanged()" @input="textAreaAutoTag" @focus="textAreaFocus"
             ref="input" rows="5" placeholder="在开头使用「方括号 ([] /【】)」包裹住的文字将成为块的标题. 输入框具有简单的输入补全, 可用于补全方括号和HTML标签. 按下回车将自动在html标签之外的地方插入换行符. "
@@ -21,16 +21,16 @@
                 <Icon>f8b0</Icon>
             </Press> 
             <div class="grow"></div> 
-            <div ref="adjustPriority" class="flex flex-wrap text-lg align-bottom mx-1 mr-1.5">
+            <div ref="adjustPriority" class="flex flex-wrap text-lg align-bottom mx-1 mr-1.5 text-black dark:text-white">
                 <p class="align-bottom h-min my-auto mx-1">位置: </p>
                 <Press @click.native="moveForward()"><Icon class="my-auto">f08d</Icon></Press>
                 <div class="align-bottom mx-0.5 px-1.5 h-min my-auto rounded-lg border font-semibold">{{ Get(tempOrigin) == -1 ? '无' : Get(tempOrigin) }}</div>
                 <Press @click.native="moveBackward()"><Icon class="my-auto">f08f</Icon></Press>
             </div>
-            <p class="align-bottom h-min my-auto mx-1 font-bold text-xl -translate-y-0.5">
+            <p class="align-bottom h-min my-auto mx-1 font-bold text-xl -translate-y-0.5 text-black dark:text-white">
                 ·
             </p>
-            <div ref="adjustSpan" class="flex flex-wrap text-lg align-bottom mx-1" >
+            <div ref="adjustSpan" class="flex flex-wrap text-lg align-bottom mx-1 text-black dark:text-white" >
                 <p class="align-bottom h-min my-auto mx-1">块宽度: </p>
                 <Press @click.native="addSpan()"><Icon class="my-auto">e710</Icon></Press>
                 <div class="align-bottom mx-0.5 px-1.5 h-min my-auto rounded-lg border font-semibold">{{ this.tempObject.span }}</div>
@@ -107,6 +107,12 @@ export default{
         };
     },
     methods: {
+        chkNull(){
+            if(this.Get(this.tempOrigin) == -1){
+                this.remakeTemp();
+                this.$forceUpdate();
+            }
+        },
         changeEditing(item){
             this.tempObject = item;
             this.tempOrigin = item;
@@ -147,6 +153,9 @@ export default{
         judgeDeletion(e){
             if(this.tempObject.id == null) return; //
             this.Del(`${this.Get(this.tempOrigin)}`, `${this.tempObject.content}`); // unnecessary to change. this is still usable.
+            this.remakeTemp();
+        },
+        remakeTemp(){
             this.tempObject = {
                 id: null,
                 content: '',
@@ -216,6 +225,12 @@ export default{
                     this.$refs.input.value = this.appendAtInput(`】`);
                     e.target.selectionStart = dir;
                     e.target.selectionEnd = dir;
+                }
+                else if(e.data == '=' && (e.target.value.slice(e.target.selectionStart, e.target.selectionStart + 1) == '>' || e.target.value.slice(e.target.selectionStart, e.target.selectionStart + 1) == '/')){
+                    let dir = e.target.selectionStart;
+                    this.$refs.input.value = this.appendAtInput(`""`);
+                    e.target.selectionStart = dir + 1;
+                    e.target.selectionEnd = dir + 1;
                 }
                 else if(e.data == null){
                     if(this.key == 'enter') this.$refs.input.value = this.appendAtInput(`<br/>`);

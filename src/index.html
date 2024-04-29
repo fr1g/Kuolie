@@ -7,6 +7,7 @@
     <meta name="keywords" content="扩列,图文,文图,生成器,生成,排版,demo,实用工具,工具">
 
     <script>
+      console.clear();
         // judge to use tailwind or not.
         var USE_TW = null;
         if(localStorage.usePlayCDN != undefined){
@@ -43,6 +44,10 @@
     <style>
       .NOCLICK{
         pointer-events: none !important;
+      }
+      *{
+        scrollbar-color: auto #00000000;
+        /* scrollbar */
       }
     </style>
     <script >
@@ -181,8 +186,8 @@
                   opacity: .99;
               }
               100%{
-                  transform: translateX(calc(var(--toast-pos) * 16)) scale(50%);
-                  opacity: .5;
+                  transform: translateX(calc(var(--toast-pos) * 16)) scale(30%);
+                  opacity: .01;
               }
           }
           .lini{
@@ -299,6 +304,11 @@
             console.log('你打开了F12!!! ');
             if(localStorage.debug == 'true' & window.location.href.includes('localhost')) {
                 console.log('但是是debug模式.');
+                console.groupCollapsed('DEBUG效果');
+                console.log('- 将在页面末尾append生成的canvas');
+                console.log('- 将允许使用更多控制台输出');
+                console.log('- 将什么我也不知道了应该晚点加入吧');
+                console.groupEnd();
                 return;
             }else{
                 setTimeout(() => {

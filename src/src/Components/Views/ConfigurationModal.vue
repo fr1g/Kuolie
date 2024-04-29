@@ -97,6 +97,14 @@ export default{
                     needRefresh: false,
                     stat: null,
                     confirmed: false,
+                },
+                idIgnorePlaceholder: {
+                    name: '忽略占位',
+                    key: 'idIgnorePlaceholder',
+                    desc: '忽略占位方块，仅为文字方块启用编号。该设置需要刷新页面',
+                    needRefresh: true,
+                    stat: (localStorage.ignorePID == 'true'),
+
                 }
             }
         }
@@ -109,7 +117,7 @@ export default{
                     this.global.playCDN.stat = val;
                     localStorage.usePlayCDN = `${val}`;
                     // if() I WANT TO dynamicly get item to config!!!
-                    this.needRefresh = true;
+                    this.changedNeedRefresh = true;
                     Three();
                     break;
 
@@ -119,6 +127,15 @@ export default{
                     }else{
                         this.global.removeAll.confirmed = true;
                     }
+                    break;
+
+                case 'idIgnorePlaceholder':
+                    PushToast('似乎这是需要刷新生效的设置! 将在后3秒内刷新页面... ', 'warn');
+                    this.global.idIgnorePlaceholder.stat = val;
+                    localStorage.ignorePID = `${val}`;
+                    // if() I WANT TO dynamicly get item to config!!!
+                    this.changedNeedRefresh = true;
+                    Three();
                     break;
 
                 default: 

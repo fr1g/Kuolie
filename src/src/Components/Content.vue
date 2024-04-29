@@ -6,7 +6,7 @@
             <h1 class="px-1.5 relative"  style="height: 36.5px;">
                 <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'w-full inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
                 <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
-                <div class="absolute -top-1 -right-5 select-none text-sm scale-75 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important;`">
+                <div class="absolute -top-1 -right-1 select-none text-sm scale-90 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important;`">
                     {{ this.watermark }}
                 </div>
             </h1>
@@ -16,6 +16,7 @@
                          :x="s.x"   
                          :key="GetPosition(s)" 
                          :id="GetPosition(s)" 
+                         :displayId="(ignorePID ? s.id : GetPosition(s))"
                          :offset="Config.waterfall.stat ? s.offset : -1" 
                          :span="s.span" 
                          :inside="s.content"
@@ -24,6 +25,7 @@
                          :self="s"
                          :showingBlockId="Config.squareId.stat"
                 />
+                <!-- need minimize -->
             </div>
         </div>
     </div>
@@ -38,6 +40,7 @@ export default{
         TextBox,
     },
     mounted(){
+        this.ignorePID = localStorage.ignorePID == 'true';
         window.addEventListener('blur', () => {
             PushToast('正在保存');
             this.Save();
@@ -53,7 +56,7 @@ export default{
         this.Read();
 
         this.$nextTick(() => {
-            this.$forceUpdate();
+            this.UpdateSorting();
         });  
     },
     provide(){
@@ -70,22 +73,8 @@ export default{
     },
     data(){
         return {
+            ignorePID: false,
             Config: {
-                flowDense: {
-                    name: '填补',
-                    key: 'flowDense',
-                    stat: false,
-                },
-                colsAuto: {
-                    name: '自动列',
-                    key: 'colsAuto',
-                    stat: true,
-                },
-                rowsAuto: {
-                    name: '自动行',
-                    key: 'rowsAuto',
-                    stat: true,
-                },
                 waterfall: {
                     name: '瀑布流*',
                     key: 'waterfall',
@@ -105,7 +94,25 @@ export default{
                     name: '块编号',
                     key: 'squareId',
                     stat: true,
-                }
+                },
+
+
+
+                flowDense: {
+                    name: '填补',
+                    key: 'flowDense',
+                    stat: false,
+                },
+                colsAuto: {
+                    name: '自动列',
+                    key: 'colsAuto',
+                    stat: true,
+                },
+                rowsAuto: {
+                    name: '自动行',
+                    key: 'rowsAuto',
+                    stat: true,
+                },
             },
             ExchangeTemp: {},
             TextBoxes: [
@@ -155,7 +162,8 @@ export default{
                     isPlaceHolder: false,
                 },
             ],
-            titlePass: ''
+            titlePass: '',
+            separate: 0,
         }
     },
     methods: {
@@ -290,7 +298,11 @@ export default{
             return this.TextBoxes[index];
         },
         UpdateSorting(){ 
+            this.separate = 0;
             this.TextBoxes.filter((x)=>{ x != null });
+            for(let ind = 0; ind < this.TextBoxes.length; ind++)
+                if(!this.TextBoxes[ind].isPlaceHolder) this.TextBoxes[ind].id = this.separate ++;
+            
             this.$forceUpdate();
         },
         MoveTo(from, to){ // obj, position, return updated id.

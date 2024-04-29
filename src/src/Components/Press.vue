@@ -1,17 +1,17 @@
 <template>
     <div :title="((this.title ?? this.link))"
-     :class="(`pressable transition ${this.unspaced <= 1 || (this.overclass ?? 'x').includes('text-') ? '' : 'text-sm'} ${((this.overclass ?? '').includes('bg-')) ? '' : 'bg-stone-300 ?dark:bg-stone-700'}
-          text-stone-950  ?dark:text-stone-50 shadow${(this.initShadow ?? 'true') == 'true' ? '' : (this.initShadow == 'sm' ? '-sm' : '-none')} 
+     :class="(`pressable transition ${this.unspaced <= 1 || (this.overclass ?? 'x').includes('text-') ? '' : 'text-sm'} ${((this.overclass ?? '').includes('bg-')) ? '' : 'bg-stone-300 dark:bg-stone-700'}
+          text-stone-950  dark:text-stone-50 shadow${(this.initShadow ?? 'true') == 'true' ? '' : (this.initShadow == 'sm' ? '-sm' : '-none')} 
             ${((this.overclass ?? '').includes('rounded')) ? '' : 'rounded-lg'}
             bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'} 
-            ?dark:bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'}
+            dark:bg-opacity-${((this.initOpacity != null) & (typeof parseInt(this.initOpacity) == 'number')) ? this.initOpacity : '35'}
             hover:shadow-md hover:bg-opacity-70   active:shadow-sm active:bg-opacity-100 
-            ?dark:hover:bg-opacity-70 ?dark:hover:shadow-md ?dark:shadow ?dark:active:shadow-sm ?dark:active:bg-opacity-100
+            dark:hover:bg-opacity-70 ?dark:hover:shadow-md dark:shadow ?dark:active:shadow-sm dark:active:bg-opacity-100
             px-2 py-1 mx-1 select-none
             ${(this.disable ?? 'false') == 'true' ? 'dis' : ''}
             ${this.overclass}
         `)" :style="`${this.overstyle} ; cursor: pointer;`"   ref="pressableBase">
-        <span :class="`tense  ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `">
+        <span :class="`tense  ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `"> 
             <i :class="(`${this.iconClass} ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `)"></i> 
             <span :class="` ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} text-center my-auto mx-0 ml-0 ${(this.isOnlyIcon ?? 'false') == 'true' ? ' use-icon ' : ' '}`" ><span ref="iconRef" :class="` ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} use-icon translate-y-0.5 mr-1 ${this.iconRefHide ? 'hidden' : 'inline-block'}`"></span><span :class="`inline-block ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `"><slot></slot></span>{{ (((this.hideProtocol ?? 'false') == 'true') & this.ex.includes('://') ? this.ex.split('://')[1] : this.ex) }}</span><i :class="`${(((this.noLinkIcon ?? 'false') == 'true') ? 'hidden' : ((this.type == 'outer' || this.isVerified == 'true') ? '  text-sm use-icon sm-icon' : 'hidden'))}  ${(this.isForModalClose ?? 'false') == 'true' ? 'xxx' : 'modal-insider'} `" style="vertical-align: text-top !important; " ref="endIconRef"> &#xe8a7;</i>
         </span>

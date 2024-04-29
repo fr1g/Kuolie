@@ -8,7 +8,7 @@
         <div :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
             <h3 :class="`text-${this._()}-700 font-semibold text-lg flex flex-wrap break-words`" >
                 <div style="line-height: .99rem !important;" :class="`opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5  ${this.showingBlockId ?? true ? 'block' : 'hidden'} `">
-                    #{{ this.id }}
+                    #{{ this.displayId }}
                 </div>
                 <div class="grow break-words" style="overflow-x: hidden; overflow-y: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement)">
                 </div>
@@ -18,7 +18,7 @@
     
         <div :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
             <div class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
-                #{{ this.id }}占位格子
+                #{{ this.ignorePID ? 'X' : this.id }} 占位{{ (this.span <= 1 ? '' : '格') }}{{ this.span <= 2 ? '' : '子' }}
             </div>
         </div>
         
@@ -28,7 +28,7 @@
 
 export default{
     name: 'TextBox',
-    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self', 'showingBlockId'],
+    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self', 'showingBlockId', 'displayId'],
     inject: {
         _: '_',
         __: '__',
@@ -41,10 +41,12 @@ export default{
             title: '=v=',
             content: '空哒!',
             replacement: '<span class=\"text-sm font-semibold\">不要尝试插入脚本!</span>',
-            reg: /<script[^>]*?>[^]*?<\/script>/gi
+            reg: /<script[^>]*?>[^]*?<\/script>/gi,
+            ignorePID: false
         }
     },
     mounted(){ // [] /【】
+        this.ignorePID = localStorage.ignorePID == 'true';
         this.$nextTick(() => {
             this.Renew();
         });

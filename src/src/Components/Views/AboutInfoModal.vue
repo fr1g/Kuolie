@@ -3,7 +3,7 @@
         <div class="modalxxx flex flex-wrap flex-shrink">
             <AppIcon class="modalx rounded-full p-1" />
             <p class="text-2xl modal-item font-semibold my-auto mx-1.5 h-fit  grow w-fit">
-                Kuolie 是一款开源、简易的扩列文图生成器.
+                Kuolie 是一款开源、简易的扩列文图生成器. <span class="text-base modala opacity-90 font-normal italic">a work under flag of <a href="https://corona.studio" target="_blank" class="a modala opacity-80 pointer-events-auto">Corona Studio</a></span>
             </p>
         </div>
         <div class="modalxxxx scale-95 mt-1 opacity-95"  style="max-height: 33.33vh; overflow-y: auto; overflow-x: hidden;">
@@ -25,8 +25,8 @@
                         <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://segmentfault.com/q/1010000015734369/a-1020000015737231" target="_blank">Chobits' answer</a> </li>
                         <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://github.com/vitejs/vite/discussions/4158#discussioncomment-1282397 " target="_blank">tptech & bhenderson's answer</a> </li>
                         <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
-                        <li class="modalx"> - </li>
-                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
+                        <!-- <li class="modalx"> - </li> -->
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://stackoverflow.com/questions/74980740/html2canvas-shifting-text-downwards" target="_blank">Mushood Hanif's hint</a> </li>
                         <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
                         <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 text-blue-400" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
                     </ul>
