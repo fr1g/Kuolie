@@ -33,11 +33,18 @@ export default{
                 if(cc.includes('bg-')) _tmp = cc;
             }
             document.body.classList.replace(_tmp, `bg-${this.GlobalColorName}-100`);
+
+            if(name.includes('&') && ((localStorage.usePlayCDN ?? 'false') == 'false')) setTimeout(() => {
+                PushToast('使用扩展颜色需要启用Tailwind PlayCDN，请前往设置\uf8b0 启用。', 'bg-orange-400', 100, 3690);
+            }, 678);
         },
-        ExtendedColorParse(saved, part = 0){
+        ExtendedColorParse(saved, part = 0, keep = false){
             
             if(!saved.includes('&')) return saved;
-            else return `${saved.split('&')[part]} EXT `;
+            else {
+                if(keep) return ` EXT ${part == 0 ? 'bg-' : 'text-'}${saved.split('&')[part]}`;
+                else return `${saved.split('&')[part]} EXT `;
+            }
 
         }
     },

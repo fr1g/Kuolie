@@ -2,7 +2,7 @@
     <div ref="Container" :style="`height: ${((this.height ?? 'UNSET') + 'px').replace('UNSETpx', 'unset') }; max-height: 51vh; min-height: 12vh`" 
     class="min-h-fit relative transition   text-black dark:text-white">
         <div id="dragArea" style="box-shadow: 0 -3px 6px #30303030;"
-        ref="dragArea" class="w-full bg-zinc-300 dark:bg-zinc-700 text-lg text-center cursor-grab active:cursor-grabbing -translate-y-1 ">
+        ref="dragArea" class="w-full bg-zinc-300 dark:bg-zinc-800 bg-opacity-80 dark:bg-opacity-80 text-lg text-center cursor-grab active:cursor-grabbing -translate-y-1 ">
             <Icon style="transform: translateY(1.5px);" class="inline-block">e76f</Icon>
         </div>
         <div class="px-3">
@@ -189,13 +189,18 @@ export default{
                     e.target.selectionEnd = dir + 1;
                 }
                 else if(e.data == '/'){
-                    if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) != ' ') return;
+                    if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) != ' ' ) {
+                        this.otname += '/'
+                        return;
+                    }
                     this.$refs.input.value = this.appendAtInput(`>`);
                     this.otname = '';
                     this.otnamePause = true;
                     this.ot = false;
                 }else if(e.data == '>'){
                     if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) == '/') return;
+                    if((this.otname.slice(0, 1) ?? '') == '/') return;
+                    console.log(this.otname)
                     let dir = e.target.selectionStart;
                     this.$refs.input.value = this.appendAtInput(`</${this.otname.replaceAll(' ', '')}>`);
                     e.target.selectionStart = dir;

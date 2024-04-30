@@ -1,14 +1,14 @@
 <template>
-    <div class=" w-full m-auto p-5 grid justify-items-center transition-all" ref="rend" id="ROUND">
+    <div class=" w-full m-auto p-1.5 md:p-5 grid justify-items-center transition-all" ref="rend" id="ROUND">
         <div :class="`  bg-${this._()}-200 text-${this._(1)}-800 relative
                     rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5 grid grid-cols-1 gap-3`" id="CORAL">
           
             <h1 class="px-1.5 flex w-full flex-wrap"  style="height: 36.5px;">
                 <div class="grow">
-                    <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'   inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
-                    <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden  transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
+                    <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'  w-full inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
+                    <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden   w-full transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
                 </div>
-                <div class=" w-fit block -top-1 -right-1 select-none text-sm scale-90 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important;`">
+                <div class=" w-fit block -top-1 -right-1 select-none text-sm scale-50 md:scale-90 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important; --tw-scale-x: .65; --tw-scale-y: .65; `">
                     {{ this.watermark }}
                 </div>
             </h1>

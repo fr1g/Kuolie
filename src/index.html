@@ -19,6 +19,9 @@
           var twcdn = document.createElement('script');
           twcdn.setAttribute('src', 'https://cdn.tailwindcss.com');
           document.head.appendChild(twcdn);
+          tailwind.config = {
+            darkMode: 'class'
+          };
         }
     </script>
     
@@ -31,16 +34,6 @@
         }
       }
     </style>
-    <script>
-        try {
-          tailwind.config = {
-            darkMode: 'class'
-          };
-        } catch (error) {
-          error
-        }
-    </script>
-
     <style>
       .NOCLICK{
         pointer-events: none !important;
@@ -106,7 +99,7 @@
         -webkit-user-select: auto;
       }
     </style>
-    <title>Vite App</title>
+    <title>Kuolie App</title>
   </head>
   <body class="bg-emerald-100">
     <div id="PASSER" class="w-0 h-0 hidden fixed left-0 top-0 -z-20">
@@ -337,8 +330,11 @@
         });
 
         WarnF12();
-        if(USE_TW) setTimeout(() => {
-          PushToast('你现在启用了TailwindCSS PlayCDN!', 'warn');
+        setTimeout(() => {
+          if(USE_TW)  PushToast('你现在启用了TailwindCSS PlayCDN!', 'warn');
+          else PushToast('你禁用了PlayCDN');
+
+          if(!_ua.includes('hrome') && _ua.includes('afari')) PushToast('=====<br>你的浏览器兼容性好像有问题，<br>显示效果可能存在异常！<br>', 'bg-rose-300', 810, 95637)
         }, 1000);
 
         const GetAllHistoriesSaved = () => {

@@ -16,10 +16,10 @@
                 </span>
             </div>
             <div class="toggle modal-view grid grid-cols-3 p-1.5 gap-1.5">
-                <div :class="`modal-view border rounded-lg grid grid-cols-3 gap-1 p-1.5 bg-opacity-60  bg-${_()}-50 shadow hover:shadow-md transition-all `"  v-for="i of global" :key="i.name">
+                <div :class="`modal-view border rounded-lg grid grid-cols-3 gap-1 p-1.5 bg-opacity-40 dark:bg-opacity-40  bg-gray-50 dark:bg-gray-700 shadow hover:shadow-md transition-all `"  v-for="i of global" :key="i.name">
                     <span class=" p-1.5 block w-fit font-semibold col-span-2 h-fit align-bottom m-auto modalx -translate-y-0.5">{{ i.name }}</span>
                     <div class="modalx text-right">
-                        <Press :class="` ${i.confirmed == undefined ? '' : (i.confirmed ? 'bg-red-500' : 'bg-red-300')}    p-1.5 w-fit mt-0.5 scale-90 modal-view-x border-zinc-700 border-2 shadow-none hover:shadow-none active:shadow-none inline-block`" 
+                        <Press v-if="i.type != 'input'" :class="` ${i.confirmed == undefined ? '' : (i.confirmed ? 'bg-red-500' : 'bg-red-300')}    p-1.5 w-fit mt-0.5 scale-90 modal-view-x border-zinc-700 border-2 shadow-none hover:shadow-none active:shadow-none inline-block`" 
                         :overclass="`shadow-none hover:shadow-none active:shadow-none   ${i.confirmed == undefined ? '' : (i.confirmed ? 'bg-red-500' : 'bg-red-300')}   `"
                          @click.native="Configure(i.key, !i.stat)" :style="i.confirmed == undefined ? '--tw-bg-opacity: 0' : '--tw-bg-opacity: .7'" init-opacity="70" >
                             <Icon class="modal-view  translate-y-0.5">{{ i.stat == null ? (i.confirmed ? 'e814' : 'e7b5') : (i.stat ? 'f78c' : 'f78a') }}</Icon>
@@ -39,7 +39,7 @@
                 </span>
             </div>
             <div class="toggle modal-view grid grid-cols-3 p-1.5 gap-1.5">
-                <div :class="`modalxxx px-0.5 flex flex-wrap  modal-view border rounded-lg bg-opacity-60   bg-${_()}-50 shadow hover:shadow-md transition-all `"  v-for="i of conf" :key="i.name">
+                <div :class="`modalxxx px-0.5 flex flex-wrap  modal-view border rounded-lg bg-opacity-40 dark:bg-opacity-40  bg-gray-50 dark:bg-gray-700  shadow hover:shadow-md transition-all `"  v-for="i of conf" :key="i.name">
                     <span class="grow pl-1.5 block modalx translate-y-0.5">{{ i.name }}</span>
                     <Press class="w-fit modal-view-x  shadow-none hover:shadow-none active:shadow-none block" overclass="shadow-none hover:shadow-none active:shadow-none" @click.native="Config(i.key, !i.stat)" style="--tw-bg-opacity: 0">
                         <Icon class="modal-view text-xl scale-150 translate-y-0.5">{{ i.stat ? 'f19f' : 'f19e' }}</Icon>
@@ -83,10 +83,10 @@ export default{
             confGetInterval: null,
             changedNeedRefresh: false,
             global: {
-                playCDN: {
+                playCDN: { // 我感觉可以留个设置就是是否立即刷新以供立即应用设置。
                     name: 'PlayCDN',
                     key: 'playCDN',
-                    desc: '启用Tailwind Play CDN以供在渲染区使用动态的TailwindCSS. 该设置需要刷新页面.',
+                    desc: '启用Tailwind Play CDN以供在渲染区使用动态的TailwindCSS和启用扩展颜色选项等。 该设置需要刷新页面.',
                     stat: (localStorage.usePlayCDN == 'true'),
                     needRefresh: true,
                 },
@@ -104,7 +104,14 @@ export default{
                     desc: '忽略占位方块，仅为文字方块启用编号。该设置需要刷新页面',
                     needRefresh: true,
                     stat: (localStorage.ignorePID == 'true'),
-
+                },
+                groundOpacity: {
+                    name: '图底透明度',
+                    key: 'groundOpacity',
+                    desc: '决定了生成图片时候主元素块底部的背景色透明度。设为0时，图片最底将会完全透明。此设置要求刷新。',
+                    needRefresh: true,
+                    stat: parseInt(localStorage.ground ?? 50),
+                    type: 'input'
                 }
             }
         }
@@ -116,7 +123,6 @@ export default{
                     PushToast('似乎这是需要刷新生效的设置! 将在后3秒内刷新页面... ', 'warn');
                     this.global.playCDN.stat = val;
                     localStorage.usePlayCDN = `${val}`;
-                    // if() I WANT TO dynamicly get item to config!!!
                     this.changedNeedRefresh = true;
                     Three();
                     break;
@@ -133,10 +139,14 @@ export default{
                     PushToast('似乎这是需要刷新生效的设置! 将在后3秒内刷新页面... ', 'warn');
                     this.global.idIgnorePlaceholder.stat = val;
                     localStorage.ignorePID = `${val}`;
-                    // if() I WANT TO dynamicly get item to config!!!
                     this.changedNeedRefresh = true;
                     Three();
                     break;
+
+                case 'groundOpacity':
+                    
+                    this.global.groundOpacity.stat = val;
+                    
 
                 default: 
                     return this.Config;

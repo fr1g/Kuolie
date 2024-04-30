@@ -1,24 +1,25 @@
 <template>
-    <div id="main-area" :class="`min-h-screen bg-zinc-50 dark:bg-zinc-950 w-full relative transition  ${this.modal ? ' pointer-events-none' : ''}`" :style="`--opa: ${this.opa / 100}`">
+    <div id="main-area" :class="`min-h-screen bg-zinc-50 dark:bg-zinc-900 w-full relative transition  ${this.modal ? ' pointer-events-none' : ''}`" :style="`--opa: ${this.opa / 100}; `">
         <div class="grid sm:hidden justify-items-center justify-center items-center h-screen">
-            <div class="text-lg px-8">
-                <p :class="`text-3xl font-semibold text-${this._(1)}-800 mb-3 pb-1 border-b w-5/6`">窗口太小啦!</p>
+            <div class="text-lg px-8 text-zinc-900 dark:text-zinc-100">
+                <p :class="`text-3xl font-semibold text-${this._(1)}-800 dark:text-${this._(1)}-100 mb-3 pb-1 border-b w-5/6`">窗口太小啦!</p>
                 <p>用的是手机吗? 或许<b class=" font-semibold">横屏</b>查看就可以了哦! <br><span class="text-base -translate-y-1.5 font-light opacity-90 inline-block italic">不然就用平板或者电脑吧...</span></p>
                 <p>用的就是电脑? 把浏览器窗口改为<b class=" font-semibold">最大化</b>吧!</p>
                 <p>再不然我也没办法了xwx</p>
             </div> 
             <div class="bottom-0 left-1 right-1 fixed mb-1" >
-                <p class="text-center opacity-70 animate-pulse"><b class="font-bold">Kuolie</b> by Feiron Iguista <Icon class="text-rose-300 inline-block " figure="0">eb52</Icon></p>
+                <p v-if="(!ua.includes('hrome') && ua.includes('afari'))" class="text-center text-zinc-900 dark:text-zinc-100 text-sm scale-90 mb-0.5 opacity-75">建议不要用Safari浏览器！实际上<br>iOS上所有浏览器实质上都是Safari</p>
+                <p class="text-center opacity-70 animate-pulse text-zinc-900 dark:text-zinc-100"><b class="font-bold">Kuolie</b> by Feiron Iguista <Icon class="text-rose-300 inline-block " figure="0">eb52</Icon></p>
             </div>
         </div>
         <div class="hidden sm:block">
             <div id="navpill" class="fixed top-1.5 left-1.5 z-20" :style="`opacity: ${this.opa / 100};`">
                 <NavPill />
             </div>
-            <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full min-h-screen m-auto relative transition pb-72 `" id="draw-area" :style="`opacity: ${this.modal ? this.opa / 100 : '1'};`">
+            <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full min-h-screen m-auto relative transition pb-72 `" id="draw-area" :style="`opacity: ${this.modal ? this.opa / 100 : '1'}; `">
                 <Content ref="c" />
             </div>
-            <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition fixed right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-white h-full max-h-screen overflow-x-hidden overflow-y-auto">
+            <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition fixed right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-neutral-100 dark:bg-neutral-700 h-full max-h-screen overflow-x-hidden overflow-y-auto">
                 <ColorChoose />
             </div>
             <div :style="`opacity: ${this.opa / 100}; z-index: 998`" class="transition fixed w-full bg-zinc-200 dark:bg-zinc-800 bottom-0 left-0 right-0 min-h-fit shadow-lg drop-shadow-lg" 
@@ -32,7 +33,7 @@
                         <Icon>e711</Icon>
                     </Press>
                 </div>
-                <ModalBase ref="modal-render" class="mt-3" id="modal-render" :assembly="this.modalContent" :key="Math.random()">
+                <ModalBase ref="modal-render" :class="`mt-3 text-${this._(1)}-800 dark:text-${this._(1)}-100`" id="modal-render" :assembly="this.modalContent" :key="Math.random()">
 
                 </ModalBase>
             </div>
@@ -79,6 +80,7 @@ export default{
                 return h(com, {});
             },
             mounted(){
+                this.ua = window.navigator.userAgent;
                 this.$nextTick(() => {
                     this.$forceUpdate();
                 });
@@ -105,6 +107,7 @@ export default{
     },
     data(){
         return {
+            ua: _ua,
             Components: {},
             hidden: false,
             idNeedHide: [
@@ -117,6 +120,7 @@ export default{
             modalContent: '',
             interval: null,
             firstTry: 'false',
+            groundOpacityPreference: 50,
 
         }
     },
@@ -243,9 +247,10 @@ export default{
 
             this.$forceUpdate();
         },
-        ___x(x, y){
-            return this.___(x, y);
-        }
+        ___x(x, y = 0, z = false){
+            return this.___(x, y, z);
+        },
+        StateHasChanged(){}
     },
     provide(){ 
         return {
