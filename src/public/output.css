@@ -1172,6 +1172,11 @@ img {
   background-color: rgb(251 113 133 / var(--tw-bg-opacity));
 }
 
+.bg-rose-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 164 175 / var(--tw-bg-opacity));
+}
+
 .bg-slate-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(248 250 252 / var(--tw-bg-opacity));
@@ -2005,11 +2010,6 @@ img {
 .bg-rose-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 205 211 / var(--tw-bg-opacity));
-}
-
-.bg-rose-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(253 164 175 / var(--tw-bg-opacity));
 }
 
 .bg-rose-500 {

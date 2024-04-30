@@ -20,6 +20,9 @@
             <Press overclass="text-lg bg-indigo-300"  @click.native="Modal(true, '<ConfigurationModal />')">
                 <Icon>f8b0</Icon>
             </Press> 
+            <Press overclass="text-lg bg-indigo-300" style="width: 32px; text-align: center;"  @click.native="Modal(true, '<ConfigurationModal />')">
+                <span class="text-lg font-bold ">?</span>
+            </Press> 
             <div class="grow"></div> 
             <div ref="adjustPriority" class="flex flex-wrap text-lg align-bottom mx-1 mr-1.5 text-black dark:text-white">
                 <p class="align-bottom h-min my-auto mx-1">位置: </p>

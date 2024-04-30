@@ -5,11 +5,11 @@
                 「{{ this.origin.length > 12 ? `${this.origin.slice(0, 11)}...` : this.origin }}」</span>
         </div>
         <p>此操作无法撤销! (真的很久! ) <span class="opacity-10">ID: {{ toBeDeletedId }}</span></p>
-        <div class="grid grid-cols-12 gap-2 mt-3">
-            <Press overclass="text-center bg-slate-400 col-span-8" >算了吧...</Press>
-            <Press id="DELCONFIRMBUTTON" :overclass="`text-lg block modal-xxx text-center ${this.clicked ? 'bg-red-500' : 'bg-red-300'}`"
+        <div class="grid grid-cols-12 gap-2 mt-3 bg-opacity-60">
+            <Press overclass="text-center font-semibold bg-slate-400 col-span-8" init-opacity="60">算了吧...</Press>
+            <Press id="DELCONFIRMBUTTON" :overclass="`text-lg font-semibold block modal-xxx text-center ${this.clicked ? 'bg-red-500' : 'bg-red-300'}`"
              :disable="clicked == null ? 'true' : 'false'" class="col-span-4"
-            is-for-modal-close="false" @click.native="handler">
+            is-for-modal-close="false" @click.native="handler"  init-opacity="60">
                 {{ this.clicked ? '再次点击确认' : '是' }}
             </Press>
         </div>

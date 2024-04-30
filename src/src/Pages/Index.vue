@@ -33,7 +33,7 @@
                         <Icon>e711</Icon>
                     </Press>
                 </div>
-                <ModalBase ref="modal-render" :class="`mt-3 text-${this._(1)}-800 dark:text-${this._(1)}-100`" id="modal-render" :assembly="this.modalContent" :key="Math.random()">
+                <ModalBase ref="modal-render" :class="`mt-3 text-${this._(1)}-800 ?dark:text-${this._(1)}-100`" id="modal-render" :assembly="this.modalContent" :key="Math.random()">
 
                 </ModalBase>
             </div>
