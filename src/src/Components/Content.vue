@@ -3,10 +3,12 @@
         <div :class="`  bg-${this._()}-200 text-${this._()}-800 relative
                     rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5 grid grid-cols-1 gap-3`" id="CORAL">
           
-            <h1 class="px-1.5 relative"  style="height: 36.5px;">
-                <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'w-full inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
-                <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
-                <div class="absolute -top-1 -right-1 select-none text-sm scale-90 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important;`">
+            <h1 class="px-1.5 flex w-full flex-wrap"  style="height: 36.5px;">
+                <div class="grow">
+                    <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'   inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
+                    <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden  transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
+                </div>
+                <div class=" w-fit block -top-1 -right-1 select-none text-sm scale-90 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important;`">
                     {{ this.watermark }}
                 </div>
             </h1>
