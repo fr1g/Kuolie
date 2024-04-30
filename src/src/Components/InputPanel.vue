@@ -12,7 +12,7 @@
             <textarea id="textarea-input" class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg text-black dark:text-white bg-zinc-100 dark:bg-zinc-700" 
                 :style="`min-height: 0; max-height: 37.89vh` " spellcheck="false" 
                 @change="textAreaChanged()" @blur="textAreaChanged()" @input="textAreaAutoTag" @focus="textAreaFocus"
-            ref="input" rows="5" placeholder="在开头使用「方括号 ([] /【】)」包裹住的文字将成为块的标题. 输入框具有简单的输入补全, 可用于补全方括号和HTML标签. 按下回车将自动在html标签之外的地方插入换行符. "
+            ref="input" rows="5" :placeholder="this.tips"
             >{{ this.tempObject.content }}</textarea>
         </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800" style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;"> 
@@ -84,7 +84,13 @@ export default{
     },
     data(){
         return{
-            resizing: false,
+            tips: `
+            第一段被「方括号 ([] /【】)」包裹住的文字将成为块的标题, 此前的文字将被忽略. 
+            输入框具有简单的输入补全, 可用于补全方括号和HTML标签. 
+            按下回车将自动在html标签之外的地方插入换行符. 
+            使用%=xxxx%以插入图标, 将xxxx替换为需要的图表的Unicode PUA代码即可. 
+            比如, %=e711%等价于&#xe711; / \ue711. 使用ctrl/command(⌘)+s保存, 或使窗口失焦以保存.
+            `.trim().replaceAll('\n', '').replaceAll('  ', ''),
             height: null,
             editing: 0,
             timer: false,
@@ -226,11 +232,17 @@ export default{
                     e.target.selectionStart = dir;
                     e.target.selectionEnd = dir;
                 }
-                else if(e.data == '=' && (e.target.value.slice(e.target.selectionStart, e.target.selectionStart + 1) == '>' || e.target.value.slice(e.target.selectionStart, e.target.selectionStart + 1) == '/')){
+                else if(e.data == '=' && e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) != '%' && ((e.target.value.slice(e.target.selectionStart, e.target.selectionStart + 1) ?? '') == '>' || (e.target.value.slice(e.target.selectionStart, e.target.selectionStart + 1) ?? '') == '/')){
                     let dir = e.target.selectionStart;
                     this.$refs.input.value = this.appendAtInput(`""`);
                     e.target.selectionStart = dir + 1;
                     e.target.selectionEnd = dir + 1;
+                }
+                else if(e.data == '=' && e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) == '%'){
+                    let dir = e.target.selectionStart;
+                    this.$refs.input.value = this.appendAtInput(`%`);
+                    e.target.selectionStart = dir;
+                    e.target.selectionEnd = dir;
                 }
                 else if(e.data == null){
                     if(this.key == 'enter') this.$refs.input.value = this.appendAtInput(`<br/>`);

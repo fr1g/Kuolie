@@ -17,9 +17,9 @@ export default{
         };
     },
     methods: {
-        GetColorName(){
+        GetColorName(n = 0){
             localStorage.setItem('accent', window.getComputedStyle(document.body).getPropertyValue('background-color'));
-            return this.GlobalColorName;
+            return this.ExtendedColorParse(this.GlobalColorName, n);
         },
         SetColorName(name){
             this.GlobalColorName = (name ?? 'emerald').toLowerCase();
@@ -33,6 +33,12 @@ export default{
                 if(cc.includes('bg-')) _tmp = cc;
             }
             document.body.classList.replace(_tmp, `bg-${this.GlobalColorName}-100`);
+        },
+        ExtendedColorParse(saved, part = 0){
+            
+            if(!saved.includes('&')) return saved;
+            else return `${saved.split('&')[part]} EXT `;
+
         }
     },
     provide(){
@@ -41,6 +47,8 @@ export default{
             _: this.GetColorName,
             SetColor: this.SetColorName,
             __: this.SetColorName,
+            ExtendedColorParse: this.ExtendedColorParse,
+            ___: this.ExtendedColorParse
         }
     }
 

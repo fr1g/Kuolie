@@ -1,19 +1,20 @@
 <template>
     <div :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))"
         :class="`   basicLooking? p-2.5 rounded-lg shadow transition-all
-                    advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._()}-900 bg-${this._()}-100 
+                    advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._(1)}-900 bg-${this._(1)}-100
+                    ${this._(1).includes('EXT') ? 'bg-opacity-20' : ''} 
                     forExtraFunctions? ${this.isPlaceHolder ? 'grow col-span-auto justify-items-center justify-center items-center  grid' : ''}
                 `"
                 :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}`">
         <div :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
-            <h3 :class="`text-${this._()}-700 font-semibold text-lg flex flex-wrap break-words`" >
+            <h3 :class="`text-${this._(1)}-700 font-semibold text-lg flex flex-wrap break-words`" >
                 <div style="line-height: .99rem !important;" :class="`opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5  ${this.showingBlockId ?? true ? 'block' : 'hidden'} `">
                     #{{ this.displayId }}
                 </div>
                 <div class="grow break-words" style="overflow-x: hidden; overflow-y: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement)">
                 </div>
             </h3>
-            <div class="text-sm break-words mt-1" v-html="`${this.content.replaceAll(this.reg, this.replacement)}`" ref="contented"></div>
+            <div class="text-sm break-words mt-1.5 pt-0.5" v-html="`${ApplyIcon(this.content.replaceAll(this.reg, this.replacement))}`" ref="contented"></div>
         </div>
     
         <div :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
@@ -42,6 +43,7 @@ export default{
             content: '空哒!',
             replacement: '<span class=\"text-sm font-semibold\">不要尝试插入脚本!</span>',
             reg: /<script[^>]*?>[^]*?<\/script>/gi,
+            useIconReg: /%=.{4}%/g,
             ignorePID: false
         }
     },
@@ -55,6 +57,15 @@ export default{
         this.Renew();
     },
     methods: {
+        ApplyIcon(x){
+            let tries = (x.match(/%=/g) ?? -1).length / 2, tmp = x;
+            if(tries == NaN) return x;
+            for(let i = 0; i <= tries; i++){
+                let iconText = x.slice(x.search(this.useIconReg), x.search(this.useIconReg) + 7 + 1);
+                tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
+            }
+            return tmp;
+        },
         Renew(){
             if (this.inside == null) return;
             

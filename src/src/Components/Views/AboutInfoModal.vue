@@ -2,12 +2,14 @@
     <div class="relative modal-content">
         <div class="modalxxx flex flex-wrap flex-shrink">
             <AppIcon class="modalx rounded-full p-1" />
-            <p class="text-2xl modal-item font-semibold my-auto mx-1.5 h-fit  grow w-fit">
-                Kuolie 是一款开源、简易的扩列文图生成器. <span class="text-base modala opacity-90 font-normal italic">a work under flag of <a href="https://corona.studio" target="_blank" class="a modala opacity-80 pointer-events-auto">Corona Studio</a></span>
+            <p class="text-2xl modal-item font-semibold my-auto mx-1.5 h-fit  grow w-full px-3">
+                Kuolie 是一款开源、<br>
+                简易的扩列文图生成器. <span class="text-base modala opacity-90 font-normal italic">a work under flag of <a href="https://corona.studio" target="_blank" class="a modala opacity-80 pointer-events-auto">Corona Studio</a></span>
             </p>
         </div>
         <div class="modalxxxx scale-95 mt-1 opacity-95"  style="max-height: 33.33vh; overflow-y: auto; overflow-x: hidden;">
             <p class="modal-item">使用技术: Vue.js 2.7, TailwindCSS, ~</p>
+            <p class="modal-item">内置Segoe Fluent Icon, 需要调用图标请<a class="a modala " style="pointer-events: all;" href="https://learn.microsoft.com/zh-cn/windows/apps/design/style/segoe-fluent-icons-font" target="_blank">查看PUA映射表</a></p>
             <p class="modal-item">主笔: Feiron Iguista</p>
             <p class="modal-item">开源协议: MIT, Authorized</p>
             <p class="modal-item">源代码/开源项目使用: </p>
