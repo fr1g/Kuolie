@@ -24,6 +24,7 @@
                          @click.native="Configure(i.key, !i.stat)" :style="i.confirmed == undefined ? '--tw-bg-opacity: 0' : '--tw-bg-opacity: .7'" init-opacity="70" >
                             <Icon class="modal-view  translate-y-0.5">{{ i.stat == null ? (i.confirmed ? 'e814' : 'e7b5') : (i.stat ? 'f78c' : 'f78a') }}</Icon>
                         </Press>
+                        <input v-if="i.key == 'groundOpacity'" type="number" v-model="ground" max="100" min="0" @input="Configure('groundOpacity')" title="数字, 小于100大于0" placeholder="数字, 小于100大于0" class="w-full px-1.5 translate-y-1 inline-block rounded-lg border-2 bg-slate-100 bg-opacity-30" />
                     </div>
                     <span class="modalx p-0.5  inline-block col-span-full text-sm scale-95">
                         {{ i.desc }}
@@ -59,7 +60,8 @@ export default{
     inject: {
         Config: 'Config', 
         RealDel: 'RealDel', 
-        _: '_'
+        _: '_',
+        G: 'Ground'
     },
     mounted(){
         this.confGetInterval = setInterval(() => {
@@ -75,6 +77,8 @@ export default{
             
         }, 1);
         
+        this.ground = localStorage.ground ?? 50;
+        
         this.$forceUpdate();
     },
     data(){
@@ -82,6 +86,7 @@ export default{
             conf: null,
             confGetInterval: null,
             changedNeedRefresh: false,
+            ground: '',
             global: {
                 playCDN: { // 我感觉可以留个设置就是是否立即刷新以供立即应用设置。
                     name: 'PlayCDN',
@@ -98,6 +103,14 @@ export default{
                     stat: null,
                     confirmed: false,
                 },
+                groundOpacity: {
+                    name: '图底透明%',
+                    key: 'groundOpacity',
+                    desc: '决定了生成图片时候主元素块底部的背景色透明度。设为0时，图片最底将会完全透明。此设动态生效且保存在缓存中。',
+                    needRefresh: true,
+                    stat: parseInt(localStorage.ground ?? 50),
+                    type: 'input'
+                },
                 idIgnorePlaceholder: {
                     name: '忽略占位',
                     key: 'idIgnorePlaceholder',
@@ -105,14 +118,6 @@ export default{
                     needRefresh: true,
                     stat: (localStorage.ignorePID == 'true'),
                 },
-                groundOpacity: {
-                    name: '图底透明度',
-                    key: 'groundOpacity',
-                    desc: '决定了生成图片时候主元素块底部的背景色透明度。设为0时，图片最底将会完全透明。此设置要求刷新。',
-                    needRefresh: true,
-                    stat: parseInt(localStorage.ground ?? 50),
-                    type: 'input'
-                }
             }
         }
     },
@@ -145,8 +150,7 @@ export default{
 
                 case 'groundOpacity':
                     
-                    this.global.groundOpacity.stat = val;
-                    
+                    this.G(this.ground)
 
                 default: 
                     return this.Config;

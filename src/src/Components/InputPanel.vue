@@ -17,10 +17,10 @@
         </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800" style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;"> 
             <Press overclass="text-lg bg-yellow-300" @click.native="Generate()">生成</Press> 
-            <Press overclass="text-lg bg-indigo-300"  @click.native="Modal(true, '<ConfigurationModal />')">
+            <Press overclass="text-lg bg-indigo-300"  @click.native="Modal(true, ConfModal)">
                 <Icon>f8b0</Icon>
             </Press> 
-            <Press overclass="text-lg bg-indigo-300" style="width: 32px; text-align: center;"  @click.native="Modal(true, '<ConfigurationModal />')">
+            <Press overclass="text-lg bg-violet-300" style="width: 33px; text-align: center;"  @click.native="Modal(true, '<HelpTipsModal />')">
                 <span class="text-lg font-bold ">?</span>
             </Press> 
             <div class="grow"></div> 
@@ -87,12 +87,9 @@ export default{
     },
     data(){
         return{
+            ConfModal: '<ConfigurationModal class="no-flush" />',
             tips: `
-            第一段被「方括号 ([] /【】)」包裹住的文字将成为块的标题, 此前的文字将被忽略. 
-            输入框具有简单的输入补全, 可用于补全方括号和HTML标签. 
-            按下回车将自动在html标签之外的地方插入换行符. 
-            使用%=xxxx%以插入图标, 将xxxx替换为需要的图表的Unicode PUA代码即可. 
-            比如, %=e711%等价于&#xe711; / \ue711. 使用ctrl/command(⌘)+s保存, 或使窗口失焦以保存.
+            点击左下角的问号「?」来查看输入框提示.
             `.trim().replaceAll('\n', '').replaceAll('  ', ''),
             height: null,
             editing: 0,

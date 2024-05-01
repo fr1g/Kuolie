@@ -16,7 +16,7 @@
             <div id="navpill" class="fixed top-1.5 left-1.5 z-20" :style="`opacity: ${this.opa / 100};`">
                 <NavPill />
             </div>
-            <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full min-h-screen m-auto relative transition pb-72 `" id="draw-area" :style="`opacity: ${this.modal ? this.opa / 100 : '1'}; `">
+            <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full min-h-screen m-auto relative transition pb-72 `" id="draw-area" :style="`opacity: ${this.modal ? this.opa / 100 : '1'}; --tw-bg-opacity: ${this.groundOpacityPreference / 100}`">
                 <Content ref="c" />
             </div>
             <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition fixed right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-neutral-100 dark:bg-neutral-700 h-full max-h-screen overflow-x-hidden overflow-y-auto">
@@ -33,7 +33,8 @@
                         <Icon>e711</Icon>
                     </Press>
                 </div>
-                <ModalBase ref="modal-render" :class="`mt-3 text-${this._(1)}-800 ?dark:text-${this._(1)}-100`" id="modal-render" :assembly="this.modalContent" :key="Math.random()">
+                <ModalBase ref="modal-render" :class="`mt-3 text-${this._(1)}-800 ?dark:text-${this._(1)}-100`" id="modal-render" :assembly="this.modalContent" 
+                :key="this.modalContent.includes(`no-flush`) ? 0 : Math.random()">
 
                 </ModalBase>
             </div>
@@ -55,6 +56,8 @@ import ConfigurationModal from '../Components/Views/ConfigurationModal.vue';
 import ConfirmDeletionModal from '../Components/Views/ConfirmDeletionModal.vue';
 import AboutInfoModal from '../Components/Views/AboutInfoModal.vue';
 import FirstTryInfoModal from '../Components/Views/FirstTryInfoModal.vue';
+import HelpTipsModal from '../Components/Views/HelpTipsModal.vue';
+
 
 export default{
     name: 'Index',
@@ -74,7 +77,7 @@ export default{
                     template: `<div class="modal-content select-none text-lg">${this.assembly}</div>`,
                     components: {
                         Icon, Press, 
-                        ConfigurationModal, ConfirmDeletionModal, AboutInfoModal, FirstTryInfoModal
+                        ConfigurationModal, ConfirmDeletionModal, AboutInfoModal, FirstTryInfoModal, HelpTipsModal
                     },
                 });
                 return h(com, {});
@@ -104,6 +107,11 @@ export default{
 
         if(localStorage.firstTry == undefined) localStorage.firstTry = true;
         this.firstTry = localStorage.firstTry; 
+
+        if(localStorage.ground)
+            this.groundOpacityPreference = parseInt(localStorage.ground);
+        
+        
     },
     data(){
         return {
@@ -250,7 +258,13 @@ export default{
         ___x(x, y = 0, z = false){
             return this.___(x, y, z);
         },
-        StateHasChanged(){}
+        ChangeGroundOpacity(x){
+            this.groundOpacityPreference = parseInt(x ?? 50) ?? 50;
+            localStorage.ground = this.groundOpacityPreference;
+        },
+        StateHasChanged(){
+            this.$forceUpdate();
+        }
     },
     provide(){ 
         return {
@@ -270,6 +284,8 @@ export default{
             Generate: this.Generate,
             GenerateStep: this.GenerateStep,
             ___: this.___x,
+            Ground: this.ChangeGroundOpacity,
+            StateHasChanged: this.StateHasChanged
 
         }
     },
