@@ -274,7 +274,8 @@ export default{
                 localStorage.setItem('kuolieTitle', this.titlePass);
             if(this.TextBoxes.length != 0 || this.TextBoxes != this.defaultTextBoxes)
                 {
-                    localStorage.History += `###${localStorage.kuolieJson}###:`
+                    sessionStorage.History += `###${localStorage.kuolieJson}###:`
+                    localStorage.lastEdit = localStorage.kuolieJson;
                     localStorage.setItem('kuolieJson', JSON.stringify(this.TextBoxes));
                 }
             PushToast('保存完毕.');
