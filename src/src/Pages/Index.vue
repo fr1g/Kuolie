@@ -138,6 +138,8 @@ export default{
             else this.SwitchModal(true, '<FirstTryInfoModal />'); // set firsttry to false 
         },
         GenerateStep(){
+            console.log(window.getComputedStyle(document.getElementById('CORAL')).width)
+            console.log(window.getComputedStyle(document.getElementById('ROUND')).width)
             if(localStorage.firstTry == 'true'){
                 localStorage.firstTry = false;
                 this.SwitchModal();
