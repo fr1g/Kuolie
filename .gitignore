@@ -127,5 +127,5 @@ dist
 .pnp.*
 
 # unnecessary output css
-src/output.css
+src\output.css
 src/output.css

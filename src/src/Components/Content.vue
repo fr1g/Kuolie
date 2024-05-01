@@ -6,7 +6,7 @@
             <h1 class="px-1.5 flex w-full flex-wrap"  style="height: 36.5px;">
                 <div class="grow">
                     <input id="INPUT" v-model="titlePass" ref="titl" style="height: 36.5px;" type="text" :class="'  w-full inline-block overflow-x-visible text-3xl border-0 outline-1 bg-transparent transition '" placeholder="点击输入标题文本..." />
-                    <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden   w-full transition" >{{ this.titlePass.length > 0 ? this.titlePass : 'Kuolie.kami.su~' }}</span>
+                    <span id="OUTPUT" style="height: 36.5px;" class="text-3xl hidden   w-full transition"  v-html="(this.titlePass.length > 0 ? this.titlePass : '无标题之Kuolie.kami.su~').replaceAll(this.reg, '').replaceAll(this.regFrame, '')"></span>
                 </div>
                 <div class=" w-fit block -top-1 -right-1 select-none text-sm scale-50 md:scale-90 " :style="this.Config.showInfo.stat ? `opacity: .3;` : `display: none !important; --tw-scale-x: .65; --tw-scale-y: .65; `">
                     {{ this.watermark }}
@@ -75,6 +75,9 @@ export default{
     },
     data(){
         return {
+            reg: /<script[^>]*?>[^]*?<\/script>/gi,
+            regFrame: /<iframe[^>]*?>[^]*?<\/iframe>/gi,
+
             ignorePID: false,
             Config: {
                 waterfall: {

@@ -16,11 +16,11 @@
             >{{ this.tempObject.content }}</textarea>
         </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800" style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;"> 
-            <Press overclass="text-lg bg-yellow-300" @click.native="Generate()">生成</Press> 
-            <Press overclass="text-lg bg-indigo-300"  @click.native="Modal(true, ConfModal)">
+            <Press overclass="text-lg bg-yellow-300" init-opacity="30" @click.native="Generate()">生成</Press> 
+            <Press overclass="text-lg bg-indigo-300"  init-opacity="30" @click.native="Modal(true, ConfModal)">
                 <Icon>f8b0</Icon>
             </Press> 
-            <Press overclass="text-lg bg-violet-300" style="width: 33px; text-align: center;"  @click.native="Modal(true, '<HelpTipsModal />')">
+            <Press overclass="text-lg bg-violet-300" init-opacity="30" style="width: 33px; text-align: center;"  @click.native="Modal(true, '<HelpTipsModal />')">
                 <span class="text-lg font-bold ">?</span>
             </Press> 
             <div class="grow"></div> 
@@ -39,10 +39,10 @@
                 <div class="align-bottom mx-0.5 px-1.5 h-min my-auto rounded-lg border font-semibold">{{ this.tempObject.span }}</div>
                 <Press @click.native="remSpan()"><Icon class="my-auto">e738</Icon></Press>
             </div>
-            <Press overclass="text-lg bg-green-300" @click.native="Add()" id="NEWTEXTBOX">添加</Press> 
-            <Press overclass="text-lg bg-red-300" @click.native="judgeDeletion">删除</Press> 
-            <div class="w-5"></div>
-            <Press overclass="text-lg bg-blue-300" @click.native="Add(true)">占位</Press> 
+            <Press overclass="text-lg bg-green-300" init-opacity="30" @click.native="Add()" id="NEWTEXTBOX">添加</Press> 
+            <Press overclass="text-lg bg-red-300" init-opacity="30" @click.native="judgeDeletion">删除</Press> 
+            <div class="w-5 bg-opacity-30"></div>
+            <Press overclass="text-lg bg-blue-300" init-opacity="30" @click.native="Add(true)">占位</Press> 
         </div> 
     </div>
 </template>

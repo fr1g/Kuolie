@@ -8,9 +8,9 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
-    "autoprefixer": "^10.4.19",
+    
     "html2canvas": "^1.4.1",
-    "postcss": "^8.4.38",
+    
     "tailwindcss": "^3.4.3",
     "vite-plugin-vue2": "^2.0.3",
     "vue": "^2.7.7",

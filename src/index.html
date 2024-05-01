@@ -25,9 +25,20 @@
         }
 
         if(USE_TW){
-            var twcdn = document.createElement('script');
+            var twcdn = document.createElement('script'), twattr = document.createElement('style');
             twcdn.setAttribute('src', 'https://cdn.tailwindcss.com');
+
+            twattr.setAttribute('type', 'text/tailwindcss');
+            twattr.innerHTML = `
+                @layer base{
+                    img {
+                    @apply inline-block;
+                    }
+                }
+            `;
+
             document.head.appendChild(twcdn);
+            document.head.appendChild(twattr);
             
             tmo = setInterval(() => {
                 try{
@@ -42,14 +53,14 @@
     </script>
     
 
-
+<!-- 
     <style type="text/tailwindcss">
       @layer base{
          img {
           @apply inline-block;
         }
       }
-    </style>
+    </style> -->
     <style>
       .NOCLICK{
         pointer-events: none !important;
