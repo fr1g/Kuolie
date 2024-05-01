@@ -11,17 +11,32 @@
         // judge to use tailwind or not.
         var USE_TW = null;
         if(localStorage.usePlayCDN != undefined){
-          if(localStorage.usePlayCDN == 'true') USE_TW = true;
-          else USE_TW = false;
+            if(localStorage.usePlayCDN == 'true') USE_TW = true;
+            else USE_TW = false;
         }else USE_TW = false;
 
+        let tmo;
+        const Inject = () => {
+            tailwind.config = {
+                darkMode: 'class'
+            };
+            clearInterval(tmo);
+        }
+
         if(USE_TW){
-          var twcdn = document.createElement('script');
-          twcdn.setAttribute('src', 'https://cdn.tailwindcss.com');
-          document.head.appendChild(twcdn);
-          tailwind.config = {
-            darkMode: 'class'
-          };
+            var twcdn = document.createElement('script');
+            twcdn.setAttribute('src', 'https://cdn.tailwindcss.com');
+            document.head.appendChild(twcdn);
+            
+            tmo = setInterval(() => {
+                try{
+                    if((localStorage.usePlayCDN ?? 'false') == 'false') clearInterval(tmo);
+                    if(tailwind != undefined && tailwind != null && tailwind.config != null && tailwind.config != undefined) Inject();
+                }catch(ex){
+                    console.log(ex)
+                }
+            }, 789);
+        
         }
     </script>
     
@@ -341,12 +356,46 @@
           if(USE_TW)  PushToast('你现在启用了TailwindCSS PlayCDN!', 'warn');
           else PushToast('你禁用了PlayCDN');
 
-          if(!_ua.includes('hrome') && _ua.includes('afari')) PushToast('=====<br>你的浏览器兼容性好像有问题，<br>显示效果可能存在异常！<br>', 'bg-rose-300', 810, 95637)
+          if(!_ua.includes('hrome') && _ua.includes('afari')) PushToast('=====<br>你的浏览器兼容性好像有问题，<br>显示效果可能存在异常！<br>', 'bg-rose-300', 810, 95637);
+
+          // tailwind.config = {
+          //   darkMode: 'class'
+          // };
         }, 1000);
 
         const GetAllHistoriesSaved = () => {
-          navigator.clipboard.writeText(localStorage.History);
+            navigator.clipboard.writeText(localStorage.History);
         }
+        let listeners = {
+            dark: (mediaQueryList ) => {
+                if(mediaQueryList.matches && (localStorage.followDark ?? 'false') == 'true'){
+                    document.documentElement.classList.add('dark');
+                    localStorage.theme = 'dark';
+                    console.log(0);
+                }
+            },
+            light: (mediaQueryList) => {
+                if(mediaQueryList.matches){
+                    try {
+                        document.documentElement.classList.remove('dark');
+                    } catch (ex) {
+                        
+                    }
+                    localStorage.theme = 'light';
+                    console.log(1);
+                }
+            },
+            enic: () => {
+                if((localStorage.followDark ?? 'false') == 'true'){
+                    document.documentElement.classList.add('dark');
+                    localStorage.theme = 'dark';
+                    console.log(0);
+                }
+            }
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', listeners.dark);
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', listeners.light);
+        if(window.matchMedia('(prefers-color-scheme: dark)').matches) listeners.enic(); 
     </script>
   </body>
 </html>

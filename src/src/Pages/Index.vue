@@ -110,8 +110,6 @@ export default{
 
         if(localStorage.ground)
             this.groundOpacityPreference = parseInt(localStorage.ground);
-        
-        
     },
     data(){
         return {

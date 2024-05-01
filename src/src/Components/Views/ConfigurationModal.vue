@@ -111,6 +111,13 @@ export default{
                     stat: parseInt(localStorage.ground ?? 50),
                     type: 'input'
                 },
+                followDark: {
+                    name: '暗色跟随',
+                    key: 'followDark',
+                    desc: '控制是否在浏览器为深色模式时候仍然启用亮色主题。 该设置需要刷新页面.',
+                    stat: (localStorage.followDark == 'true'),
+                    needRefresh: true,
+                },
                 idIgnorePlaceholder: {
                     name: '忽略占位',
                     key: 'idIgnorePlaceholder',
@@ -149,8 +156,16 @@ export default{
                     break;
 
                 case 'groundOpacity':
-                    
-                    this.G(this.ground)
+                    this.G(this.ground);
+                    break;
+
+                case 'followDark':
+                    PushToast('似乎这是需要刷新生效的设置! 将在后3秒内刷新页面... ', 'warn');
+                    this.global.followDark.stat = val;
+                    localStorage.followDark = `${val}`;
+                    this.changedNeedRefresh = true;
+                    Three();
+                    break;
 
                 default: 
                     return this.Config;
