@@ -12,11 +12,12 @@
             <p class="modal-item">内置Segoe Fluent Icon, 需要调用图标请<a class="a modala " style="pointer-events: all;" href="https://learn.microsoft.com/zh-cn/windows/apps/design/style/segoe-fluent-icons-font#pua-e700-e900" target="_blank">查看PUA映射表</a></p>
             <p class="modal-item">主笔: Feiron Iguista</p>
             <p class="modal-item">开源协议: MIT, Authorized</p>
-            <p class="modal-item">源代码/开源项目使用: </p>
+            <p class="modal-item">源代码/开源项目使用: <span class="modalsx text-xs">sorted by the date included</span></p>
             <ul class="scale-95 modal-content">
-                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://github.com/niklasvh/html2canvas" target="_blank">HTML2Canvas</a></li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://vuejs.org" target="_blank">Vue.js</a></li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://tailwindcss.com" target="_blank">TailwindCSS</a></li>
+                <li class="modal-content">- Followed Microsoft's Rules to use <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://learn.microsoft.com/zh-cn/windows/apps/design/style/segoe-fluent-icons-font#how-do-i-get-this-font" target="_blank">Segoe Fluent Icons</a></li>
+                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://github.com/niklasvh/html2canvas" target="_blank">HTML2Canvas</a></li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://macyjs.com/" target="_blank">Macy.js</a></li>
                 <li class="modal-xxx mt-3 opacity-80 italic">还有...</li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://min.corona.studio" target="_blank">日冕工作室最小官网 (搬了点组件来用hhh)</a></li>
