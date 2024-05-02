@@ -87,6 +87,8 @@ export default{
     },
     data(){
         return{
+            isEditingMasonry: false,
+            masonryCols: 1,
             ConfModal: '<ConfigurationModal class="no-flush" />',
             tips: `
             点击左下角的问号「?」来查看输入框提示.
@@ -136,8 +138,8 @@ export default{
             }, 1234);
         },
 
-        Edit(o, i){ 
-            this.EditX(o, i);
+        Edit(o, i, r){ 
+            this.EditX(o, i, r);
             this.tempOrigin = this.tempObject; // unknown priority
         },
         moveForward(){
@@ -278,7 +280,7 @@ export default{
             return;
         },
         addSpan(){
-            if(this.tempObject.id == null){
+            if(this.tempObject.id == null && localStorage.masonry != 'true'){
                 PushToast('未选中修改目标! ', 'warn');
                 return;
             }
@@ -289,11 +291,11 @@ export default{
             }
             else  {
                 this.tempObject.span ++;
-                this.Edit(this.Get(this.tempOrigin), this.tempObject);
+                this.Edit(this.Get(this.tempOrigin), this.tempObject, true);
             }
         },
         remSpan(){
-            if(this.tempObject.id == null){
+            if(this.tempObject.id == null && localStorage.masonry != 'true'){
                 PushToast('未选中修改目标! ', 'warn');
                 return;
             }
@@ -304,7 +306,7 @@ export default{
             }
             else  {
                 this.tempObject.span --;
-                this.Edit(this.Get(this.tempOrigin), this.tempObject);
+                this.Edit(this.Get(this.tempOrigin), this.tempObject, true);
             }
         },
         startDrag(){

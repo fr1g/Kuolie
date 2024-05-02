@@ -17,6 +17,7 @@
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://github.com/niklasvh/html2canvas" target="_blank">HTML2Canvas</a></li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://vuejs.org" target="_blank">Vue.js</a></li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://tailwindcss.com" target="_blank">TailwindCSS</a></li>
+                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://macyjs.com/" target="_blank">Macy.js</a></li>
                 <li class="modal-xxx mt-3 opacity-80 italic">还有...</li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://min.corona.studio" target="_blank">日冕工作室最小官网 (搬了点组件来用hhh)</a></li>
             </ul>
@@ -29,8 +30,8 @@
                         <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
                         <!-- <li class="modalx"> - </li> -->
                         <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://stackoverflow.com/questions/74980740/html2canvas-shifting-text-downwards" target="_blank">Mushood Hanif's hint</a> </li>
-                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
-                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li>
+                        <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://jessieji.com/2019/pure-css-masonry" target="_blank">jessieji's spotlight</a> </li>
+                        <!-- <li class="modalx"> - <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://www.cnblogs.com/shenjp/p/10670787.html" target="_blank">sjpqy's simplified solution</a> </li> -->
                     </ul>
                 </div>
             </details>

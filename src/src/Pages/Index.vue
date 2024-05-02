@@ -195,11 +195,12 @@ export default{
             this.$refs.c.Remove(id);
             this.SwitchModal();
             this.$refs.input.chkNull();
-        },
-        Upd(place, x){ 
-            this.$refs.c.Modify(place, x); 
+        },   
+        Upd(...args){ 
+            let aa = this.$refs.c.Modify(...args); 
             this.$forceUpdate(); 
             this.$refs.c.$forceUpdate(); 
+            return aa;
         },
         Move(item, to){
             return this.$refs.c.MoveTo(item, to);
@@ -261,6 +262,9 @@ export default{
         ChangeGroundOpacity(x){
             this.groundOpacityPreference = parseInt(x ?? 50) ?? 50;
             localStorage.ground = this.groundOpacityPreference;
+        },
+        ChangeMasonryMode(bol){
+
         },
         StateHasChanged(){
             this.$forceUpdate();

@@ -32,6 +32,7 @@
                          :isPlaceHolder="s.isPlaceHolder"
                          :self="s"
                          :showingBlockId="Config.squareId.stat"
+                         :isMasonry="Config.waterfall.stat"
                 />
                 <!-- need minimize -->
             </div>
@@ -40,7 +41,7 @@
 </template>
 <script>
 import TextBox from './TextBox.vue';
-import { Macy } from 'macy';
+import Macy from 'macy';
 
 export default{
     name: 'Content',
@@ -67,12 +68,9 @@ export default{
         this.$nextTick(() => {
             this.UpdateSorting();
         });  
-        if(this.Config.waterfall.stat){
-            this.macy = Macy({
-                container: document.getElementById('bs'),
-
-            });
-        }
+        setInterval(() => {
+            this.InitMacy();
+        }, 5000);
     },
     provide(){
         return{
@@ -92,12 +90,13 @@ export default{
             regFrame: /<iframe[^>]*?>[^]*?<\/iframe>/gi,
 
             macy: null,
-            ignorePID: false,
+            cols: 4,
+            ignorePID: (localStorage.ignorePID == 'true'),
             Config: {
                 waterfall: {
                     name: '瀑布流*',
                     key: 'waterfall',
-                    stat: (localStorage.mansonry ?? 'false') == 'true',
+                    stat: (localStorage.masonry ?? 'false') == 'true',
                 },                
                 fill: {
                     name: '填满',
@@ -213,6 +212,18 @@ export default{
 
                 case 'waterfall':
                     this.Config.waterfall.stat = val;
+                    localStorage.masonry = val;
+                    console.log(val)
+                    if(val == true)
+                        PushToast('实验性功能！每五秒钟会刷新一次布局，<br>如果实在出现了块重叠，请使用占位方块辅助。', 'bg-indigo-300', 3, 5637);
+                    else{
+                        this.Save();
+                        PushToast('由于可能界面出现紊乱，即将在三秒内刷新页面。', 'bg-indigo-300', 3, 5637);
+                        setTimeout(() => {
+                            Three();
+                        }, 1234);
+                    }
+                    
                     break;
 
                 case 'fill':
@@ -231,6 +242,7 @@ export default{
                     return this.Config;
             }
             this.$forceUpdate();
+            this.InitMacy();
         },
         Create(placeholder = false){
             let prepare = this.Prepare();
@@ -245,6 +257,7 @@ export default{
                 document.getElementsByTagName('textarea')[0].focus();
                 Scroll(`TEXTBOX::${di}`);
             }, 123);   
+            this.InitMacy();
             return;
             
         },
@@ -268,21 +281,32 @@ export default{
         _delete(position){
             // this.TextBoxes = this.TextBoxes.filter(i => i.id != id); // !!!
             this.TextBoxes.splice(position, 1);
+            this.InitMacy();
         },
-        Modify(place, change = 'default'){ // ?????
+        Modify(place, change = 'default', changeCol = null){ // ?????
             if(change === 'default'){
                 console.error('Require ID!');
                 return;
-            }else if(change.id == null){
+            }
+            else if(this.Config.waterfall.stat && (changeCol ?? false)){
+                this.cols = change.span;
+                localStorage.masonryCols = this.cols;
+                this.InitMacy();
+                return this.cols;
+            }
+            else if(change.id == null){
                 PushToast('没有选中编辑项目.<br>为此, 新块已添加.', 'bg-sky-300');
                 return;
-            }else{
+            }
+            else{
                 this.UpdateSorting();
                 this.TextBoxes[this.GetPosition(change)]
-                let _tmp = this.TextBoxes[place]; // !!!
-                this.TextBoxes[this.TextBoxes.indexOf(_tmp)] = change;
+                let _tmp = this.TextBoxes[place], _change = change; // !!!
+                if(this.Config.waterfall.stat) _change.span = this.TextBoxes[place].span;
+                this.TextBoxes[this.TextBoxes.indexOf(_tmp)] = _change;
                 this.$forceUpdate();
             }
+            this.InitMacy();
             Scroll(`TEXTBOX::${change.id}`);
         },
         Save(){
@@ -296,6 +320,7 @@ export default{
                     localStorage.setItem('kuolieJson', JSON.stringify(this.TextBoxes));
                 }
             PushToast('保存完毕.');
+            this.InitMacy();
         },
         Read(){
             let _yield = '未能找到记录: ';
@@ -309,6 +334,7 @@ export default{
                 this.TextBoxes = this.defaultTextBoxes;
                 PushToast('载入默认组...');
             }, 567);
+            this.InitMacy();
         },
         GetPosition(item = null){
             if (item === null) return this.TextBoxes.length;
@@ -322,7 +348,7 @@ export default{
             this.TextBoxes.filter((x)=>{ x != null });
             for(let ind = 0; ind < this.TextBoxes.length; ind++)
                 if(!this.TextBoxes[ind].isPlaceHolder) this.TextBoxes[ind].id = this.separate ++;
-            
+            this.InitMacy(); // can be simplified here
             this.$forceUpdate();
         },
         MoveTo(from, to){ // obj, position, return updated id.
@@ -336,7 +362,20 @@ export default{
             this.ExchangeTemp = {};
             this.UpdateSorting();
             return to;
-        }
+        },
+        InitMacy(){
+            if(this.Config.waterfall.stat){
+                this.macy = new Macy({
+                    container: '#bs',
+                    trueOrder: true,
+                    columns: parseInt(`${localStorage.masonryCols ?? this.cols}`),
+                    margin: 3
+
+                });
+            }else this.macy = null;
+            this.$forceUpdate(); // ???
+
+        },
     },
     watch: {
         TextBoxes(){

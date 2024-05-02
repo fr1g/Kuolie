@@ -1,6 +1,6 @@
 <template>
     <div :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))"
-        :class="`   basicLooking? p-2.5 rounded-lg shadow transition-all hover:shadow-md active:shadow-lg opacity-95 hover:opacity-80 active:opacity-70
+        :class="`   basicLooking? p-2.5 ?${this.isMasonry ? 'm-2' : ''} rounded-lg shadow transition-all hover:shadow-md active:shadow-lg opacity-95 hover:opacity-80 active:opacity-70
                     advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._(1)}-900 bg-${this._(1)}-100
                     ${this._(1).includes('EXT') ? 'bg-opacity-20' : ''} 
                     forExtraFunctions? ${this.isPlaceHolder ? 'grow col-span-auto justify-items-center justify-center items-center  grid' : ''}
@@ -29,7 +29,7 @@
 
 export default{
     name: 'TextBox',
-    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self', 'showingBlockId', 'displayId'],
+    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self', 'showingBlockId', 'displayId', 'isMasonry'],
     inject: {
         _: '_',
         __: '__',
