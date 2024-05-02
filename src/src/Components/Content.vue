@@ -12,8 +12,14 @@
                     {{ this.watermark }}
                 </div>
             </h1>
-            <div ref="texts" :style="`--id-show: ${this.Config.squareId.stat ? 'block' : 'hidden'};`" 
-                :class="`grid grid-cols-12 gap-2.5 transition-all   ${Config.flowDense.stat ? 'grid-flow-dense' : ''}  ${Config.colsAuto.stat ? 'auto-cols-auto' : ''}  ${Config.rowsAuto.stat ? 'auto-rows-auto' : ''}  `">
+            <div id="bs" ref="texts" :style="`--id-show: ${this.Config.squareId.stat ? 'block' : 'hidden'};`" 
+                :class="` gap-2.5 transition-all 
+                    ${Config.waterfall.stat ? '' : 'grid grid-cols-12 '}
+                    ${Config.flowDense.stat ? 'grid-flow-dense' : ''} 
+                    ${Config.colsAuto.stat ? 'auto-cols-auto' : ''}  
+                    ${Config.rowsAuto.stat ? 'auto-rows-auto' : ''}  
+                    
+                    `">
                 <TextBox v-for="s of this.TextBoxes"
                          :x="s.x"   
                          :key="GetPosition(s)" 
@@ -22,7 +28,7 @@
                          :offset="Config.waterfall.stat ? s.offset : -1" 
                          :span="s.span" 
                          :inside="s.content"
-                         :fill="Config.fill.stat"
+                         :fill="Config.waterfall.stat ? false : Config.fill.stat"
                          :isPlaceHolder="s.isPlaceHolder"
                          :self="s"
                          :showingBlockId="Config.squareId.stat"
@@ -34,6 +40,7 @@
 </template>
 <script>
 import TextBox from './TextBox.vue';
+import { Macy } from 'macy';
 
 export default{
     name: 'Content',
@@ -41,7 +48,7 @@ export default{
     components: {
         TextBox,
     },
-    mounted(){
+    mounted(){ 
         this.ignorePID = localStorage.ignorePID == 'true';
         window.addEventListener('blur', () => {
             PushToast('正在保存');
@@ -60,6 +67,12 @@ export default{
         this.$nextTick(() => {
             this.UpdateSorting();
         });  
+        if(this.Config.waterfall.stat){
+            this.macy = Macy({
+                container: document.getElementById('bs'),
+
+            });
+        }
     },
     provide(){
         return{
@@ -78,12 +91,13 @@ export default{
             reg: /<script[^>]*?>[^]*?<\/script>/gi,
             regFrame: /<iframe[^>]*?>[^]*?<\/iframe>/gi,
 
+            macy: null,
             ignorePID: false,
             Config: {
                 waterfall: {
                     name: '瀑布流*',
                     key: 'waterfall',
-                    stat: false,
+                    stat: (localStorage.mansonry ?? 'false') == 'true',
                 },                
                 fill: {
                     name: '填满',
