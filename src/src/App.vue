@@ -34,7 +34,7 @@ export default{
             }
             document.body.classList.replace(_tmp, `bg-${this.GlobalColorName}-100`);
 
-            if(name.includes('&') && ((localStorage.usePlayCDN ?? 'false') == 'false')) setTimeout(() => {
+            if((name ?? 'emerald').includes('&') && ((localStorage.usePlayCDN ?? 'false') == 'false')) setTimeout(() => {
                 PushToast('使用扩展颜色需要启用Tailwind PlayCDN，请前往设置\uf8b0 启用。', 'bg-orange-400', 100, 3690);
             }, 678);
         },
