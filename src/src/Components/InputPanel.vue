@@ -263,7 +263,7 @@ export default{
         handleKey(e, isRelease = false){
             this.key = e.code.toLowerCase();
             if(window.location.href.includes('#debug')) console.log('handleKey: ' + this.key + '; isRelease: ' + isRelease);
-            if(e.includes('shift')) if(isRelease) this.shifting = true; else this.shifting = false;
+            if(this.key.includes('shift')) if(isRelease) this.shifting = true; else this.shifting = false;
         },
         textAreaFocus(e){
 
