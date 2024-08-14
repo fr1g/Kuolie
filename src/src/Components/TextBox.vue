@@ -45,7 +45,7 @@ export default{
             reg: /<script[^>]*?>[^]*?<\/script>/gi,
             regFrame: /<iframe[^>]*?>[^]*?<\/iframe>/gi,
             useIconReg: /%=.{4}%/g,
-            useSpacerReg: /%=(0|-?[1-9]\d*)%/g,
+            useSpacerReg: /%=([0-9]\d*)%/g,
             ignorePID: false
         }
     },
