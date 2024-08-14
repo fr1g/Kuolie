@@ -63,11 +63,11 @@ export default{
             
             let founds = x.match(this.useIconReg);
             let tries = (founds ?? []).length, tmp = x;
-            if(tries == 0 || tries == NaN) return x;
-            for(let i = 0; i < tries; i++){
-                let iconText = founds[i];
-                tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
-            }
+            if(!(tries == 0 || tries == NaN))
+                for(let i = 0; i < tries; i++){
+                    let iconText = founds[i];
+                    tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
+                }
 //
             founds = x.match(this.useSpacerReg);
             tries = (founds ?? []).length;
