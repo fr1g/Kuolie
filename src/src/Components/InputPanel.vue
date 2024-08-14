@@ -112,6 +112,7 @@ export default{
             otnamePause: false,
             key: '',
             prepare: '',
+            shifting: false,
         };
     },
     methods: {
@@ -260,7 +261,7 @@ export default{
         },
         handleKey(e){
             this.key = e.code.toLowerCase();
-            // console.log(this.key);
+            if(window.location.href.includes('#debug')) console.log('handleKey' + this.key);
         },
         textAreaFocus(e){
 
