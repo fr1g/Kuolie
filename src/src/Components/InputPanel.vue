@@ -114,6 +114,7 @@ export default{
             key: '',
             prepare: '',
             shifting: false,
+            currKeyEvent: null,
         };
     },
     methods: {
@@ -255,15 +256,16 @@ export default{
                     e.target.selectionEnd = dir;
                 }
                 else if(e.data == null){
-                    if(this.key == 'enter') if(!this.shifting) this.$refs.input.value = this.appendAtInput(`<br/>`);
+                    if(this.key == 'enter') if(!this.currKeyEvent.shiftKey) this.$refs.input.value = this.appendAtInput(`<br/>`);
                 }
             }
             this.textAreaChanged();
         },
         handleKey(e, isRelease = false){
             this.key = e.code.toLowerCase();
+            this.currKeyEvent = e;
             if(window.location.href.includes('#debug')) console.log('handleKey: ' + this.key + '; isRelease: ' + isRelease);
-            if(this.key.includes('shift')) if(isRelease) this.shifting = true; else this.shifting = false;
+            if(this.key.includes('shift')) this.shifting = isRelease;
         },
         textAreaFocus(e){
 
