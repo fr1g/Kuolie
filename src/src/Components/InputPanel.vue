@@ -80,6 +80,7 @@ export default{
         window.addEventListener('touchmove', (e) => {this.resize(e)});
 
         document.getElementsByTagName('textarea')[0].addEventListener('keydown', (e) => {this.handleKey(e)});
+        document.getElementsByTagName('textarea')[0].addEventListener('keyup', (e) => {this.handleKey(e, true)});
 
         this.dragBarHeight = Cont.offsetHeight;
         // this.Add();
@@ -254,14 +255,15 @@ export default{
                     e.target.selectionEnd = dir;
                 }
                 else if(e.data == null){
-                    if(this.key == 'enter') this.$refs.input.value = this.appendAtInput(`<br/>`);
+                    if(this.key == 'enter') if(!this.shifting) this.$refs.input.value = this.appendAtInput(`<br/>`);
                 }
             }
             this.textAreaChanged();
         },
-        handleKey(e){
+        handleKey(e, isRelease = false){
             this.key = e.code.toLowerCase();
-            if(window.location.href.includes('#debug')) console.log('handleKey' + this.key);
+            if(window.location.href.includes('#debug')) console.log('handleKey: ' + this.key + '; isRelease: ' + isRelease);
+            if(e.includes('shift')) if(isRelease) this.shifting = true; else this.shifting = false;
         },
         textAreaFocus(e){
 
