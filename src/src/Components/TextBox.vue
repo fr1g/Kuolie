@@ -59,13 +59,15 @@ export default{
     },
     methods: {
         ApplyIcon(x){
-            let founds = x.match(/%=/g);
+            let founds = x.match(this.useIconReg);
+            // let founds = x.match(/%=/g);
             console.log(founds);
             // let tries = (founds ?? []).length / 2, tmp = x;
             let tries = (founds ?? []).length, tmp = x;
             if(tries == 0 || tries == NaN) return x;
             for(let i = 0; i < tries; i++){
-                let iconText = founds[i].slice( founds[i].search(this.useIconReg), founds[i].search(this.useIconReg) + 7 + 1);
+                // let iconText = x.slice( founds[i].search(this.useIconReg), x.search(this.useIconReg) + 7 + 1);
+                let iconText = founds[i];
                 tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
                 console.log('applied icon name: ' + iconText);
             }
