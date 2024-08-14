@@ -181,8 +181,8 @@ export default{
         submit(){
             this.Edit(this.Get(this.tempOrigin), this.tempObject);
         },
-        appendAtInput(item){
-            return `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(this.$refs.input.selectionEnd)}`;
+        appendAtInput(item, plus = null){
+            return `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(plus ?? this.$refs.input.selectionEnd)}`;
         },
         textAreaAutoTag(e){
             if(window.location.href.includes('#debug')) console.log(e);
@@ -256,7 +256,7 @@ export default{
                     e.target.selectionEnd = dir;
                 }
                 else if(e.data == null){
-                    if(this.key == 'enter') if(!this.currKeyEvent.shiftKey) this.$refs.input.value = this.appendAtInput(`<br/>`);
+                    if(this.key == 'enter') if(!this.currKeyEvent.shiftKey) this.$refs.input.value = this.appendAtInput(`<br/>`, 5);
                 }
             }
             this.textAreaChanged();
