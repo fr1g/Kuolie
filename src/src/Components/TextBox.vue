@@ -45,6 +45,7 @@ export default{
             reg: /<script[^>]*?>[^]*?<\/script>/gi,
             regFrame: /<iframe[^>]*?>[^]*?<\/iframe>/gi,
             useIconReg: /%=.{4}%/g,
+            useSpacerReg: /%=(0|-?[1-9]\d*)%/g,
             ignorePID: false
         }
     },
@@ -59,6 +60,7 @@ export default{
     },
     methods: {
         ApplyIcon(x){
+            
             let founds = x.match(this.useIconReg);
             let tries = (founds ?? []).length, tmp = x;
             if(tries == 0 || tries == NaN) return x;
@@ -66,6 +68,31 @@ export default{
                 let iconText = founds[i];
                 tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
             }
+//
+            founds = x.match(this.useSpacerReg);
+            tries = (founds ?? []).length;
+            if(tries != 0 && tries != NaN){
+                for(let i = 0; i < tries; i++){
+                    let iconText = founds[i].replace('%=', '').replace('%', '');
+                    let spacesCount;
+                    try{
+                        spacesCount = parseInt(iconText);
+                    }
+                    catch(ex){
+                        spacesCount = 0;
+                    }
+                    if(spacesCount == 0) continue;
+                    let count = 0, real = '';
+                    while(count < spacesCount){
+                        real += '&nbsp;';
+                        count++;
+                    }
+                    tmp = tmp.replaceAll(iconText, real);
+                    
+                }
+            }
+            
+//
             return tmp;
         },
         Renew(){
