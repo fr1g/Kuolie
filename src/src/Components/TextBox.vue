@@ -87,7 +87,7 @@ export default{
                         real += '&nbsp;';
                         count++;
                     }
-                    tmp = tmp.replaceAll(iconText, real);
+                    tmp = tmp.replaceAll(founds[i], real);
                     
                 }
             }
