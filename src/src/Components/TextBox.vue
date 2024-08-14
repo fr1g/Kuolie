@@ -64,6 +64,7 @@ export default{
             for(let i = 0; i <= tries; i++){
                 let iconText = x.slice(x.search(this.useIconReg), x.search(this.useIconReg) + 7 + 1);
                 tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
+                console.log('applied icon name: ' + iconText);
             }
             return tmp;
         },
