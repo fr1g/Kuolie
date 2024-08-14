@@ -59,9 +59,9 @@ export default{
     },
     methods: {
         ApplyIcon(x){
-            let founds = (x.match(/%=/g);
+            let founds = x.match(/%=/g);
             console.log(founds);
-            let tries = (founds ?? []).length / 2), tmp = x;
+            let tries = (founds ?? []).length / 2, tmp = x;
             if(tries == 0 || tries == NaN) return x;
             for(let i = 0; i <= tries; i++){
                 let iconText = x.slice(x.search(this.useIconReg), x.search(this.useIconReg) + 7 + 1);
