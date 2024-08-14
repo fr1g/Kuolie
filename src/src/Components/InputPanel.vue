@@ -182,6 +182,7 @@ export default{
             return `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(this.$refs.input.selectionEnd)}`;
         },
         textAreaAutoTag(e){
+            if(window.location.href.includes('#debug')) console.log(e);
             if(this.ot){ // opened
                 if(e.data == '<') return;
                 else if(e.data == '='){
