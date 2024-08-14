@@ -59,8 +59,10 @@ export default{
     },
     methods: {
         ApplyIcon(x){
-            let tries = (x.match(/%=/g) ?? -1).length / 2, tmp = x;
-            if(tries == NaN) return x;
+            let founds = (x.match(/%=/g);
+            console.log(founds);
+            let tries = (founds ?? []).length / 2), tmp = x;
+            if(tries == 0 || tries == NaN) return x;
             for(let i = 0; i <= tries; i++){
                 let iconText = x.slice(x.search(this.useIconReg), x.search(this.useIconReg) + 7 + 1);
                 tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
