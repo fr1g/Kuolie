@@ -8,6 +8,7 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
+    "@cantoo/html2canvas": "^1.5.9",
     "html2canvas": "^1.4.1",
     "macy": "^2.5.1",
     "tailwindcss": "^3.4.3",

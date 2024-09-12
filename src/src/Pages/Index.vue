@@ -43,7 +43,7 @@
 </template>
 <script>
 import Vue from 'vue';
-import html2canvas from 'html2canvas'
+import html2canvas from '@cantoo/html2canvas'
 
 import InputPanel from '@/Components/InputPanel.vue';
 import ColorChoose from '../Components/ColorChoose.vue';

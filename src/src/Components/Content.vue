@@ -1,7 +1,8 @@
 <template>
     <div class=" w-full m-auto p-1.5 md:p-5 grid justify-items-center transition-all" ref="rend" id="ROUND">
         <div :class="`  bg-${this._()}-200 text-${this._(1)}-800 relative
-                    rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5 grid grid-cols-1 gap-3`" id="CORAL" style="max-width: 1955px;">
+                    rounded-lg shadow-md transition w-5/6 p-5 hover:shadow-lg m-5 grid grid-cols-1 gap-3`" id="CORAL" 
+                    style="max-width: 1955px;">
           
             <h1 class="px-1.5 flex w-full flex-wrap"  style="height: 36.5px;">
                 <div class="grow">
