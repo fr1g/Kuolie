@@ -18,6 +18,7 @@
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://tailwindcss.com" target="_blank">TailwindCSS</a></li>
                 <li class="modal-content">- Followed Microsoft's Rules to use <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://learn.microsoft.com/zh-cn/windows/apps/design/style/segoe-fluent-icons-font#how-do-i-get-this-font" target="_blank">Segoe Fluent Icons</a></li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://github.com/niklasvh/html2canvas" target="_blank">HTML2Canvas</a></li>
+                <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://github.com/cantoo-scribe/html2canvas" target="_blank">HTML2Canvas Cantoo Fork</a></li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://macyjs.com/" target="_blank">Macy.js</a></li>
                 <li class="modal-xxx mt-3 opacity-80 italic">还有...</li>
                 <li class="modal-content">- <a class="opacity-90 modal-content hover:opacity-50 transition active:opacity-70 a" href="https://min.corona.studio" target="_blank">日冕工作室最小官网 (搬了点组件来用hhh)</a></li>
