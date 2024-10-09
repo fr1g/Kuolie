@@ -19,7 +19,7 @@
             <div :class="`block bg-${this._()}-50 bg-opacity-50 w-full min-h-screen m-auto relative transition pb-72 `" id="draw-area" :style="`opacity: ${this.modal ? this.opa / 100 : '1'}; --tw-bg-opacity: ${this.groundOpacityPreference / 100}`">
                 <Content ref="c" />
             </div>
-            <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition fixed right-1.5 top-1.5 bottom-1.5 left-auto p-1.5 shadow rounded-lg bg-neutral-100 dark:bg-neutral-700 h-full max-h-screen overflow-x-hidden overflow-y-auto">
+            <div id="palette" :style="`opacity: ${this.opa / 100};`" class="transition fixed right-1.5 top-1.5 bottom-1.5 left-auto p-1.5? shadow rounded-lg bg-neutral-100 dark:bg-neutral-700 h-full max-h-screen overflow-x-hidden overflow-y-auto">
                 <ColorChoose />
             </div>
             <div :style="`opacity: ${this.opa / 100}; z-index: 998`" class="transition fixed w-full bg-zinc-200 dark:bg-zinc-800 bottom-0 left-0 right-0 min-h-fit shadow-lg drop-shadow-lg" 
@@ -57,6 +57,7 @@ import ConfirmDeletionModal from '../Components/Views/ConfirmDeletionModal.vue';
 import AboutInfoModal from '../Components/Views/AboutInfoModal.vue';
 import FirstTryInfoModal from '../Components/Views/FirstTryInfoModal.vue';
 import HelpTipsModal from '../Components/Views/HelpTipsModal.vue';
+import ColorSuperModeModal from '../Components/Views/ColorSuperModeModal.vue';
 
 
 export default{
@@ -69,7 +70,7 @@ export default{
             // - Chobits' answer at: https://segmentfault.com/q/1010000015734369/a-1020000015737231
             // - tptech & bhenderson's answer at: https://github.com/vitejs/vite/discussions/4158#discussioncomment-1282397
             // - sjpqy's simplified solution at: https://www.cnblogs.com/shenjp/p/10670787.html
-            // these helped this modal got constructed, but never will I prefer to try to make this modal again.
+            // these helped this modal got constructed, but never will I prefer to try to make this modal again :(
             props: { assembly: String },
             render(h) {
                 const com = Vue.extend({
@@ -77,7 +78,7 @@ export default{
                     template: `<div class="modal-content select-none text-lg">${this.assembly}</div>`,
                     components: {
                         Icon, Press, 
-                        ConfigurationModal, ConfirmDeletionModal, AboutInfoModal, FirstTryInfoModal, HelpTipsModal
+                        ConfigurationModal, ConfirmDeletionModal, AboutInfoModal, FirstTryInfoModal, HelpTipsModal, ColorSuperModeModal
                     },
                 });
                 return h(com, {});

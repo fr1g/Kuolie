@@ -4,18 +4,18 @@
     </div>
 </template>
 <script>
-
+import KConfig from './kuolie.config.js';
 
 export default{
     name: 'App',
-    mounted(){
-        // this.SetColorName();
+    mounted(){ 
+        // this.SetColorName(); 
     },
     data(){
         return {
             GlobalColorName: ''
         };
-    },
+    }, 
     methods: {
         GetColorName(n = 0){
             localStorage.setItem('accent', window.getComputedStyle(document.body).getPropertyValue('background-color'));
