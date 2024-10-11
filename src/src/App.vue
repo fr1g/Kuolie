@@ -42,8 +42,13 @@ export default{
             
             if(!saved.includes('&')) return saved;
             else {
-                if(keep) return ` EXT ${part == 0 ? 'bg-' : 'text-'}${saved.split('&')[part]}`;
-                else return `${saved.split('&')[part]} EXT `;
+                let parts = saved.split('&');
+                if(parts.length === 2)
+                    if(keep) return ` EXT ${part == 0 ? 'bg-' : 'text-'}${parts[part]}`;
+                    else return `${parts[part]} EXT `;
+                else{
+                    // deal with 3 parts
+                }
             }
 
         }

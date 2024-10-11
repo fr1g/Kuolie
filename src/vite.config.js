@@ -7,7 +7,7 @@ import { createVuePlugin } from '@vitejs/plugin-vue2' // ?
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  resolve: { 
+  resolve: {  
     alias: {
       vue: 'vue/dist/vue.esm.js',
       '@': fileURLToPath(new URL('./src', import.meta.url))
