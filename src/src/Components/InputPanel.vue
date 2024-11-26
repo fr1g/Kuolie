@@ -181,8 +181,27 @@ export default{
         submit(){
             this.Edit(this.Get(this.tempOrigin), this.tempObject);
         },
-        appendAtInput(item, plus = null){
-            return `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(plus ?? this.$refs.input.selectionEnd)}`;
+        appendAtInput(item, plus = null, r = null){
+            // summary: this returns the new value that appended the value onto the cursor's location
+            let nx = `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(plus ?? this.$refs.input.selectionEnd)}`;
+            console.log(`
+vals: (
+real value: ${this.$refs.input.value};   
+
+selection start: ${this.$refs.input.selectionStart};  
+
+plus value: ${plus}, 
+
+selection end: ${this.$refs.input.selectionEnd}
+)
+
+first part: ${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}
+
+inserted: ${item}
+
+end part: ${this.$refs.input.value.slice(plus ?? this.$refs.input.selectionEnd)}
+            `);
+            return nx
         },
         textAreaAutoTag(e){
             if(window.location.href.includes('#debug')) console.log(e);
@@ -206,7 +225,6 @@ export default{
                 }else if(e.data == '>'){
                     if( e.target.value.slice(e.target.selectionStart - 2, e.target.selectionStart - 1) == '/') return;
                     if((this.otname.slice(0, 1) ?? '') == '/') return;
-                    console.log(this.otname)
                     let dir = e.target.selectionStart;
                     this.$refs.input.value = this.appendAtInput(`</${this.otname.replaceAll(' ', '')}>`);
                     e.target.selectionStart = dir;
@@ -256,7 +274,14 @@ export default{
                     e.target.selectionEnd = dir;
                 }
                 else if(e.data == null){
-                    if(this.key == 'enter') if(!this.currKeyEvent.shiftKey) this.$refs.input.value = this.appendAtInput(`<br/>`, 5);
+                    if(this.key == 'enter') 
+                        if(!this.currKeyEvent.shiftKey) 
+                            {
+                                let dir = e.target.selectionStart + 5;
+                                this.$refs.input.value = this.appendAtInput(`<br/>`);
+                                e.target.selectionStart = dir;
+                                e.target.selectionEnd = dir;
+                            }
                 }
             }
             this.textAreaChanged();
