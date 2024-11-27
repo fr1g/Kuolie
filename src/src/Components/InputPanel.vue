@@ -182,26 +182,11 @@ export default{
             this.Edit(this.Get(this.tempOrigin), this.tempObject);
         },
         appendAtInput(item, plus = null, r = null){
-            // summary: this returns the new value that appended the value onto the cursor's location
-            let nx = `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(plus ?? this.$refs.input.selectionEnd)}`;
-            console.log(`
-vals: (
-real value: ${this.$refs.input.value};   
-
-selection start: ${this.$refs.input.selectionStart};  
-
-plus value: ${plus}, 
-
-selection end: ${this.$refs.input.selectionEnd}
-)
-
-first part: ${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}
-
-inserted: ${item}
-
-end part: ${this.$refs.input.value.slice(plus ?? this.$refs.input.selectionEnd)}
-            `);
-            return nx
+            if(r != null) {
+                this.$refs.input.selectionEnd = r;
+                this.$refs.input.selectionStart = r;
+            }
+            return `${this.$refs.input.value.slice(0, this.$refs.input.selectionStart)}${item}${this.$refs.input.value.slice(plus ?? this.$refs.input.selectionEnd)}`;
         },
         textAreaAutoTag(e){
             if(window.location.href.includes('#debug')) console.log(e);
