@@ -14,13 +14,13 @@
                 </div>
             </h1>
             <div id="bs" ref="texts" :style="`--id-show: ${this.Config.squareId.stat ? 'block' : 'hidden'};`" 
-                :class="` gap-2.5 transition-all 
+                :class="` gap-3.5 transition-all 
                     ${Config.waterfall.stat ? '' : 'grid grid-cols-12 '}
                     ${Config.flowDense.stat ? 'grid-flow-dense' : ''} 
                     ${Config.colsAuto.stat ? 'auto-cols-auto' : ''}  
                     ${Config.rowsAuto.stat ? 'auto-rows-auto' : ''}  
                     
-                    `">
+                    `"> 
                 <TextBox v-for="s of this.TextBoxes"
                          :x="s.x"   
                          :key="GetPosition(s)" 
@@ -34,6 +34,7 @@
                          :self="s"
                          :showingBlockId="Config.squareId.stat"
                          :isMasonry="Config.waterfall.stat"
+                         :extendInfo="s.extendInfo"
                 />
                 <!-- need minimize -->
             </div>
@@ -43,6 +44,7 @@
 <script>
 import TextBox from './TextBox.vue';
 import Macy from 'macy';
+import ExtendInfo from './Classes/ExtendInfo';
 
 export default{
     name: 'Content',
@@ -194,6 +196,7 @@ export default{
                 offset: 0,
                 x: 0,
                 isPlaceHolder: false,
+                extendInfo: new ExtendInfo()
             };
         },
         PassFocus(b){return this.Focus(b);},
@@ -245,12 +248,22 @@ export default{
             this.$forceUpdate();
             this.InitMacy();
         },
-        Create(placeholder = false){
+        Create(extra = {placeholder: false, extendable: null}){
+
             let prepare = this.Prepare();
             this.UpdateSorting();
             prepare.id = this.TextBoxes.length; // ...
-            if(placeholder) prepare.isPlaceHolder = true;
+
+            if(extra.placeholder) prepare.isPlaceHolder = true;
+            if(extra.extendable) {
+                prepare.isExtendable = true;
+                prepare.extendInfo = extra.extendable;
+            }
+
+            // console.log(333, prepare)
+
             this.TextBoxes.push(prepare);
+
             this.UpdateSorting();
             setTimeout(() => {                
                 let di = this.GetPosition(prepare);
@@ -259,6 +272,7 @@ export default{
                 Scroll(`TEXTBOX::${di}`);
             }, 123);   
             this.InitMacy();
+
             return;
             
         },

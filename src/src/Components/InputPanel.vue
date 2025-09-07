@@ -42,7 +42,8 @@
             <Press overclass="text-lg bg-green-300" init-opacity="30" @click.native="Add()" id="NEWTEXTBOX">添加</Press> 
             <Press overclass="text-lg bg-red-300" init-opacity="30" @click.native="judgeDeletion">删除</Press> 
             <div class="w-5 bg-opacity-30"></div>
-            <Press overclass="text-lg bg-blue-300" init-opacity="30" @click.native="Add(true)">占位</Press> 
+            <Press overclass="text-lg bg-blue-300" init-opacity="30" @click.native="Add({placeholder: true, extendable: null})">占位</Press> 
+            <Press overclass="text-lg bg-blue-300" init-opacity="30" @click.native="addExtended('image')">图片</Press> 
         </div> 
     </div>
 </template>
@@ -50,6 +51,7 @@
 import Icon from './Icon.vue';
 import Press from './Press.vue';
 import ConfigurationModal from './Views/ConfigurationModal.vue';
+import ExtendInfo from './Classes/ExtendInfo';
  
 export default{
     name: 'InputPanel',
@@ -123,6 +125,9 @@ export default{
                 this.remakeTemp();
                 this.$forceUpdate();
             }
+        },
+        addExtended(type, args){
+            this.Add({placeholder: false, extendable: new ExtendInfo(true, type, args)});
         },
         changeEditing(item){
             this.tempObject = item;

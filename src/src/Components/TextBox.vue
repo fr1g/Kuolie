@@ -6,7 +6,8 @@
                     forExtraFunctions? ${this.isPlaceHolder ? 'grow col-span-auto justify-items-center justify-center items-center  grid' : ''}
                 `"
                 :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}`">
-        <div :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
+
+        <div v-if="!(this.extendInfo && this.extendInfo.isExtended)" :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
             <h3 :class="`text-${this._(1)}-700 font-semibold text-lg flex flex-wrap break-words`" >
                 <div style="line-height: .99rem !important;" :class="`opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5  ${this.showingBlockId ?? true ? 'block' : 'hidden'} `">
                     #{{ this.displayId }}
@@ -17,7 +18,7 @@
             <div class="text-sm break-words mt-1.5 pt-0.5" v-html="`${ApplyIcon(this.content.replaceAll(this.reg, this.replacement).replaceAll(this.regFrame, this.replacement.replace('脚本', 'iFrame')))}`" ref="contented"></div>
         </div>
     
-        <div :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
+        <div v-if="!(this.extendInfo && this.extendInfo.isExtended)" :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
             <div class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
                 #{{ this.ignorePID ? 'X' : this.id }} 占位{{ (this.span <= 1 ? '' : '格') }}{{ this.span <= 2 ? '' : '子' }}
             </div>
@@ -26,10 +27,11 @@
     </div>
 </template>
 <script>
+import ExtendInfo from './Classes/ExtendInfo';
 
 export default{
     name: 'TextBox',
-    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'self', 'showingBlockId', 'displayId', 'isMasonry'],
+    props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'extendInfo', 'self', 'showingBlockId', 'displayId', 'isMasonry'],
     inject: {
         _: '_',
         __: '__',
@@ -46,10 +48,18 @@ export default{
             regFrame: /<iframe[^>]*?>[^]*?<\/iframe>/gi,
             useIconReg: /%=.{4}%/g,
             useSpacerReg: /%=([0-9]\d*)%/g,
-            ignorePID: false
+            ignorePID: false,
+            thisBlockIsExtended: false,
+            usingBeneathTitle: false,
+            parsedDataContent: null
         }
     },
     mounted(){ // [] /【】
+        if(this.extendInfo && this.extendInfo.isExtended){
+            this.thisBlockIsExtended = true;
+            console.log(this.title)
+        }
+        // console.log(this.isExtendable, this.thisBlockIsExtended, this.title, this.id, this.isMasonry)
         this.ignorePID = localStorage.ignorePID == 'true';
         this.$nextTick(() => {
             this.Renew();

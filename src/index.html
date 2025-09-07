@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="kuolie.kami.su是开源项目Kuolie的官方demo站点.">
     <meta name="keywords" content="扩列,图文,文图,生成器,生成,排版,demo,实用工具,工具">
 
     <style>
-        *{
+        * {
             scrollbar-width: thin !important;
             scrollbar-color: rgba(173, 172, 172, 0.504);
-            
+
         }
     </style>
     <script>
-      console.clear();
+        console.clear();
         // judge to use tailwind or not.
         var USE_TW = null;
-        if(localStorage.usePlayCDN != undefined){
-            if(localStorage.usePlayCDN == 'true') USE_TW = true;
+        if (localStorage.usePlayCDN != undefined) {
+            if (localStorage.usePlayCDN == 'true') USE_TW = true;
             else USE_TW = false;
-        }else USE_TW = false;
+        } else USE_TW = false;
 
         let tmo;
         const Inject = () => {
@@ -31,7 +32,7 @@
             console.log('injected playCDN props')
         }
 
-        if(USE_TW){
+        if (USE_TW) {
             var twcdn = document.createElement('script'), twattr = document.createElement('style');
             twcdn.setAttribute('src', 'https://cdn.tailwindcss.com');
 
@@ -43,24 +44,24 @@
                     }
                 }
             `;
- 
+
             document.head.appendChild(twcdn);
             document.head.appendChild(twattr);
-            
+
             tmo = setInterval(() => {
-                try{
-                    if((localStorage.usePlayCDN ?? 'false') == 'false') clearInterval(tmo);
-                    if(tailwind != undefined && tailwind != null && tailwind.config != null && tailwind.config != undefined) Inject();
-                }catch(ex){
+                try {
+                    if ((localStorage.usePlayCDN ?? 'false') == 'false') clearInterval(tmo);
+                    if (tailwind != undefined && tailwind != null && tailwind.config != null && tailwind.config != undefined) Inject();
+                } catch (ex) {
                     console.log(ex)
                 }
             }, 789);
-        
+
         }
     </script>
-    
 
-<!-- 
+
+    <!-- 
     <style type="text/tailwindcss">
       @layer base{
          img {
@@ -69,41 +70,42 @@
       }
     </style> -->
     <style>
-      .NOCLICK{
-        pointer-events: none !important;
-      }
-      *{
-        scrollbar-color: auto #00000000;
-        /* scrollbar */
-      }
+        .NOCLICK {
+            pointer-events: none !important;
+        }
+
+        * {
+            scrollbar-color: auto #00000000;
+            /* scrollbar */
+        }
     </style>
-    <script >
-      var hasError = false;
-      window.addEventListener('load', () => {
-        if(hasError) PushToast('资源未完成加载! 或许应该刷新页面重试, <br>或检查自己的网络连接? ', 'bg-red-400 animation-pulse', 500, 114514);
-      });
-      const AccessList = [
-        '/favicon.png',
-        '/output.css',
-        '/sfi.ttf',
-      ];
+    <script>
+        var hasError = false;
+        window.addEventListener('load', () => {
+            if (hasError) PushToast('资源未完成加载! 或许应该刷新页面重试, <br>或检查自己的网络连接? ', 'bg-red-400 animation-pulse', 500, 114514);
+        });
+        const AccessList = [
+            '/favicon.png',
+            '/output.css',
+            '/sfi.ttf',
+        ];
 
-      for(let i of AccessList){
-        let xhr = new XMLHttpRequest();
-        // console.log(`Checking ${i} while before this total status is: ${hasError}`);
-        xhr.open('get', i);
-        xhr.onreadystatechange = () => {
-            // console.log(xhr.readyState + ' : ' + xhr.status)
-            if(xhr.readyState != 4) return;
-            if(xhr.status != 200) hasError = true;
-        };
-        xhr.send();
-      }
+        for (let i of AccessList) {
+            let xhr = new XMLHttpRequest();
+            // console.log(`Checking ${i} while before this total status is: ${hasError}`);
+            xhr.open('get', i);
+            xhr.onreadystatechange = () => {
+                // console.log(xhr.readyState + ' : ' + xhr.status)
+                if (xhr.readyState != 4) return;
+                if (xhr.status != 200) hasError = true;
+            };
+            xhr.send();
+        }
 
-      var _consoleWarn = console.warn, isTwLoaded = false;
-        console.warn = function(...data){
+        var _consoleWarn = console.warn, isTwLoaded = false;
+        console.warn = function (...data) {
             _consoleWarn(...data);
-            if(data.toString().includes('cdn.tailwindcss.com')) isTwLoaded = true;
+            if (data.toString().includes('cdn.tailwindcss.com')) isTwLoaded = true;
             else hasError = true;
         }
         const _ua = navigator.userAgent;
@@ -112,233 +114,256 @@
     <link rel="icon" href="./favicon.png" />
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="stylesheet" href="output.css" />
-    
+
     <style>
-      @font-face {
-        font-family: segoe-fluent;
-        src: url(sfi.ttf);
-      }
-      .use-icon{
-        font-family: system-ui, segoe-fluent, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      }
-      .modal-item > *{
-        pointer-events: none;
-      }
-      *{
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      textarea,.content{
-        user-select: auto;
-        -webkit-user-select: auto;
-      }
+        @font-face {
+            font-family: segoe-fluent;
+            src: url(sfi.ttf);
+        }
+
+        .use-icon {
+            font-family: segoe-fluent, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .modal-item>* {
+            pointer-events: none;
+        }
+
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        textarea,
+        .content {
+            user-select: auto;
+            -webkit-user-select: auto;
+        }
     </style>
     <title>Kuolie App</title>
-  </head>
-  <body class="bg-emerald-100">
+</head>
+
+<body class="bg-emerald-100">
     <div id="PASSER" class="w-0 h-0 hidden fixed left-0 top-0 -z-20">
-      <a id="LINKHANDLER" style="pointer-events: all !important;"></a>
-      <input id="VALUEPASS" value="NULL" name="VALUEPASS" />
+        <a id="LINKHANDLER" style="pointer-events: all !important;"></a>
+        <input id="VALUEPASS" value="NULL" name="VALUEPASS" />
     </div>
     <div id="app"></div>
     <!-- POPUP TOAST -->
     <div id="popup-container fixed taz select-none" style="pointer-events: none !important;">
-      <div class="PopUpToastArea transition fixed  taz m-2 text-left right-auto left-0 top-2 pb-3 " id="pa">
-          <!-- -->
-      </div>
-      <style>
-          .taz{z-index: 1000 !important;}
-          :root{
-              --toast-span: .5s;
-              --toast-pos: -3vw;
-              /* POPUP TOAST CONFIGURATION */
-          }
-          *{
-            font-family: system-ui, segoe-fluent, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-          }
-          .shine{
-              background-color: rgba(255, 244, 233, 0.8105141141919) !important;
-              position: relative;
-              
-          }
-          .shine::after{
-            content: '\e813  选中';
-            background: #efecec96;
-            border: 1px whitesmoke solid;
-            border-radius: .26rem;
-            box-shadow: 1px 1px 3px rgba(20, 20, 20, 0.176);
-            padding: .06rem .12rem;
-            font-family: system-ui, segoe-fluent, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            position: absolute;
-            left: auto;
-            right: -6px;
-            top: -1.39rem;
-            bottom: auto;
-            font-size: smaller;
-            font-weight: bold;
-            mix-blend-mode: difference;
-            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, display;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 150ms; /* aktual'no useless... scheiße! */
-            transform: scale(70%);
-          }
-      
-          img{
-            border-radius: .21rem;
-            box-shadow: 1px 1px 3px #06060666;
-          }
-          input{
-              outline: 0;
-          }
-          code{
-            pointer-events: none !important;
-          }
-      
-          .toast-initial{
-              transform: translateX(var(--toast-pos));
-              animation: cubic-bezier(0.075, 0.82, 0.165, 1) popupAnimate calc(var(--toast-span) * 3) forwards;
-              z-index: 1000 !important;
-          }
+        <div class="PopUpToastArea transition fixed  taz m-2 text-left right-auto left-0 top-2 pb-3 " id="pa">
+            <!-- -->
+        </div>
+        <style>
+            .taz {
+                z-index: 1000 !important;
+            }
 
-          .toast-leave{
-              animation: cubic-bezier(0.075, 0.82, 0.165, 1) popupLeave calc(var(--toast-span) * 0.1) forwards;
+            :root {
+                --toast-span: .5s;
+                --toast-pos: -3vw;
+                /* POPUP TOAST CONFIGURATION */
+            }
 
-          }
-      
-          @keyframes popupAnimate {
-              0%{
-                  transform: translateX(var(--toast-pos)) scale(80%);
-                  opacity: .6;
-              }
-              100%{
-                  transform: translateX(calc(-.7 * var(--toast-pos))) scale(105%);;
-                  opacity: 1;
-              }
-          }
+            * {
+                font-family: system-ui, segoe-fluent, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
 
-          @keyframes popupLeave{
-              0%{
-                  transform: translateX(calc(-1.8 * var(--toast-pos))) scale(105%);
-                  opacity: .99;
-              }
-              100%{
-                  transform: translateX(calc(var(--toast-pos) * 16)) scale(30%);
-                  opacity: .01;
-              }
-          }
-          .lini{
-              line-height: 1.29rem;
-          }
+            .shine {
+                background-color: rgba(255, 244, 233, 0.8105141141919) !important;
+                position: relative;
 
-          .a{
-              color: rgb(54, 161, 255);
-              transition-property: all;
-              transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-              transition-duration: 150ms;
-              font-weight: 539;
-          }
-          .a:hover{
-              color: rgba(49, 128, 255, 0.888);
-              text-decoration: underline;
-          }
-          .a:active{
-              color: rgb(23, 83, 195, .9);
-          }
-          .a:visited{
-              color: rgb(66, 85, 233);
-              text-decoration: line-through;
-          }
-          .force-baseline{
-              vertical-align: baseline !important;
-          }
-      </style>
-      <script>
-          const PopUpToastContainerClass = "toast-initial fixed p-1.5 use-icon #COLOR# border opacity-95 shadow-xl hover:shadow-2xl rounded-lg max-w-max left-0 right-0 inline-block taz";
-          const PopUpToastInnerClass = "use-icon force-baseline inline-block px-1.5 mx-auto taz lini";
-          var PopupArea = document.getElementById('pa');
-      
-          function PushToast(str, ucolor = "bg-emerald-400", later = 0, disappear = 3200){
-              let color = ucolor;
-              setTimeout(() => {
-                  switch(color){
-                      case "normal":
-                          // do nothing on the color
-                          break;
-                      case "warn":
-                          color = "bg-yellow-400";
-                          break;
-                      case "err":
-                          color = "bg-rose-400";
-                          break;
-                      case 'blur':
-                          color = 'backdrop-blur-md'
-                      default:
-                          break;
-                  }
-                  let containerC = PopUpToastContainerClass.replace('#COLOR#', color);
-                  let nPopToast = document.createElement('div');
-                  let nPopToastText = document.createElement('p');
-                  nPopToastText.innerHTML = str;
-                  nPopToast.appendChild(nPopToastText);
-                  for(let ii of containerC.split(" ")){
-                      nPopToast.classList.add(ii);
-                  }
-                  for(let ii of PopUpToastInnerClass.split(" ")){
-                      nPopToastText.classList.add(ii);
-                  }
-                  PopupArea.appendChild(nPopToast);
-      
-                  setTimeout(() => {
-                      nPopToast.classList.replace('toast-initial', 'toast-leave')
-                  }, disappear);
-                  setTimeout(() => {
-                      PopupArea.removeChild(nPopToast);
-                      delete nPopToast;
-                  }, 787 + disappear);
-      
-              }, later);
-          };
-          
-      </script>
-  </div>
-  <!-- end of popup -->
+            }
+
+            .shine::after {
+                content: '\e813  选中';
+                background: #efecec96;
+                border: 1px whitesmoke solid;
+                border-radius: .26rem;
+                box-shadow: 1px 1px 3px rgba(20, 20, 20, 0.176);
+                padding: .06rem .12rem;
+                font-family: system-ui, segoe-fluent, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                position: absolute;
+                left: auto;
+                right: -6px;
+                top: -1.39rem;
+                bottom: auto;
+                font-size: smaller;
+                font-weight: bold;
+                mix-blend-mode: difference;
+                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, display;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                transition-duration: 150ms;
+                /* aktual'no useless... scheiße! */
+                transform: scale(70%);
+            }
+
+            img {
+                border-radius: .21rem;
+                box-shadow: 1px 1px 3px #06060666;
+            }
+
+            input {
+                outline: 0;
+            }
+
+            code {
+                pointer-events: none !important;
+            }
+
+            .toast-initial {
+                transform: translateX(var(--toast-pos));
+                animation: cubic-bezier(0.075, 0.82, 0.165, 1) popupAnimate calc(var(--toast-span) * 3) forwards;
+                z-index: 1000 !important;
+            }
+
+            .toast-leave {
+                animation: cubic-bezier(0.075, 0.82, 0.165, 1) popupLeave calc(var(--toast-span) * 0.1) forwards;
+
+            }
+
+            @keyframes popupAnimate {
+                0% {
+                    transform: translateX(var(--toast-pos)) scale(80%);
+                    opacity: .6;
+                }
+
+                100% {
+                    transform: translateX(calc(-.7 * var(--toast-pos))) scale(105%);
+                    ;
+                    opacity: 1;
+                }
+            }
+
+            @keyframes popupLeave {
+                0% {
+                    transform: translateX(calc(-1.8 * var(--toast-pos))) scale(105%);
+                    opacity: .99;
+                }
+
+                100% {
+                    transform: translateX(calc(var(--toast-pos) * 16)) scale(30%);
+                    opacity: .01;
+                }
+            }
+
+            .lini {
+                line-height: 1.29rem;
+            }
+
+            .a {
+                color: rgb(54, 161, 255);
+                transition-property: all;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                transition-duration: 150ms;
+                font-weight: 539;
+            }
+
+            .a:hover {
+                color: rgba(49, 128, 255, 0.888);
+                text-decoration: underline;
+            }
+
+            .a:active {
+                color: rgb(23, 83, 195, .9);
+            }
+
+            .a:visited {
+                color: rgb(66, 85, 233);
+                text-decoration: line-through;
+            }
+
+            .force-baseline {
+                vertical-align: baseline !important;
+            }
+        </style>
+        <script>
+            const PopUpToastContainerClass = "toast-initial fixed p-1.5 use-icon #COLOR# border opacity-95 shadow-xl hover:shadow-2xl rounded-lg max-w-max left-0 right-0 inline-block taz";
+            const PopUpToastInnerClass = "use-icon force-baseline inline-block px-1.5 mx-auto taz lini";
+            var PopupArea = document.getElementById('pa');
+
+            function PushToast(str, ucolor = "bg-emerald-400", later = 0, disappear = 3200) {
+                let color = ucolor;
+                setTimeout(() => {
+                    switch (color) {
+                        case "normal":
+                            // do nothing on the color
+                            break;
+                        case "warn":
+                            color = "bg-yellow-400";
+                            break;
+                        case "err":
+                            color = "bg-rose-400";
+                            break;
+                        case 'blur':
+                            color = 'backdrop-blur-md'
+                        default:
+                            break;
+                    }
+                    let containerC = PopUpToastContainerClass.replace('#COLOR#', color);
+                    let nPopToast = document.createElement('div');
+                    let nPopToastText = document.createElement('p');
+                    nPopToastText.innerHTML = str;
+                    nPopToast.appendChild(nPopToastText);
+                    for (let ii of containerC.split(" ")) {
+                        nPopToast.classList.add(ii);
+                    }
+                    for (let ii of PopUpToastInnerClass.split(" ")) {
+                        nPopToastText.classList.add(ii);
+                    }
+                    PopupArea.appendChild(nPopToast);
+
+                    setTimeout(() => {
+                        nPopToast.classList.replace('toast-initial', 'toast-leave')
+                    }, disappear);
+                    setTimeout(() => {
+                        PopupArea.removeChild(nPopToast);
+                        delete nPopToast;
+                    }, 787 + disappear);
+
+                }, later);
+            };
+
+        </script>
+    </div>
+    <!-- end of popup -->
     <script type="module" src="./src/main.js"></script>
     <script>
         var AHANDLER = document.getElementById('LINKHANDLER');
-      function Find(array, item){
-        for(let i of array) if (i.id == item.id) return i;
-      }
-      function Scroll(id){
-        window.scrollTo({top: document.getElementById(id.replace('#', '')).offsetTop - 30, behavior: "smooth"});
-      }
-      function Clear(){
-        localStorage.clear(); 
-        setTimeout(()=>{window.location.reload()}, 300);
-      }
-      function DebugCondition2(){
-        if(localStorage.debug != 'true') localStorage.debug = 'true';
-        else localStorage.debug = 'false';
-        return localStorage.debug;
-      }
-      function TitleSwitch(b){
-        if(b){
-          document.body.classList.add('NOCLICK');
-          document.getElementById('INPUT').classList.add('hidden');
-          document.getElementById('OUTPUT').classList.remove('hidden');
-        }else{
-          document.getElementById('OUTPUT').classList.add('hidden');
-          document.getElementById('INPUT').classList.remove('hidden');
-          document.body.classList.remove('NOCLICK');
+        function Find(array, item) {
+            for (let i of array) if (i.id == item.id) return i;
         }
-      }
-      function Three(){
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
-      }
+        function Scroll(id) {
+            window.scrollTo({ top: document.getElementById(id.replace('#', '')).offsetTop - 30, behavior: "smooth" });
+        }
+        function Clear() {
+            localStorage.clear();
+            setTimeout(() => { window.location.reload() }, 300);
+        }
+        function DebugCondition2() {
+            if (localStorage.debug != 'true') localStorage.debug = 'true';
+            else localStorage.debug = 'false';
+            return localStorage.debug;
+        }
+        function TitleSwitch(b) {
+            if (b) {
+                document.body.classList.add('NOCLICK');
+                document.getElementById('INPUT').classList.add('hidden');
+                document.getElementById('OUTPUT').classList.remove('hidden');
+            } else {
+                document.getElementById('OUTPUT').classList.add('hidden');
+                document.getElementById('INPUT').classList.remove('hidden');
+                document.body.classList.remove('NOCLICK');
+            }
+        }
+        function Three() {
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+        }
         const WarnF12 = () => {
             console.log('你打开了F12!!! ');
-            if(localStorage.debug == 'true' & window.location.href.includes('localhost')) {
+            if (localStorage.debug == 'true' & window.location.href.includes('localhost')) {
                 console.log('但是是debug模式.');
                 console.groupCollapsed('DEBUG效果');
                 console.log('- 将在页面末尾append生成的canvas');
@@ -346,9 +371,9 @@
                 console.log('- 将什么我也不知道了应该晚点加入吧');
                 console.groupEnd();
                 return;
-            }else{
+            } else {
                 setTimeout(() => {
-                    console.log( _EX_CONFIG.F12WARN, _EX_CONFIG.F12WARN_CSS );
+                    console.log(_EX_CONFIG.F12WARN, _EX_CONFIG.F12WARN_CSS);
                 }, 514);
             }
         }
@@ -356,30 +381,30 @@
             'f12'
         ]
         window.addEventListener('keydown', (e) => {
-            if(f12.includes(e.key.toLowerCase())) WarnF12();
+            if (f12.includes(e.key.toLowerCase())) WarnF12();
         });
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             if (window.outerHeight - window.innerHeight > 100 || window.outerWidth - window.innerWidth > 100) {
-                WarnF12(); 
+                WarnF12();
             }
         });
         if (performance.memory && performance.memory.usedJSHeapSize > 0) {
-            WarnF12(); 
+            WarnF12();
         }
-        window.addEventListener('devicemotion', function(event) {
-            WarnF12(); 
+        window.addEventListener('devicemotion', function (event) {
+            WarnF12();
         });
 
         WarnF12();
         setTimeout(() => {
-          if(USE_TW)  PushToast('你现在启用了TailwindCSS PlayCDN!', 'warn');
-          else PushToast('你禁用了PlayCDN');
+            if (USE_TW) PushToast('你现在启用了TailwindCSS PlayCDN!', 'warn');
+            else PushToast('你禁用了PlayCDN');
 
-          if(!_ua.includes('hrome') && _ua.includes('afari')) PushToast('=====<br>你的浏览器兼容性好像有问题，<br>显示效果可能存在异常！<br>', 'bg-rose-300', 810, 95637);
+            if (!_ua.includes('hrome') && _ua.includes('afari')) PushToast('=====<br>你的浏览器兼容性好像有问题，<br>显示效果可能存在异常！<br>', 'bg-rose-300', 810, 95637);
 
-          // tailwind.config = {
-          //   darkMode: 'class'
-          // };
+            // tailwind.config = {
+            //   darkMode: 'class'
+            // };
         }, 1000);
 
         const GetAllHistoriesSaved = () => {
@@ -388,26 +413,26 @@
             }, 5637);
         }
         let listeners = {
-            dark: (mediaQueryList ) => {
-                if(mediaQueryList.matches && (localStorage.followDark ?? 'false') == 'true'){
+            dark: (mediaQueryList) => {
+                if (mediaQueryList.matches && (localStorage.followDark ?? 'false') == 'true') {
                     document.documentElement.classList.add('dark');
                     localStorage.theme = 'dark';
                     console.log(0);
                 }
             },
             light: (mediaQueryList) => {
-                if(mediaQueryList.matches){
+                if (mediaQueryList.matches) {
                     try {
                         document.documentElement.classList.remove('dark');
                     } catch (ex) {
-                        
+
                     }
                     localStorage.theme = 'light';
                     console.log(1);
                 }
             },
             enic: () => {
-                if((localStorage.followDark ?? 'false') == 'true'){
+                if ((localStorage.followDark ?? 'false') == 'true') {
                     document.documentElement.classList.add('dark');
                     localStorage.theme = 'dark';
                     console.log(0);
@@ -416,7 +441,7 @@
         }
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', listeners.dark);
         window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', listeners.light);
-        if(window.matchMedia('(prefers-color-scheme: dark)').matches) listeners.enic(); 
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) listeners.enic();
 
         const GetAllCache = () => {
             setTimeout(() => {
@@ -446,7 +471,7 @@
             setTimeout(() => {
                 navigator.clipboard.writeText(JSON.stringify(localStorage.kuolieJson));
             }, 3690);
-        }        
+        }
         const GetLastEditing = () => {
             setTimeout(() => {
                 navigator.clipboard.writeText(JSON.stringify(localStorage.lastEdit));
@@ -454,5 +479,6 @@
         }
     </script>
     <script src="./kuolie.ex.config.js"></script>
-  </body>
+</body>
+
 </html>
