@@ -1,8 +1,6 @@
-@tailwind base;
-@layer base{
-    img {
-        @apply inline-block;
-      }
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+img {
+    @apply inline-block;
   }
-@tailwind utilities;
-@tailwind variants;
