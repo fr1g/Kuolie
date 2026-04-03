@@ -15,6 +15,8 @@
         }
     </style>
     <script>
+        const CDN_URL = 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4';
+        // const CDN_URL = 'https://cdn.tailwindcss.com';
         console.clear();
         // judge to use tailwind or not.
         var USE_TW = null;
@@ -34,7 +36,7 @@
 
         if (USE_TW) {
             var twcdn = document.createElement('script'), twattr = document.createElement('style');
-            twcdn.setAttribute('src', 'https://cdn.tailwindcss.com');
+            twcdn.setAttribute('src', CDN_URL);
 
             twattr.setAttribute('type', 'text/tailwindcss');
             twattr.innerHTML = `
@@ -105,7 +107,7 @@
         var _consoleWarn = console.warn, isTwLoaded = false;
         console.warn = function (...data) {
             _consoleWarn(...data);
-            if (data.toString().includes('cdn.tailwindcss.com')) isTwLoaded = true;
+            if (data.toString().includes(CDN_URL.split('//')[1])) isTwLoaded = true;
             else hasError = true;
         }
         const _ua = navigator.userAgent;
