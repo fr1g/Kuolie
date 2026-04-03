@@ -8,6 +8,14 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  builder: 'rollup',
+  // build:{
+  //   rolldownOptions: {
+  //     output: {
+  //       format: 'esm',
+  //     }
+  //   }
+  // },
   resolve: {
     alias: {
       vue: 'vue/dist/vue.esm.js',
@@ -20,10 +28,10 @@ export default defineConfig({
     vue2({
       runtimeCompiler: true,
     }),
-    legacy({
-      targets: ['ie >= 11'],
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime']
-    }),
+    // legacy({
+    //   targets: ['ie >= 11'],
+    //   additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+    // }),
     tailwindcss()
     // createVuePlugin.vueTemplateOptions({
     //   runtimeCompiler: true,
