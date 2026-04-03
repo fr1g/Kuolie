@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import App from './App.vue'
 import router from './router'
-import html2canvas from '@cantoo/html2canvas'
+import html2canvas from 'h2canvas-fr1g-oklch'
 
 // import '../public/output.css'
 // import '../public/sfi.ttf'

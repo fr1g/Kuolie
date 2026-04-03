@@ -2,5 +2,40 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 img {
-    @apply inline-block;
+  @apply inline-block;
+}
+
+* {
+  @apply transition;
+}
+
+ul {
+  @apply list-disc list-inside;
+}
+
+ol {
+  @apply list-decimal list-inside!;
+}
+
+.render-block {
+  @apply text-sm wrap-break-word mt-1.5 pt-0.5;
+
+  h1 {
+    @apply text-2xl font-bold;
   }
+  h2 {
+    @apply text-xl font-bold;
+  }
+  h3 {
+    @apply text-xl font-semibold;
+  }
+  h4 {
+    @apply text-lg font-bold;
+  }
+  h5 {
+    @apply text-lg font-semibold;
+  }
+  h6 {
+    @apply text-base font-semibold;
+  }
+}

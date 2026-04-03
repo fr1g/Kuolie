@@ -11,7 +11,9 @@ export default defineConfig({
   resolve: {
     alias: {
       vue: 'vue/dist/vue.esm.js',
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // 'vue-markdown-render': fileURLToPath(new URL('./node_modules/vue-markdown-renderer/src/MarkdownRenderer.js', import.meta.url))
+
     }
   },
   plugins: [

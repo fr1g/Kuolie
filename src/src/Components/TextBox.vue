@@ -1,35 +1,41 @@
+<script setup>
+
+</script>
 <template>
-    <div :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))"
-        :class="`   basicLooking? p-2.5 ?${this.isMasonry ? 'm-2' : ''} rounded-lg shadow transition-all hover:shadow-md active:shadow-lg opacity-95 hover:opacity-80 active:opacity-70
+    <div :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))" :class="`   basicLooking? p-2.5 ?${this.isMasonry ? 'm-2' : ''} rounded-lg shadow transition-all hover:shadow-md active:shadow-lg opacity-95 hover:opacity-80 active:opacity-70
                     advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._(1)}-900 bg-${this._(1)}-100
-                    ${this._(1).includes('EXT') ? 'bg-opacity-20' : ''} 
+                    ${this._(1).includes('EXT') ? '@todo:bg-opacity bg--/20' : ''} 
                     forExtraFunctions? ${this.isPlaceHolder ? 'grow col-span-auto justify-items-center justify-center items-center  grid' : ''}
-                `"
-                :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}`">
+                `" :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}`">
 
         <div v-if="!(this.extendInfo && this.extendInfo.isExtended)" :class="`${this.isPlaceHolder ? 'hidden' : ''}`">
-            <h3 :class="`text-${this._(1)}-700 font-semibold text-lg flex flex-wrap break-words`" >
-                <div style="line-height: .99rem !important;" :class="`opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5  ${this.showingBlockId ?? true ? 'block' : 'hidden'} `">
+            <h3 :class="`text-${this._(1)}-700 font-semibold text-lg flex flex-wrap break-words`">
+                <div style="line-height: .99rem !important;"
+                    :class="`opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5  ${this.showingBlockId ?? true ? 'block' : 'hidden'} `">
                     #{{ this.displayId }}
                 </div>
-                <div class="grow break-words" style="overflow-x: hidden; overflow-y: hidden; line-height: 1.14rem !important;" v-html="this.title.replaceAll(this.reg, this.replacement).replaceAll(this.regFrame, this.replacement.replace('脚本', 'iFrame'))">
+                <div class="grow break-words @title-display"
+                    style="overflow-x: hidden; overflow-y: hidden; line-height: 1.14rem !important;"
+                    v-html="this.title.replaceAll(this.reg, this.replacement).replaceAll(this.regFrame, this.replacement.replace('脚本', 'iFrame'))">
                 </div>
             </h3>
-            <div class="text-sm break-words mt-1.5 pt-0.5" v-html="`${ApplyIcon(this.content.replaceAll(this.reg, this.replacement).replaceAll(this.regFrame, this.replacement.replace('脚本', 'iFrame')))}`" ref="contented"></div>
+            <div class=" @text-display render-block" ref="contented" v-html="this.GetContent()">
+            </div>
         </div>
-    
+
         <div v-if="!(this.extendInfo && this.extendInfo.isExtended)" :class="`${!this.isPlaceHolder ? 'hidden' : ''}`">
             <div class="opacity-60 pr-0.5 text-base align-bottom font-normal translate-y-0.5">
                 #{{ this.ignorePID ? 'X' : this.id }} 占位{{ (this.span <= 1 ? '' : '格') }}{{ this.span <= 2 ? '' : '子' }}
+                    </div>
             </div>
+
         </div>
-        
-    </div>
 </template>
 <script>
 import ExtendInfo from './Classes/ExtendInfo';
+import { marked, Marked } from 'marked';
 
-export default{
+export default {
     name: 'TextBox',
     props: ['id', 'offset', 'span', 'inside', 'fill', 'x', 'isPlaceHolder', 'extendInfo', 'self', 'showingBlockId', 'displayId', 'isMasonry'],
     inject: {
@@ -39,7 +45,7 @@ export default{
         Seek: 'Seek',
         Focus: 'Focus'
     },
-    data(){
+    data() {
         return {
             title: '=v=',
             content: '空哒!',
@@ -51,11 +57,26 @@ export default{
             ignorePID: false,
             thisBlockIsExtended: false,
             usingBeneathTitle: false,
-            parsedDataContent: null
+            parsedDataContent: null,
+            // markedRenderer: {
+            //     heading(text, level) {
+            //         return `<h${level} class="marked-md">${text}</h${level}>`;
+            //     },
+            //     paragraph(text) {
+            //         return `<p class="marked-md">${text}</p>`;
+            //     },
+            //     list(body, ordered, start) {
+            //         const type = ordered ? 'ol' : 'ul';
+            //         return `<${type} class="marked-md">${body}</${type}>`;
+            //     },
+            //     listitem(text) {
+            //         return `<li class="marked-md">${text}</li>`;
+            //     }
+            // }
         }
     },
-    mounted(){ // [] /【】
-        if(this.extendInfo && this.extendInfo.isExtended){
+    mounted() { // [] /【】
+        if (this.extendInfo && this.extendInfo.isExtended) {
             this.thisBlockIsExtended = true;
             console.log(this.title)
         }
@@ -65,86 +86,89 @@ export default{
             this.Renew();
         });
     },
-    beforeUpdate(){
+    beforeUpdate() {
         this.Renew();
     },
     methods: {
-        ApplyIcon(x){
-            
+        GetContent() {
+            return marked.parse(this.content ?? this.ApplyIcon(this.content.replaceAll(this.reg, this.replacement).replaceAll(this.regFrame, this.replacement.replace('脚本', 'iFrame'))));
+        },
+        ApplyIcon(x) {
+
             let founds = x.match(this.useIconReg);
             let tries = (founds ?? []).length, tmp = x;
-            if(!(tries == 0 || tries == NaN))
-                for(let i = 0; i < tries; i++){
+            if (!(tries == 0 || tries == NaN))
+                for (let i = 0; i < tries; i++) {
                     let iconText = founds[i];
                     tmp = tmp.replaceAll(iconText, iconText.replace('%=', '&#x').replace('%', ';'));
                 }
-//
+            //
             founds = x.match(this.useSpacerReg);
             tries = (founds ?? []).length;
-            if(tries != 0 && tries != NaN){
-                for(let i = 0; i < tries; i++){
+            if (tries != 0 && tries != NaN) {
+                for (let i = 0; i < tries; i++) {
                     let iconText = founds[i].replace('%=', '').replace('%', '');
                     let spacesCount;
-                    try{
+                    try {
                         spacesCount = parseInt(iconText);
                     }
-                    catch(ex){
+                    catch (ex) {
                         spacesCount = 0;
                     }
-                    if(spacesCount == 0) continue;
+                    if (spacesCount == 0) continue;
                     let count = 0, real = '';
-                    while(count < spacesCount){
+                    while (count < spacesCount) {
                         real += '&nbsp;';
                         count++;
                     }
                     tmp = tmp.replaceAll(founds[i], real);
-                    
+
                 }
             }
-            
-//
+
+            //
             return tmp;
         },
-        Renew(){
+        Renew() {
             if (this.inside == null) return;
-            
+
             let process = this.inside;
-            if(process == undefined) return;
-            if(process.includes('[') || process.includes('【')){
+            if (process == undefined) return;
+            if (process.includes('[') || process.includes('【')) {
                 let startIndex1 = process.indexOf('['),
                     startIndex2 = process.indexOf('【'),
                     closeIndex1 = process.indexOf(']'),
                     closeIndex2 = process.indexOf('】');
 
-                if(startIndex1 != -1 & (startIndex2 == -1 ? (true) : (startIndex1 < startIndex2))){
-                    if(closeIndex1 != -1){
+                if (startIndex1 != -1 & (startIndex2 == -1 ? (true) : (startIndex1 < startIndex2))) {
+                    if (closeIndex1 != -1) {
                         this.title = process.slice(startIndex1 + 1, closeIndex1);
                         this.content = process.slice(closeIndex1 + 1);
                     }
 
                     else this.Clear(true, process);
-                }else if(startIndex2 != -1 & (startIndex1 == -1 ? true : (startIndex1 > startIndex2))){
-                    if(closeIndex2 != -1){
+                } else if (startIndex2 != -1 & (startIndex1 == -1 ? true : (startIndex1 > startIndex2))) {
+                    if (closeIndex2 != -1) {
                         this.title = process.slice(startIndex2 + 1, closeIndex2);
                         this.content = process.slice(closeIndex2 + 1);
                     }
 
                     else this.Clear(true, process);
-                }else this.Clear(true, process);
-            }else this.Clear(true, process);
+                } else this.Clear(true, process);
+            } else this.Clear(true, process);
             this.$forceUpdate();
         },
-        Clear(onlyTitle = false, process = ''){
+        Clear(onlyTitle = false, process = '') {
             this.title = '=v=';
             if (!onlyTitle) this.content = '空哒!';
             else this.content = (process == '' ? '空哒! owo' : process);
         }
     },
     watch: {
-        content(after, before){
+        content(after, before) {
             this.Renew();
         },
-        x(){
+        x() {
             this.Renew();
         }
     },

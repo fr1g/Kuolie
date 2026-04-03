@@ -1,6 +1,6 @@
 {
   "name": "kuolie",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "host": "vite --host",
@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
+    "h2canvas-fr1g-oklch": "0.1.175",
     "html2canvas": "^1.4.1",
     "macy": "^2.5.1",
+    "marked": "^17.0.5",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.1",
     "vite-plugin-vue2": "^2.0.3",

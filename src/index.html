@@ -86,7 +86,7 @@
         });
         const AccessList = [
             '/favicon.png',
-            '/output.css',
+            // '/output.css',
             '/sfi.ttf',
         ];
 
@@ -348,11 +348,11 @@
         function TitleSwitch(b) {
             if (b) {
                 document.body.classList.add('NOCLICK');
-                document.getElementById('INPUT').classList.add('hidden');
-                document.getElementById('OUTPUT').classList.remove('hidden');
+                document.getElementById('INPUT').classList.replace('inline-block', 'hidden!');
+                document.getElementById('OUTPUT').classList.replace('hidden!', 'inline-block');
             } else {
-                document.getElementById('OUTPUT').classList.add('hidden');
-                document.getElementById('INPUT').classList.remove('hidden');
+                document.getElementById('OUTPUT').classList.replace('inline-block', 'hidden!');
+                document.getElementById('INPUT').classList.replace('hidden!', 'inline-block');
                 document.body.classList.remove('NOCLICK');
             }
         }
