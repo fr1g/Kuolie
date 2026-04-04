@@ -10,11 +10,15 @@ img {
 }
 
 ul {
-  @apply list-disc list-inside;
+  @apply list-disc  ml-3.5;
 }
 
 ol {
-  @apply list-decimal list-inside!;
+  @apply list-decimal  ml-3.5;
+}
+
+li::marker {
+  @apply translate-x-3 inline-block text-center!;
 }
 
 .render-block {
