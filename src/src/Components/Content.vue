@@ -254,17 +254,72 @@ export default {
             let prepare = this.Prepare();
             this.UpdateSorting();
             prepare.id = this.TextBoxes.length; // ...
+            let needSkip = false;
 
             if (extra.placeholder) prepare.isPlaceHolder = true;
-            if (extra.extendable) {
+            if (extra.extendable != null && extra.extendable instanceof ExtendInfo) {
+                console.log('extendable add')
                 prepare.isExtendable = true;
                 prepare.extendInfo = extra.extendable;
+                switch (extra.extendable.type) {
+                    default:
+                        console.log(extra.extendable.type);
+
+                    case 'image': {
+                        console.log('img add')
+                        needSkip = true;
+                        const input = document.createElement('input');
+                        input.type = 'file';
+                        input.id = `FILEINPUT::${prepare.id}`;
+                        input.accept = 'image/*';
+                        input.style.display = 'none';
+                        input.classList.add('img-input');
+
+                        input.onchange = async (event) => {
+                            const file = event.target.files?.[0];
+                            if (!file) {
+                                input.remove();
+                                return;
+                            }
+                            if (file.size > 20 * 1024 * 1024) {
+                                PushToast('图片大小不能超过20MB', 'warn');
+                                input.remove();
+                                return;
+                            }
+
+                            const result = await new Promise((resolve, reject) => {
+                                const reader = new FileReader();
+                                reader.onload = () => resolve(reader.result);
+                                reader.onerror = () => reject(reader.error);
+                                reader.readAsDataURL(file);
+                            });
+                            console.log(prepare);
+                            prepare.content = result;
+
+                            this.TextBoxes.push(prepare);
+                            this.AfterNewInsert(prepare);
+
+                            this.$forceUpdate();
+                            input.remove();
+
+                        };
+                        console.log(input);
+                        document.body.appendChild(input);
+                        input.click();
+
+                        break;
+                    }
+                }
             }
 
-            // console.log(333, prepare)
+            if (!needSkip) {
+                this.TextBoxes.push(prepare);
+                this.AfterNewInsert(prepare);
+            }
 
-            this.TextBoxes.push(prepare);
 
+        },
+        AfterNewInsert(prepare) {
             this.UpdateSorting();
             setTimeout(() => {
                 let di = this.GetPosition(prepare);
@@ -275,7 +330,6 @@ export default {
             this.InitMacy();
 
             return;
-
         },
         Remove(id = 'default') {
             if (id === 'default') {

@@ -6,18 +6,27 @@
             class="w-full  dark:bg-zinc-800/80  bg-zinc-300/80   text-lg text-center cursor-grab active:cursor-grabbing -translate-y-1 ">
             <Icon style="transform: translateY(1.5px);" class="inline-block">e76f</Icon>
         </div>
-        <div class="px-3">
-            <p class=" -translate-y-0.5 text-lg select-none text-black dark:text-white">
+        <div class="px-3 relative">
+            <p class=" -translate-y-0.5 text-lg select-none text-black dark:text-white relative z-30">
                 <span>当前编辑: <span class="font-semibold ">#{{ Get(tempOrigin) == -1 ? '无' : Get(tempOrigin)
                 }}</span></span>
             </p>
+            <div v-if="this.tempObject.extendInfo?.isExtended && this.tempObject.extendInfo.extendType == 'image'"
+                class="w-full z-10 h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg absolute grid items-center bg-zinc-100/30 backdrop-blur-lg">
+                <div class="-translate-y-5 ">
+                    <p class="text-xl text-center font-semibold text-slate-500">
+                        不要修改此处内容！
+                    </p>
+                    <p class="text-center text-lg">修改此处内容将导致此图片显示异常。如需要更改图片，可以先删除此块，然后重新添加。</p>
+                </div>
+            </div>
             <textarea id="textarea-input"
-                class="w-full h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg text-black dark:text-white bg-zinc-100 dark:bg-zinc-700"
+                class="w-full z-1 h-full top-0 bottom-0 left-0 right-0 mb-12 p-1.5 outline-none resize-none rounded-lg text-black dark:text-white bg-zinc-100 dark:bg-zinc-700"
                 :style="`min-height: 0; max-height: 37.89vh`" spellcheck="false" @change="textAreaChanged()"
                 @blur="textAreaChanged()" @input="textAreaAutoTag" @focus="textAreaFocus" ref="input" rows="5"
                 :placeholder="this.tips">{{ this.tempObject.content }}</textarea>
         </div>
-        <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800"
+        <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800  z-20"
             style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;">
             <Press overclass="text-lg bg-yellow-300" init-opacity="30" @click.native="Generate()">生成</Press>
             <Press overclass="text-lg bg-indigo-300" init-opacity="30" @click.native="Modal(true, ConfModal)">
@@ -55,7 +64,7 @@
                 </Press>
             </div>
             <Press overclass="text-lg bg-green-300" init-opacity="30" @click.native="Add()" id="NEWTEXTBOX">添加</Press>
-            <Press overclass="text-lg bg-red-300" init-opacity="30" @click.native="judgeDeletion">删除</Press>
+            <Press overclass="text-lg bg-red-300 z-50" init-opacity="30" @click.native="judgeDeletion">删除</Press>
             <div class="w-5  bg-white-/30"></div>
             <Press overclass="text-lg bg-blue-300" init-opacity="30"
                 @click.native="Add({ placeholder: true, extendable: null })">占位</Press>

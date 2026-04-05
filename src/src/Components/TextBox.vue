@@ -2,7 +2,14 @@
 
 </script>
 <template>
-    <div :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))" :class="`   basicLooking? p-2.5 ?${this.isMasonry ? 'm-2' : ''} rounded-lg shadow transition-all hover:shadow-md active:shadow-lg opacity-95 hover:opacity-80 active:opacity-70
+    <img v-if="(this.extendInfo && this.extendInfo.isExtended && this.extendInfo.extendType === 'image')"
+        :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))" :style="`z-index: ${this.id + 10}; ${this.isPlaceHolder ? 'opacity: var(--opa);' : ''}
+        `" :class="`   basicLooking?  ?${this.isMasonry ? 'm-2' : ''} rounded-lg! overflow-hidden shadow transition-all hover:shadow-md active:shadow-lg opacity-95 hover:opacity-80 active:opacity-70
+                    advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._(1)}-900 bg-${this._(1)}-100
+                    ${this._(1).includes('EXT') ? '@todo:bg-opacity bg--/20' : ''} 
+                    
+                `" :src="this.content" alt="added-img" />
+    <div v-else :id="`TEXTBOX::${this.id}`" @click="Focus(Seek(id))" :class="`   basicLooking? p-2.5 ?${this.isMasonry ? 'm-2' : ''} rounded-lg shadow transition-all hover:shadow-md active:shadow-lg opacity-95 hover:opacity-80 active:opacity-70
                     advancedLooking? col-span-${this.span ?? '1'}  ${this.fill ? 'h-full' : 'h-fit'} text-${this._(1)}-900 bg-${this._(1)}-100
                     ${this._(1).includes('EXT') ? '@todo:bg-opacity bg--/20' : ''} 
                     forExtraFunctions? ${this.isPlaceHolder ? 'grow col-span-auto justify-items-center justify-center items-center  grid' : ''}
