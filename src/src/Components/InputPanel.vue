@@ -28,7 +28,7 @@
         </div>
         <div class="my-1 flex fixed justify-items-end flex-wrap bottom-1 right-1 left-1 px-1 pr-2 text-zinc-800  z-20"
             style="color: rgb(39 39 42 / var(--tw-text-opacity)) !important;">
-            <Press overclass="text-lg bg-yellow-300" init-opacity="30" @click.native="Generate()">生成</Press>
+            <Press overclass="text-lg bg-yellow-300" init-opacity="30" @click.native="generateOnce">生成</Press>
             <Press overclass="text-lg bg-indigo-300" init-opacity="30" @click.native="Modal(true, ConfModal)">
                 <Icon>f8b0</Icon>
             </Press>
@@ -125,6 +125,7 @@ export default {
             editing: 0,
             timer: false,
             timerRef: null,
+            generateLocked: false,
             dragBarHeight: 0,
             tempObject: {
                 id: null,
@@ -145,6 +146,14 @@ export default {
         };
     },
     methods: {
+        generateOnce() {
+            if (this.generateLocked) return;
+            this.generateLocked = true;
+            this.Generate();
+            setTimeout(() => {
+                this.generateLocked = false;
+            }, 800);
+        },
         chkNull() {
             if (this.Get(this.tempOrigin) == -1) {
                 this.remakeTemp();
