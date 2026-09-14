@@ -42,4 +42,41 @@ li::marker {
   h6 {
     @apply text-base font-semibold;
   }
+
+  code {
+    @apply rounded bg-white/40 px-1 py-0.5 font-mono text-[0.9em];
+  }
+
+  pre {
+    @apply my-2 overflow-x-auto rounded-lg bg-white/30 p-3 font-mono text-sm leading-relaxed;
+  }
+
+  pre code {
+    @apply bg-transparent p-0;
+  }
+
+  blockquote {
+    @apply my-2 border-l-4 border-white/60 pl-3 italic;
+  }
+
+  a {
+    @apply underline decoration-2 underline-offset-2;
+  }
+
+  hr {
+    @apply my-3 border-white/60;
+  }
+
+  table {
+    @apply my-2 w-full border-collapse text-left;
+  }
+
+  th,
+  td {
+    @apply border border-white/50 px-2 py-1;
+  }
+
+  th {
+    @apply bg-white/20 font-semibold;
+  }
 }

@@ -98,7 +98,7 @@ export default {
     },
     methods: {
         GetContent() {
-            return marked.parse(this.content ?? this.ApplyIcon(this.content.replaceAll(this.reg, this.replacement).replaceAll(this.regFrame, this.replacement.replace('脚本', 'iFrame'))));
+            return marked.parse(this.content ? this.ApplyIcon(this.content.replaceAll(this.reg, this.replacement).replaceAll(this.regFrame, this.replacement.replace('脚本', 'iFrame'))) : this.content);
         },
         ApplyIcon(x) {
 

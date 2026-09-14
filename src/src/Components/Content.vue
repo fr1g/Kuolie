@@ -169,7 +169,7 @@ export default {
                 },
                 {
                     id: 4,
-                    content: '【Tailwind Yes!】另外, 这个工具使用了 <p class="font-semibold text-3xl">TailwindCSS Play CDN</p>所以你可以快捷引入样式!',
+                    content: '【Tailwind Yes!】另外, 这个工具使用了 <p class="font-semibold text-3xl">TailwindCSS Play CDN</p>所以你可以快捷引入样式!<br/>而且在左下角的`生成`按钮旁有两个可能很实用的按钮，设置和帮助。<br/>点击 <code>%=003f%</code> 查看：%=6%←这六个空格是怎么打出来的？如何插入SFI图标？',
                     span: 5,
                     offset: 0,
                     x: 0,
@@ -177,7 +177,7 @@ export default {
                 },
                 {
                     id: 5,
-                    content: '【MarkDown Yes!】\n# 现在Kuolie支持Markdown语法了！\n*还不错吧ww*',
+                    content: '【MarkDown Yes!】\n# 现在Kuolie支持Markdown语法了！\n*还不错吧ww*\n```javascript\n\"powered with Vue.js 2 老东西了\"\n```\n注意：如果需要换行且**不添加**`<br />`的话，需要按下：`shift` + `enter`',
                     span: 5,
                     offset: 0,
                     x: 0,
